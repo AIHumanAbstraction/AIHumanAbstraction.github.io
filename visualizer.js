@@ -1197,23 +1197,19 @@ class ConceptARCVisualizer {
     }
 
     selectionHasRuleEvaluation(modality, model, setting) {
-        // Rules per user:
-        // - o3: everything evaluated
-        // - Human: evaluated (human labels present)
-        // - o4-mini: nothing evaluated
-        // - gpt4o: none evaluated
-        // - claude-sonnet-4: only medium+tools evaluated
-        // - gemini-2.5-pro: only medium+tools evaluated
-        // - qwen2.5-vl-72b: none evaluated
-        // - llama-scout: none evaluated
+        // Which (modality, model, setting) combinations have rule-evaluation labels in the shipped CSVs.
+        // - o3: evaluated (text + visual)
+        // - Human: evaluated
+        // - o4-mini, gpt4o, qwen2.5-vl-72b, llama-scout: not evaluated in this bundle
+        // - claude-sonnet-4, gemini-2.5-pro: medium and medium+tools (text + visual) include labels
         if (model === 'o3') return true;
         if (model === 'Human') return true;
         if (model === 'o4-mini') return false;
         if (model === 'gpt4o') return false;
         if (model === 'qwen2.5-vl-72b') return false;
         if (model === 'llama-scout') return false;
-        if (model === 'claude-sonnet-4') return setting === 'medium+tools';
-        if (model === 'gemini-2.5-pro') return setting === 'medium+tools';
+        if (model === 'claude-sonnet-4') return setting === 'medium' || setting === 'medium+tools';
+        if (model === 'gemini-2.5-pro') return setting === 'medium' || setting === 'medium+tools';
         return false;
     }
     
