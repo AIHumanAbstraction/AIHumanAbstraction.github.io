@@ -1,0 +1,280 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule_correct,rule_evaluation_reasoning,Rule,validated
+2025-07-23T17:27:17,TopBottom2D,TopBottom2D1,1,low,0,mismatch,0,1 1 1 1 1 1 3 3 3 3,"Each grid on the left is transformed to a smaller grid on the right, consisting of only the non-black colored squares, arranged in the same order as they appear from top to bottom, left to right. The black squares are removed, leaving a compact representation of the colored pattern.
+
+Rule: Remove all black squares and arrange the remaining colored squares in the same order from top to bottom, left to right, in a smaller grid.",,0,"The Evaluated Rule focuses on removing black squares and rearranging colored squares, while the Ground Truth Rule specifies producing the highest shape in a minimal bounding box. The two rules do not align in their core transformation objectives.","Remove all black squares and arrange the remaining colored squares in the same order from top to bottom, left to right, in a smaller grid.",0
+2025-07-23T17:27:26,TopBottom2D,TopBottom2D1,2,low,0,mismatch,0,"1 1 1 1 1
+1 1 1 1 1","By examining the transformations from the left grids to the right grids, we observe that in each case, the right grid captures one of the colored regions from the left grid. The chosen region is extracted and placed on the right side. The new grid is smaller and does not contain any black areas from the original grid. This suggests that the rule is to extract and isolate a single connected component of colored squares from the left grid, ignoring black squares.
+
+Rule: Extract and isolate a single connected component of colored squares from the left grid, ignoring black squares.",,0,"The Evaluated Rule focuses on extracting a single connected component of colored squares while ignoring black squares, which does not align with the Ground Truth Rule that specifies producing the highest shape in a minimal bounding box. The two rules describe different processes and outcomes.","Extract and isolate a single connected component of colored squares from the left grid, ignoring black squares.",0
+2025-07-23T17:27:31,TopBottom2D,TopBottom2D1,3,low,0,parse:rows have unequal length,0,"3 3 3 3 3 3
+4 4 4 4 4","In each pair of grids, the right side only contains the non-black squares of the left side grid in a more compact form. The non-black colors are extracted and placed in a small grid without any black squares present, retaining their order from top to bottom and left to right. The transformation rule is to extract and compact the non-black squares from the large grid into a smaller grid without black squares.
+
+Rule: Extract non-black squares and arrange them in a compact form.",,0,"The Evaluated Rule focuses on extracting non-black squares and arranging them compactly, which does not necessarily ensure that the highest shape is produced in a minimal bounding box as specified in the Ground Truth Rule.",Extract non-black squares and arrange them in a compact form.,0
+2025-07-23T17:27:13,TopBottom2D,TopBottom2D10,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+5 5 0 0 0 0 0 0
+3 3 0 0 0 0 0 0
+1 1 0 0 0 0 0 0
+7 7 0 0 0 0 0 0
+2 2 0 0 0 0 0 0","The left side images have vertical color blocks. The right side images are the left images flipped vertically. This transformation applies consistently in both examples.
+
+Rule: Flip the grid vertically.",,1,"The Evaluated Rule of flipping the grid vertically achieves the same effect as reversing the order of contained shapes from top to bottom, thus it is correct.",Flip the grid vertically.,0
+2025-07-23T17:27:19,TopBottom2D,TopBottom2D10,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 0 0 0 0
+0 0 3 3 3 3 0 0 0 0
+0 0 3 3 3 3 0 0 0 0
+0 0 2 2 0 0 0 0 0 0
+0 0 2 2 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The left grids are vertically oriented stacks of colors. The right grids are the horizontal flips of their corresponding left grids. The colors are rearranged vertically. The second grid's lower half is flipped to the top and mirrored.
+
+Rule: Flip the grid vertically and mirror the colors horizontally while maintaining their vertical positions.",,0,"The Evaluated Rule specifies flipping the grid vertically and mirroring colors horizontally, which introduces additional transformations not present in the Ground Truth Rule. The Ground Truth Rule only requires reversing the order of shapes from top to bottom without altering their horizontal positions or colors.",Flip the grid vertically and mirror the colors horizontally while maintaining their vertical positions.,0
+2025-07-23T17:27:27,TopBottom2D,TopBottom2D10,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 1 1 0 0 0 0 0
+0 0 0 1 1 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","In the first pair of images, the colored sections of the grid are flipped vertically. The topmost color becomes the bottommost, and the bottommost color becomes the topmost. This transformation is consistently applied to each grid. Applying this rule to the grid in the second image involves flipping the blue and yellow sections vertically. The blue section on rows 6-7 becomes the topmost on rows 4-5, and the yellow section on rows 8-9 becomes the bottommost on rows 6-7.
+
+Rule: Flip the colored sections of the grid vertically.",,0,"The Evaluated Rule specifies flipping the colored sections of the grid vertically, which does not necessarily imply reversing the order of contained shapes from top to bottom as required by the Ground Truth Rule. The two rules describe different transformations.",Flip the colored sections of the grid vertically.,0
+2025-07-23T17:27:31,TopBottom2D,TopBottom2D2,1,low,0,mismatch,0,"0 0 0 0 0 0
+0 7 7 0 0 0
+0 7 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The left grids contain colored shapes. The right grids show transformations focusing on the topmost shape from the left grid, maintaining its original color and creating a smaller version of it. The first grid extracts the green T-shape, the second grid extracts the orange line, and the third grid extracts the maroon U-shape. Applying this rule to the second image, we focus on the gray L-shape, maintaining its color and creating a smaller version.
+
+Rule: Extract the topmost colored shape, retain its color, and create a smaller version of it.",,0,"The Evaluated Rule specifies extracting the topmost colored shape and creating a smaller version of it, which does not align with the Ground Truth Rule that focuses on producing the lowest shape in a minimal bounding box. The two rules describe different transformations.","Extract the topmost colored shape, retain its color, and create a smaller version of it.",0
+2025-07-23T17:27:11,TopBottom2D,TopBottom2D2,2,low,0,mismatch,0,1 1 0 0 0 0 0 0 0 0 0 0,"In each pair of grids, the right grid extracts and isolates a specific color pattern from the left grid, focusing on a distinct colored shape. The first pair extracts the green 'T' shape, the second pair extracts the yellow square, and the third pair extracts the red cross. The rule is to find and isolate the most prominent or central colored shape in the left grid. In the second image, the grid has two distinct color blocks: red and cyan. The rule suggests isolating the red as it appears more central and prominent.
+
+Rule: Isolate the most prominent or central colored shape from the left grid.",,0,"The Evaluated Rule focuses on isolating the most prominent or central colored shape, which does not align with the Ground Truth Rule's requirement to produce the lowest shape in a minimal bounding box. The two rules describe different transformations.",Isolate the most prominent or central colored shape from the left grid.,0
+2025-07-23T17:27:31,TopBottom2D,TopBottom2D2,3,low,0,parse:rows have unequal length,0,"2 2
+2 2
+7 7 7 7 7
+7 7 7 7 7","In each example, the right grid includes only the non-black colored squares from the left grid. The right grid is the smallest possible grid that can contain all the colored squares from the left grid. Applying this rule to the new grid, we identify the non-black squares, which are yellow in the top left corner and magenta at the bottom.
+
+Rule: Extract non-black colored squares into the smallest grid possible.",,0,"The Evaluated Rule focuses on extracting non-black colored squares into the smallest grid possible, which does not necessarily align with producing the lowest shape in a minimal bounding box as stated in the Ground Truth Rule. The two rules have different focuses and outcomes.",Extract non-black colored squares into the smallest grid possible.,0
+2025-07-23T17:27:17,TopBottom2D,TopBottom2D3,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 1 1 1 1 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0","The left grids are transformed by adding a red line on top of the colored area. In each example, the transformation adds a red line above the existing color. Applying this rule to the gray square in the second image, a red line should be added above the gray area.
+
+Rule: Add a red line above the colored area.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by indicating the addition of a red line above the colored area, which aligns with the requirement to color the top horizontal line of the contained shape with red pixels.",Add a red line above the colored area.,0
+2025-07-23T17:27:28,TopBottom2D,TopBottom2D3,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 2 2 2 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0","The transformation rule involves adding a horizontal red strip above the existing colored block in the grid. In each example, the red strip is positioned directly above the topmost row of the colored area.
+
+Rule: Add a horizontal red strip directly above the topmost row of the colored block in the grid.",,1,"The Evaluated Rule effectively adds a horizontal red strip above the topmost row of the colored block, which aligns with the requirement of coloring the top horizontal line of the contained shape with red pixels in the Ground Truth Rule. Both rules achieve the same visual outcome, thus the Evaluated Rule is correct.",Add a horizontal red strip directly above the topmost row of the colored block in the grid.,0
+2025-07-23T17:27:49,TopBottom2D,TopBottom2D3,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 3 3 3 0 0 0 0 0
+0 0 0 3 1 1 1 3 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0 0
+0 0 0 0 0 1 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","In the first image, each transformation adds a red row on top of the existing colored area. In the first grid, a red row is added above yellow. In the second grid, a red row is added above orange. In the third grid, a red row is added above the peak of the green shape. The transformation rule is to add a red row above the topmost colored row of the shape. Applying this rule to the second image's grid, which has blue in the middle and bottom, we add a red row above the blue shape.
+
+Rule: Add a red row above the topmost colored row of the shape.",,0,"The Evaluated Rule specifies adding a red row above the topmost colored row of the shape, which does not reproduce the grid completely as required by the Ground Truth Rule. The Ground Truth Rule requires the entire grid to be reproduced with the top horizontal line of the contained shape colored red, not just adding a row above the existing colored rows.",Add a red row above the topmost colored row of the shape.,0
+2025-07-23T17:27:45,TopBottom2D,TopBottom2D4,1,low,0,mismatch,0,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,"In the first set of images, each left grid consists of a vertical arrangement of colored blocks, and each right grid is a condensed version that only retains the central colored block. The transformation rule involves removing the top and bottom colored blocks and keeping only the central block. Applying this rule to the second image, which has a vertical arrangement of green, blue, yellow, and red blocks, we find the central block is yellow.
+
+Rule: Retain only the central colored block from the vertical arrangement.",,0,"The Evaluated Rule specifies retaining only the central colored block, which does not align with the Ground Truth Rule that requires reproducing the entire grid while removing shapes at the very top and bottom. The Evaluated Rule is too restrictive and does not capture the broader transformation described in the Ground Truth Rule.",Retain only the central colored block from the vertical arrangement.,0
+2025-07-23T17:27:17,TopBottom2D,TopBottom2D4,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 2 2 2 2 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0","In the first image, each left grid is transformed into a right grid by selecting the largest contiguous horizontal line of a single color. The right grids show only the longest horizontal line with the remaining cells black. Applying this to the second image, the longest horizontal line is orange, occupying the third row.
+
+Rule: Select the longest horizontal line of a single color and make all other cells black.",,0,"The Evaluated Rule focuses on selecting the longest horizontal line of a single color and turning all other cells black, which is fundamentally different from the Ground Truth Rule that requires reproducing the grid while removing shapes at the very top and bottom. The transformations described do not align in their objectives or outcomes.",Select the longest horizontal line of a single color and make all other cells black.,0
+2025-07-23T17:27:12,TopBottom2D,TopBottom2D4,3,low,0,mismatch,0,0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,"In the first image, each grid on the right is a scaled-down version of the corresponding grid on the left, focusing on the central part of the colored area. The left grids are reduced to a smaller grid that captures the center of the color pattern. Applying this rule to the second image, we focus on the center three rows and three columns of the grid to form the final grid.
+
+Rule: Extract the central 3x3 area of the grid, focusing on the middle part of the colored pattern.",,0,"The Evaluated Rule specifies extracting a central 3x3 area, which does not align with the Ground Truth Rule's requirement to reproduce the entire grid while removing shapes only at the very top and bottom. The focus on a specific central area is a significant deviation from the original transformation.","Extract the central 3x3 area of the grid, focusing on the middle part of the colored pattern.",0
+2025-07-23T17:27:27,TopBottom2D,TopBottom2D5,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+1 1 1 1 1 1 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 3 3 3 3 3 3
+0 0 0 0 0 0 0 0 0 0 0 0","In the first image, each colored 'L' shape on the left side corresponds to a single color on the right side. The transformation involves keeping only the color that appears in the bottom-most, right-most position among the colored squares in the shape. Applying this rule to the second image, identify the bottom-most, right-most color for each column of colors.
+
+Rule: Keep only the color that appears in the bottom-most, right-most position among the colored squares in each shape.",,0,"The Evaluated Rule specifies keeping only the color in the bottom-most, right-most position, which does not align with the Ground Truth Rule's requirement to delete all but the lowest contained shape. The focus on color position rather than shape containment indicates a fundamental difference in the transformation being described.","Keep only the color that appears in the bottom-most, right-most position among the colored squares in each shape.",0
+2025-07-23T17:35:41,TopBottom2D,TopBottom2D5,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 1 0 0
+0 0 0 0 0 0 1 1 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule involves identifying the largest contiguous block of the same color and keeping only that block visible in the transformed grid. In the first grid pair, the largest block is magenta. In the second pair, the largest is red. In the third pair, the largest is green. Applying this rule to the second image, the largest contiguous block is formed by the yellow squares at the top right.
+
+Rule: Keep only the largest contiguous block of the same color visible.",,0,"The Evaluated Rule focuses on keeping the largest contiguous block of the same color, while the Ground Truth Rule specifies deleting all but the lowest contained shape, which does not necessarily relate to size or contiguity. Therefore, the two rules describe different transformations.",Keep only the largest contiguous block of the same color visible.,0
+2025-07-23T17:27:26,TopBottom2D,TopBottom2D5,3,low,0,mismatch,0,2 2 2 2 2 2 0 0 0 0 2 2 3 3 0 0 2 2 0 0 0 0 0 0 0 0 0 0 0 0,"In each transformation, only the largest shape is retained and other shapes are removed. For each pair of grids, the largest block in terms of area is kept, and smaller blocks are discarded. This pattern holds for all three pairs of grids. In the second image, the largest block is the red shape, which is 4x3 in size, while the other shapes are smaller.
+
+Rule: Retain the largest block by area and remove all others.",,0,"The Ground Truth Rule specifies to delete all but the lowest contained shape, while the Evaluated Rule retains the largest block by area. These are fundamentally different criteria for determining which shapes to keep.",Retain the largest block by area and remove all others.,0
+2025-07-23T17:27:17,TopBottom2D,TopBottom2D6,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 3 3 0 0 0 0
+0 0 0 0 0 0 3 3 0 0 0 0
+0 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","By examining the transformations, it appears the rule involves rotating the colored part of each grid 90 degrees clockwise. This is consistent across all examples. Applying this rule to the second image, the two green squares will be positioned to the right of their original position, and the magenta squares will move to where the green squares were.
+
+Rule: Rotate the colored section of the grid 90 degrees clockwise.",,0,"The Evaluated Rule involves rotating the colored section of the grid, which does not align with the Ground Truth Rule of producing the lowest contained shape in a minimal bounding box. The two rules describe fundamentally different transformations.",Rotate the colored section of the grid 90 degrees clockwise.,0
+2025-07-23T17:27:16,TopBottom2D,TopBottom2D6,2,low,0,mismatch,0,"1 1 1 1 0 0
+1 2 2 1 0 0
+2 1 1 2 0 0
+1 1 1 1 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","By examining the transformations, the rule involves extracting the non-black colored squares from the left grid and arranging them into a compact shape on the right. The pattern of colors is preserved, and the new arrangement takes the form of a compact, connected cluster. Each transformed grid on the right is a rearranged version of the colored part of the grid on the left, maintaining color groupings but not their original positions.
+
+Rule: Extract the non-black colored squares and rearrange them into a compact, connected cluster, preserving color groupings.",,0,"The Evaluated Rule specifies rearranging non-black squares into a compact cluster while preserving color groupings, which introduces additional constraints not present in the Ground Truth Rule. The Ground Truth Rule focuses solely on producing the lowest contained shape in a minimal bounding box without regard to color groupings or clustering.","Extract the non-black colored squares and rearrange them into a compact, connected cluster, preserving color groupings.",0
+2025-07-23T17:27:26,TopBottom2D,TopBottom2D6,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+4 4 4 0 0 0 0 0 0 0
+4 4 4 0 0 0 0 0 0 0
+4 4 4 1 1 1 0 0 0 0
+0 0 0 1 1 1 0 0 0 0
+0 0 0 1 1 1 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","In the first set of grids, each grid on the right is a 90-degree clockwise rotation of the corresponding grid on the left. By identifying this transformation, we can apply the same rotation to the grid in the second image.
+
+Rule: Rotate the grid 90 degrees clockwise.",,0,"The Evaluated Rule involves rotating the grid 90 degrees clockwise, which does not produce the lowest contained shape in a minimal bounding box as specified in the Ground Truth Rule. The two rules describe different transformations.",Rotate the grid 90 degrees clockwise.,0
+2025-07-23T17:27:12,TopBottom2D,TopBottom2D7,1,low,0,mismatch,0,"2 2 2 2 2 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","In each example, the right grid contains the first row of the left grid's non-black colors. The left grids have various colors but only the top row is considered for the transformation. The rule focuses on transferring the topmost non-black row to the right grid.
+
+Rule: Extract the topmost row containing non-black colors from the left grid and replicate it horizontally on the right grid.",,0,"The Evaluated Rule focuses on extracting the topmost row of non-black colors and replicating it, which does not align with the Ground Truth Rule's requirement to produce the highest contained shape in a minimal bounding box. The two rules describe different transformations.",Extract the topmost row containing non-black colors from the left grid and replicate it horizontally on the right grid.,0
+2025-07-23T17:27:38,TopBottom2D,TopBottom2D7,2,low,0,mismatch,0,"2 2 2 2 0 0 0 0 0 0
+3 3 3 3 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","Analyzing the transformations from left to right, it appears that each colored shape is shifted to the leftmost position on its row, removing any black squares between the start of the row and the colored shape. The shapes themselves remain unchanged.
+
+Rule: Shift each colored shape to the leftmost position on its row, maintaining the shape's structure.",,0,"The Evaluated Rule focuses on shifting shapes to the leftmost position on their row, which does not necessarily produce the highest contained shape in a minimal bounding box as specified in the Ground Truth Rule. The two rules describe different transformations.","Shift each colored shape to the leftmost position on its row, maintaining the shape's structure.",0
+2025-07-23T17:27:21,TopBottom2D,TopBottom2D7,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 3
+0 0 0 0 0 0 0 0 0 3
+0 0 0 0 0 0 0 0 0 3
+0 0 0 0 0 0 0 0 0 3
+0 0 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 4","The left grids have colored blocks surrounded by black. The right grids have these colored blocks moved to the rightmost columns. Only colored blocks are moved, preserving their size and shape. Applying this to the second image, the orange block (2x4) moves to the rightmost side, and the yellow block (1x6) also moves to the rightmost side.
+
+Rule: Move colored blocks to the rightmost columns, preserving their shape and size.",,0,"The Evaluated Rule focuses on moving colored blocks to the rightmost columns while preserving their shape and size, which does not align with the Ground Truth Rule's requirement to produce the highest contained shape in a minimal bounding box. The two rules describe different transformations.","Move colored blocks to the rightmost columns, preserving their shape and size.",0
+2025-07-23T17:27:35,TopBottom2D,TopBottom2D8,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 1 1 1 0 0 0 2 2 0
+0 1 0 1 0 0 0 2 0 0
+0 1 0 1 0 0 0 2 0 0
+0 1 0 1 0 0 0 2 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","Analyzing the transformations: In the first pair, the green square transforms to red, and the red square remains red. In the second pair, all colors transform to gray. In the third pair, magenta and blue transform to light blue. The rule is to transform all colors to light blue except red, which remains unchanged.
+
+Rule: Transform all colors to light blue, except red, which stays red.",,0,"The Evaluated Rule specifies transforming all colors to light blue except for red, which remains red. This does not align with the Ground Truth Rule, which requires coloring all contained shapes in the color of the lowest contained shape, without any specific exclusions. The Evaluated Rule introduces a specific color transformation that is not present in the Ground Truth Rule.","Transform all colors to light blue, except red, which stays red.",0
+2025-07-23T17:27:39,TopBottom2D,TopBottom2D8,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation involves changing each colored section into a new pattern. In the first example, green squares become red, and red squares remain red. In the second example, yellow, blue, and green become gray. In the third example, magenta and blue turn into cyan. The rule seems to be transforming all colors into a single specified color, with each grid having a different target color.
+
+Rule: Transform each color to a specific target color based on its position in the grid series.",,0,"The Evaluated Rule focuses on transforming colors based on their position in the grid series, which does not align with the Ground Truth Rule's requirement to color shapes based on the lowest contained shape's color. The core transformation functionality is not similar.",Transform each color to a specific target color based on its position in the grid series.,0
+2025-07-23T17:27:32,TopBottom2D,TopBottom2D8,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 1 0 0 0 1 0 0
+0 1 1 1 0 0 1 1 0 0
+0 0 1 1 1 1 0 0 0 0
+0 0 0 1 1 1 0 0 0 0
+0 0 0 0 1 1 0 0 0 0
+0 0 0 0 0 1 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","In the first set of images, each grid on the right is a transformation of the grid on the left. Observing these transformations: 1) The green and red squares in the first grid are changed entirely to red on the right. 2) The yellow, green, and blue T-shapes are transformed to gray T-shapes. 3) The magenta and blue plus shapes are transformed to light blue plus shapes. The transformation rule seems to be changing any colored shape to a specific color: red squares become red, T-shapes become gray, and plus shapes become light blue. Applying this rule to the second image: the red L-shape becomes red, green L-shapes become red, and the yellow diagonal line becomes gray.
+
+Rule: Transform any red shape to red, green shapes to red, yellow shapes to gray.",,0,"The Evaluated Rule specifies transformations for specific colors (red, green, yellow) without addressing the requirement to color all contained shapes in the color of the lowest contained shape, which is a key part of the Ground Truth Rule.","Transform any red shape to red, green shapes to red, yellow shapes to gray.",0
+2025-07-23T17:27:25,TopBottom2D,TopBottom2D9,1,low,0,mismatch,0,2 2 2 2 2 2 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2,"In each pair of grids, the transformation involves identifying the color that appears the most in the left grid and changing all instances of that color to gray in the right grid. Other colors remain unchanged.
+
+Rule: Change the most frequent color in the grid to gray.",,0,"The Evaluated Rule changes the most frequent color to gray, which does not necessarily correspond to coloring the highest contained shape gray as specified in the Ground Truth Rule. The two rules describe different transformations.",Change the most frequent color in the grid to gray.,0
+2025-07-23T17:27:39,TopBottom2D,TopBottom2D9,2,low,0,mismatch,0,"0 0 0 0 0 0 0
+0 7 7 0 0 0 0
+0 7 0 0 0 0 0
+0 7 7 7 0 0 0
+7 0 0 7 0 0 0
+7 7 7 7 0 0 0
+7 0 0 0 0 0 0","Each grid on the right side is a transformed version of the grid on the left side. The transformation involves replacing colored squares in the left grid with gray squares in the right grid. Specifically, any non-black colored square in the left grid is replaced with a gray square in the right grid, preserving the position, while black squares remain unchanged.
+
+Rule: Replace all non-black colored squares with gray squares, keeping black squares unchanged.",,0,"The Evaluated Rule specifies replacing all non-black squares with gray, which does not align with the Ground Truth Rule's requirement to color only the highest contained shape gray. The Evaluated Rule is broader and does not capture the specific intent of the Ground Truth Rule.","Replace all non-black colored squares with gray squares, keeping black squares unchanged.",0
+2025-07-23T17:27:20,TopBottom2D,TopBottom2D9,3,low,0,mismatch,0,"0 0 2 2 0 7
+0 2 2 0 0 7
+0 0 0 0 0 7
+5 5 5 5 5 7
+0 0 0 0 0 7
+7 7 7 7 7 7","In the first image, each transformation involves changing all instances of the most frequent color in the left grid to gray in the right grid. If there is a tie, choose the first color in reading order. In the first grid, blue becomes gray. In the second, black becomes gray. In the third, yellow becomes gray. In the fourth, black becomes gray. Applying this rule to the grid in the second image, the most frequent color is cyan. Therefore, change all cyan squares to gray.
+
+Rule: Change the most frequent color in the grid to gray.",,0,"The Evaluated Rule changes the most frequent color to gray, which does not necessarily reproduce the grid completely or identify the highest contained shape. The transformation described in the Evaluated Rule does not align with the intent of the Ground Truth Rule.",Change the most frequent color in the grid to gray.,0

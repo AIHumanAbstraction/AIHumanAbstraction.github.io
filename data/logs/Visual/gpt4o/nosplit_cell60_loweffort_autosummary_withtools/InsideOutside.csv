@@ -1,0 +1,760 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule,validated
+2025-08-01T19:31:12,InsideOutside,InsideOutside1,1,low,0,mismatch,0,"6 6 6 6 6 6
+0 0 0 0 0 6
+2 2 0 2 2 2
+2 0 7 0 2 0
+2 2 0 0 7 0
+0 0 0 0 0 0","In the given images, the right side grids are transformed versions of the left side grids. The transformation involves shifting the colored line and dot from inside the grid to the outside right column. Applying this rule to the test image involves identifying the color line and dot within the grid, moving them to the corresponding positions outside on the right.
+
+Rule: Shift the horizontal and vertical colors outside the grid to the right column, aligning with their original positions.",,"Shift the horizontal and vertical colors outside the grid to the right column, aligning with their original positions.",0
+2025-08-01T19:29:55,InsideOutside,InsideOutside1,2,low,0,mismatch,0,"1 1 1 1 1 1 1 0 0 0 0 0 0
+0 0 1 1 1 1 0 0 0 0 0 0 0
+0 0 0 1 1 0 0 0 0 2 0 0 0
+0 0 0 0 1 1 1 1 1 0 0 0 0
+0 0 0 0 0 0 1 1 1 1 1 0 0
+0 0 0 0 0 0 0 0 1 1 1 1 2
+0 0 0 0 0 0 0 0 0 1 1 1 1","The transformation rule involves translating the color pattern to a one-cell left shift in each row. By applying this rule to the grid in the second image, we achieve consistency in transformation.
+
+Rule: Shift all colors left by one cell in each row.",,Shift all colors left by one cell in each row.,0
+2025-08-01T19:31:40,InsideOutside,InsideOutside1,3,low,0,mismatch,0,"6 5 5 5 5 6
+5 5 5 5 5 5
+5 5 5 5 5 5
+5 5 5 5 5 5
+5 5 5 5 5 5
+6 5 5 5 5 6","In each pair of grids, the central color propagates vertically and horizontally to the edges, while the corners take on a different, new color. The new corner color is not present in the original grid.
+
+Rule: Fill the outermost rows and columns with the central color, and change the corners to a new color not present in the grid.",,"Fill the outermost rows and columns with the central color, and change the corners to a new color not present in the grid.",0
+2025-08-01T19:29:55,InsideOutside,InsideOutside10,1,low,0,mismatch,0,5 5 5 5 5 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 3 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 5 3 5 5 5 5 5 5 5 5 5,"The left grids are transformed to the right grids by removing horizontal lines of the secondary color (green in first pair, blue in second pair). The pattern remains unchanged if no horizontal line exists.
+
+Rule: Remove horizontal lines of the secondary color.",,Remove horizontal lines of the secondary color.,0
+2025-08-01T19:30:45,InsideOutside,InsideOutside10,2,low,0,mismatch,1,0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0,"Upon evaluating the transformation between the grids, it appears that vertical lines are removed in the transformation. Applying this to the test grid involves removing similar vertical lines.
+
+Rule: Remove vertical lines that are not borders.","from PIL import Image
+import numpy as np
+
+# Load the images
+image1_path = '/mnt/data/file-NsaL4FpCnJV8GmqD27xy82-train.png'
+image2_path = '/mnt/data/file-21a4Fi5cWrgETdqjoGToGR-test_2.png'
+
+img1 = Image.open(image1_path)
+img2 = Image.open(image2_path)
+
+# Convert images to numpy arrays
+img1_array = np.array(img1)
+img2_array = np.array(img2)
+
+img1_array.shape, img2_array.shape
+
+# Define a function to simplify an image into a grid with color indices
+def simplify_image(image_array, unique_colors):
+    # Get the shape of the image
+    height, width, _ = image_array.shape
+    
+    # Determine the grid size based on the image dimensions
+    grid_size = 6  # Choosing a grid size that matches the examples for first image
+    grid_height = height // grid_size
+    grid_width = width // grid_size
+    
+    # Initialize an empty grid
+    simplified_grid = np.zeros((grid_size, grid_size), dtype=int)
+    
+    # Map colors to indices
+    color_to_index = {tuple(color): idx for idx, color in enumerate(unique_colors)}
+    
+    # Simplify the image into the grid
+    for i in range(grid_size):
+        for j in range(grid_size):
+            # Get the color at the center of each grid cell
+            color = tuple(image_array[(i * grid_height) + (grid_height // 2), 
+                                      (j * grid_width) + (grid_width // 2)])
+            simplified_grid[i, j] = color_to_index.get(color, 0)
+    
+    return simplified_grid
+
+# Define the colors found in the first image
+colors_img1_a = [
+    (0, 0, 0),      # black
+    (255, 0, 0),    # red
+    (0, 255, 0),    # green
+    (255, 255, 0),  # yellow
+    (0, 255, 255),  # cyan
+    (255, 0, 255),  # magenta
+    (128, 128, 128),# gray
+    (255, 165, 0),  # orange
+    (0, 0, 255),    # blue
+    (165, 42, 42),  # brown
+]
+
+# Simplify the first image
+grid_img1 = simplify_image(img1_array, colors_img1_a)
+
+# Define the colors found in the second image
+colors_img2 = [
+    (0, 0, 0),      # black
+    (0, 255, 255),  # light blue
+    (128, 0, 0),    # maroon
+]
+
+# Simplify the second image
+grid_img2 = simplify_image(img2_array, colors_img2)
+
+grid_img1, grid_img2",Remove vertical lines that are not borders.,0
+2025-08-01T19:31:29,InsideOutside,InsideOutside10,3,low,0,mismatch,1,"0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0","The left grids contain certain colored lines crossing or overlapping the borders, while the right grids do not. The rule appears to remove any horizontal or vertical lines crossing the grid area that do not fully enclose shapes (i.e., the transformation removes lines that extend beyond the grid boundaries and are not part of enclosed areas). Applying this rule to the test grid means removing extending lines.
+
+Rule: Remove lines that extend beyond the grid boundaries and are not part of enclosed shapes.","from PIL import Image
+
+# Open the images
+train_image_path = '/mnt/data/file-JbhYAPM5NqN9j5hiKaW9E4-train.png'
+test_image_path = '/mnt/data/file-3LoqtyEc2Xh3qWTN6m2Sit-test_3.png'
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+train_image, test_image
+
+import numpy as np
+
+def image_to_grid(image, grid_size):
+    # Convert image to a grid representation
+    image = image.resize(grid_size)
+    image_array = np.array(image)
+    return image_array
+
+def extract_colors(image_array):
+    # Map unique colors to indices
+    unique_colors = {}
+    index = 0
+    grid = []
+    for row in image_array:
+        grid_row = []
+        for pixel in row:
+            color = tuple(pixel)
+            if color not in unique_colors:
+                unique_colors[color] = index
+                index += 1
+            grid_row.append(unique_colors[color])
+        grid.append(grid_row)
+    return grid, unique_colors
+
+# Convert train and test images to grids
+train_grid_size = (18, 16)  # we can determine this from the visible grid
+test_grid_size = (16, 16)   # same here
+
+train_left_grid_array = image_to_grid(train_image.crop((0, 0, 727, 732)), train_grid_size)
+train_right_grid_array = image_to_grid(train_image.crop((727, 0, 1454, 732)), train_grid_size)
+
+test_grid_array = image_to_grid(test_image, test_grid_size)
+
+train_left_grid, train_colors = extract_colors(train_left_grid_array)
+train_right_grid, _ = extract_colors(train_right_grid_array)
+test_grid, _ = extract_colors(test_grid_array)
+
+train_left_grid, train_right_grid, train_colors, test_grid",Remove lines that extend beyond the grid boundaries and are not part of enclosed shapes.,0
+2025-08-01T19:34:57,InsideOutside,InsideOutside2,1,low,0,mismatch,1,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 4 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4,"The transformation involves retaining only red (2) if both red and yellow are present.
+
+Rule: Filter out yellow if both red and yellow are present.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_image_path = ""/mnt/data/file-4dgDt9d85m5cHmYbTy5Xsb-train.png""
+test_image_path = ""/mnt/data/file-NqT96owKgBKh92abKebWf9-test_1.png""
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+# Convert images to numpy arrays
+train_array = np.array(train_image)
+test_array = np.array(test_image)
+
+train_array.shape, test_array.shape
+
+# Let's define a function to extract the pattern colors from a grid
+def extract_colors(image_array):
+    unique_colors = np.unique(image_array.reshape(-1, image_array.shape[2]), axis=0)
+    return unique_colors
+
+# Extract unique colors for the train image grids
+train_colors = extract_colors(train_array)
+train_colors
+
+# Define a function to get sub-grids from the train image
+def get_subgrids(image_array):
+    # Each grid is roughly a quarter of the image, ignoring white borders
+    height, width, _ = image_array.shape
+    grid_height = height // 4
+    grid_width = width // 2
+    
+    # Extract grid regions by slicing
+    grids = [image_array[i*grid_height:(i+1)*grid_height, j*grid_width:(j+1)*grid_width]
+             for i in range(4) for j in range(2)]
+    return grids
+
+# Get the sub-grids from the train image
+train_grids = get_subgrids(train_array)
+
+# Check the colors in each grid
+grid_colors = [extract_colors(grid) for grid in train_grids]
+grid_colors
+
+# Extract test grid data
+test_colors = extract_colors(test_array)
+
+# Test colors
+test_colors_index = {tuple(color): index for index, color in enumerate(test_colors)}
+test_colors_index
+
+# Map the transformation
+def transform_grid(grid, remove_color):
+    transformed_grid = grid.copy()
+    for x in range(grid.shape[0]):
+        for y in range(grid.shape[1]):
+            if tuple(grid[x, y]) == tuple(remove_color):
+                transformed_grid[x, y] = [0, 0, 0]  # Replace with black
+    return transformed_grid
+
+# Check if both red and yellow are present in the test grid
+has_red = (test_colors_index.keys() - {(0, 0, 0), (204, 204, 204), (255, 255, 255)}).intersection({(255, 57, 55)})
+has_yellow = (test_colors_index.keys() - {(0, 0, 0), (204, 204, 204), (255, 255, 255)}).intersection({(255, 215, 49)})
+
+# Apply rule based on detection
+if has_red and has_yellow:
+    transformed_test_array = transform_grid(test_array, [255, 215, 49])  # Remove yellow if both present
+else:
+    transformed_test_array = test_array.copy()  # No change if not both present
+
+# Convert back to structured format
+result_grid = np.zeros((transformed_test_array.shape[0], transformed_test_array.shape[1]), dtype=int)
+for x in range(result_grid.shape[0]):
+    for y in range(result_grid.shape[1]):
+        color = tuple(transformed_test_array[x, y])
+        result_grid[x, y] = test_colors_index.get(color, 0)
+
+result_grid_output = ""\n"".join("" "".join(map(str, row)) for row in result_grid)
+result_grid_output",Filter out yellow if both red and yellow are present.,0
+2025-08-01T19:31:13,InsideOutside,InsideOutside2,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 2
+2 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 2 0","In the provided images, in each pair from the first image, if there is a yellow square to the right of a red square on the left grid, the corresponding yellow square is removed in the right grid. Similarly, if a yellow square is below a red square, it is removed. The left grid of the second image has a yellow square that needs to be evaluated according to this rule.
+
+Rule: Remove a yellow square if it is adjacent to a red square either horizontally or vertically to the left, above, or below in the grid.",,"Remove a yellow square if it is adjacent to a red square either horizontally or vertically to the left, above, or below in the grid.",0
+2025-08-01T19:31:37,InsideOutside,InsideOutside2,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0
+0 1 0 0 0 0 0 0 1
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0","The transformation rule seems to involve removing the yellow squares while keeping the red ones intact. In the first image set, the yellow squares don't appear in the transformed grids on the right while the red squares retain their positions. Applying this rule to the second image should result in removing the yellow square and retaining the red ones.
+
+Rule: Remove all yellow squares, retain the red squares in their original positions.",,"Remove all yellow squares, retain the red squares in their original positions.",0
+2025-08-01T19:31:24,InsideOutside,InsideOutside3,1,low,0,mismatch,0,"0 0 0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 4 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0","Upon examination of the provided grids, each transformation consists of identifying the central yellow square in the original grid and producing a new grid where only this yellow square is retained, replacing all other non-black colors with black. This process isolates the yellow square as expected output. I will now apply this transformation rule to the test grid, providing the resulting configuration using indices corresponding to the colors: 0 for black, 2 for red, and 4 for yellow.
+
+Rule: Retain only the yellow square, convert all others to black.",,"Retain only the yellow square, convert all others to black.",0
+2025-08-01T19:30:40,InsideOutside,InsideOutside3,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The left grids have a yellow center square and red squares forming a pattern around it. The transformation eliminates all red squares, keeping only the yellow center square on the right side grids.
+
+Rule: Remove all red squares, only keeping the yellow square in the grid.",,"Remove all red squares, only keeping the yellow square in the grid.",0
+2025-08-01T19:30:38,InsideOutside,InsideOutside3,3,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","Analyzed individual grids: top-left had a yellow center replaced in top-right with yellow, others blackened leaving one red pixel.
+
+Rule: Retain yellow pixel from left grid, change all non-yellow to black.","from PIL import Image
+import numpy as np
+
+# Open the images
+train_image_path = '/mnt/data/file-F3UtzKhhbJumXz1Ky3YUHA-train.png'
+test_image_path = '/mnt/data/file-L5nTNLqzxF9bJfKrygMQxJ-test_3.png'
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+# Convert the images to arrays
+train_array = np.array(train_image)
+test_array = np.array(test_image)
+
+train_array.shape, test_array.shape
+
+# Let's check the unique colors present in the training image
+unique_colors_train = np.unique(train_array.reshape(-1, 3), axis=0)
+unique_colors_train
+
+# Let's map these colors to indices
+color_map = {
+    (0, 0, 0): 0,         # black
+    (204, 204, 204): 5,   # gray (not used in examples)
+    (255, 57, 55): 2,     # red
+    (255, 215, 49): 4,    # yellow
+    (255, 255, 255): 9    # white (grid lines)
+}
+
+# Convert the train image to grid based on the color map
+# Ignore the white lines
+train_grid = np.zeros((train_array.shape[0] // 61, train_array.shape[1] // 22), dtype=int)
+for i in range(train_grid.shape[0]):
+    for j in range(train_grid.shape[1]):
+        color = tuple(train_array[i * 61 + 30, j * 22 + 11])  # Choose a point inside the grid square
+        if color != (255, 255, 255):
+            train_grid[i, j] = color_map[color]
+
+train_grid
+
+# Extract the individual grids
+top_left = train_grid[:10, :10]
+top_right = train_grid[:10, 11:21]
+bottom_left = train_grid[11:21, :10]
+bottom_right = train_grid[11:21, 11:21]
+
+top_left, top_right, bottom_left, bottom_right","Retain yellow pixel from left grid, change all non-yellow to black.",0
+2025-08-01T19:29:46,InsideOutside,InsideOutside4,1,low,0,mismatch,0,0 0 8 8 8 0 0 0 8 1 1 1 8 0 8 8 1 4 4 1 8 8 1 1 4 7 7 4 1 1 1 1 4 7 3 7 4 2 2 1 1 7 7 7 7 1 1 9 0 0 7 3 9 9 9 2 9 9 9 9 4 4 9 9,"By comparing the left and right grids of each pair, the transformation rule appears to be a rotation of the grid 90 degrees clockwise.
+
+Rule: Rotate the grid 90 degrees clockwise.",,Rotate the grid 90 degrees clockwise.,0
+2025-08-01T19:30:09,InsideOutside,InsideOutside4,2,low,0,mismatch,0,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 7 0 0 0 0 7 3 7 0 0 0 7 3 3 7 0 0 7 7 0 7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,"Analyzing the transformations, the rule involves keeping the existing structure and rotating the inner pattern clockwise within its boundary. The second image contains a gray border, a green square, and a magenta center. Applying the rule: keep the gray and green structures and rotate the magenta square at center clockwise.
+
+Rule: Rotate the inner pattern clockwise within its boundary while keeping the overall structure intact.",,Rotate the inner pattern clockwise within its boundary while keeping the overall structure intact.,0
+2025-08-01T19:31:55,InsideOutside,InsideOutside4,3,low,0,mismatch,0,"0 0 0 1 1 1 1 0 0 0 0 0
+1 1 1 1 0 0 1 1 1 0 0 0
+0 1 0 0 0 1 0 0 0 1 0 0
+0 0 1 1 0 0 0 1 1 1 0 0
+2 2 0 0 0 1 0 0 2 2 0 0
+0 0 0 1 2 2 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","Observing the transformations, the rule appears to be a 90-degree clockwise rotation of each grid. This is consistent across all four examples in the first image. Applying this rule to the grid in the second image will result in a grid with color orientations shifted to the right.
+
+Rule: Rotate the grid 90 degrees clockwise.",,Rotate the grid 90 degrees clockwise.,0
+2025-08-01T19:31:28,InsideOutside,InsideOutside5,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 5 5 0 0 0 0 0 0
+0 0 0 0 0 0 5 5 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The observed transformation appears to isolate and remove all elements except the smallest layer of colored squares, specifically focusing on the innermost colored area or the smallest complete square.
+
+Rule: Remove all colored layers except the innermost one enclosed within the squares, preserving its color and position.",,"Remove all colored layers except the innermost one enclosed within the squares, preserving its color and position.",0
+2025-08-01T19:30:24,InsideOutside,InsideOutside5,2,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 2 2 0 0 0 0 0
+0 0 0 0 2 0 0 2 0 0 0 0
+0 0 0 2 0 0 0 0 2 0 0 0
+0 0 2 0 0 0 0 0 0 2 0 0
+0 0 2 0 0 0 0 0 0 2 0 0
+0 0 2 0 0 0 0 0 0 2 0 0
+0 0 0 2 0 0 0 0 2 0 0 0
+0 0 0 0 2 0 0 2 0 0 0 0
+0 0 0 0 0 2 2 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","Analyzed the provided grids. Each transformation involves isolating a color from the left-side grids and displaying only the central figure of that color on the right-side grids, without any background or surrounding colors.
+
+Rule: Extract the central colored figure from the larger pattern, ignoring surrounding colors.","from PIL import Image
+
+# Open the images
+image1 = Image.open(""/mnt/data/file-RT2dCgWoQ5X4yQariP99VX-train.png"")
+image2 = Image.open(""/mnt/data/file-LNTBr15fR7SvD2bYudzV9w-test_2.png"")
+
+# Display the images to identify the transformation rule
+image1.show()
+image2.show()","Extract the central colored figure from the larger pattern, ignoring surrounding colors.",0
+2025-08-01T19:29:53,InsideOutside,InsideOutside5,3,low,0,mismatch,0,"4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 4
+4 4 0 1 1 1 0 0 0 0 0 0 4
+4 4 0 1 2 1 0 0 0 0 0 0 4
+4 4 0 1 1 1 0 3 3 3 0 0 4
+4 4 0 0 0 0 0 3 0 3 0 0 4
+4 4 0 0 0 0 0 3 3 3 0 0 4
+4 4 0 0 0 0 0 0 0 0 0 0 4
+4 4 4 4 4 4 4 4 4 4 4 4 4","The grids on the left are transformed to the right by removing all but the centered square of each nested square pattern. Thus, only the smallest enclosed color remains visible.
+
+Rule: Keep only the smallest colored square and remove all other colors.",,Keep only the smallest colored square and remove all other colors.,0
+2025-08-01T19:32:52,InsideOutside,InsideOutside6,1,low,0,mismatch,0,"0 0 0 0 5 0
+0 0 0 0 0 0
+0 0 5 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 5
+0 5 0 0 0 0","The left grids showcase patterns along with scattered squares of another color. The right grids retain only the scattered squares. This suggests the rule: isolate and transfer only the distinct single-colored squares while removing patterns.
+
+Rule: For each grid, retain only the scattered single squares of a distinct color and remove the rest.",,"For each grid, retain only the scattered single squares of a distinct color and remove the rest.",0
+2025-08-01T19:33:00,InsideOutside,InsideOutside6,2,low,0,parse:non-integer token in row 1,1,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...,"The left grids show a denser pattern with more colors. The right grids seem to preserve only specific colors (blue or magenta) creating sparser patterns. This indicates that the transformation rule selectively retains certain colors, reducing grid density.
+
+Rule: Retain only the specific feature colors from the original grid (like blue and magenta).","from PIL import Image
+import numpy as np
+
+# Load the images
+image_train = Image.open('/mnt/data/file-CbwjFHuVjRvCqRsZ4XtQ7N-train.png')
+image_test = Image.open('/mnt/data/file-1YxFw5BQRi23KNo7MR58hA-test_2.png')
+
+# Convert images to numpy arrays
+train_array = np.array(image_train)
+test_array = np.array(image_test)
+
+# Inspect the unique colors in the training image
+train_unique_colors = np.unique(train_array.reshape(-1, train_array.shape[2]), axis=0)
+train_unique_colors, train_array.shape, test_array.shape
+
+# Define a function to map RGB colors to indices
+def rgb_to_index(color):
+    color_map = {
+        (0, 0, 0): 0,        # Black
+        (255, 255, 255): 1,  # White
+        (0, 105, 207): 2,    # Blue
+        (249, 22, 179): 3,   # Magenta
+        (255, 215, 49): 4,   # Yellow
+        (0, 197, 67): 5,     # Green
+        (204, 204, 204): 6,  # Gray
+    }
+    return color_map.get(tuple(color), -1)
+
+# Preview the top left grid in the training image
+top_left_grid = train_array[:train_array.shape[0] // 2, :train_array.shape[1] // 2]
+
+# Map each pixel to its corresponding index
+top_left_grid_indices = np.apply_along_axis(rgb_to_index, 2, top_left_grid)
+
+# Preview the top right grid in the training image
+top_right_grid = train_array[:train_array.shape[0] // 2, train_array.shape[1] // 2:]
+
+# Map each pixel to its corresponding index
+top_right_grid_indices = np.apply_along_axis(rgb_to_index, 2, top_right_grid)
+
+# Verify transformation
+top_left_non_black = np.argwhere(top_left_grid_indices != 0)
+top_right_non_black = np.argwhere(top_right_grid_indices != 0)
+
+# Explore the relationship
+(top_left_non_black, top_right_non_black), (top_left_grid_indices.shape, top_right_grid_indices.shape)
+
+# Identify rule: It seems each colored position is selectively preserved
+def identify_transformation_rule(src_indices, target_indices):
+    src_positions = set(map(tuple, src_indices))
+    target_positions = set(map(tuple, target_indices))
+
+    return {
+        ""src_positions"": len(src_positions),
+        ""target_positions"": len(target_positions),
+        ""common_positions"": len(src_positions & target_positions)
+    }
+
+# Derive the transformation rule
+transformation_details = identify_transformation_rule(top_left_non_black, top_right_non_black)
+transformation_details
+
+# Apply the identified ""rule"" to the new grid
+# The pattern suggests selective preservation of certain colors - let's map out a clear, detailed proposal
+
+# Let's assume the primary rule is reducing to the unique non-black features, likely reducing density.
+def transform_grid(grid_array):
+    # Only retain blue and magenta positions for sparsity, using the learned pattern.
+    indices = np.apply_along_axis(rgb_to_index, 2, grid_array)
+    
+    # Use original grid shape
+    transformed_indices = np.zeros_like(indices)
+
+    # Keep only specific feature colors
+    for color_index in [2, 3]:  # These correspond to blue and magenta
+        positions = np.argwhere(indices == color_index)
+        for pos in positions:
+            transformed_indices[tuple(pos)] = color_index
+    
+    return transformed_indices
+
+# Process the test grid
+transformed_test_grid = transform_grid(test_array)
+
+# Convert to grid format for output
+final_output_grid = np.where(transformed_test_grid == 2, 4, np.where(transformed_test_grid == 3, 1, 0))
+
+# Convert to JSON-like string format
+output_grid_str = '\n'.join(' '.join(str(cell) for cell in row) for row in final_output_grid)
+
+output_grid_str[:300]  # Preview part of the grid output for context",Retain only the specific feature colors from the original grid (like blue and magenta).,0
+2025-08-01T19:38:46,InsideOutside,InsideOutside6,3,low,0,parse:non-integer token in row 3,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... (truncated) ... 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation involves keeping specific color indices from the grid.
+
+Rule: Extract specific color indices from the grid as observed in transformations.","from PIL import Image
+
+# Load the images
+image1_path = '/mnt/data/file-WrzWo8Z4vNZiaMjHh2d948-train.png'
+image2_path = '/mnt/data/file-HprtmGntFLvf7sKNN3h72h-test_3.png'
+
+image1 = Image.open(image1_path)
+image2 = Image.open(image2_path)
+
+image1.show()
+image2.show()
+
+(image1.size, image2.size)
+
+import numpy as np
+
+# Convert images to numpy arrays
+image1_array = np.array(image1)
+image2_array = np.array(image2)
+
+# Define color indices based on the given colors
+color_indices = {
+    (0, 0, 0): 0,      # Black
+    (0, 0, 255): 1,    # Blue
+    (255, 0, 0): 2,    # Red
+    (0, 255, 0): 3,    # Green
+    (255, 255, 0): 4,  # Yellow
+    (128, 128, 128): 5, # Gray
+    (255, 0, 255): 6,  # Magenta
+    (255, 165, 0): 7,  # Orange
+    (0, 255, 255): 8,  # Cyan
+    (165, 42, 42): 9   # Brown
+}
+
+# Get the grid part of each image
+def extract_grid(image_array, top_left, bottom_right):
+    """"""Extract a grid part of an image""""""
+    return image_array[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
+
+# The dimensions and positioning can be adjusted manually
+grid1_left = extract_grid(image1_array, (0, 0), (900, 900))
+grid1_right = extract_grid(image1_array, (900, 0), (1800, 900))
+
+# Convert grid colors to indices
+def convert_to_indices(grid, color_indices):
+    """"""Convert grid colors to corresponding indices""""""
+    h, w, _ = grid.shape
+    grid_indices = np.zeros((h, w), dtype=int)
+    for i in range(h):
+        for j in range(w):
+            pixel = tuple(grid[i, j][:3])
+            grid_indices[i, j] = color_indices.get(pixel, 0)  # Default to 0 if color not found
+    return grid_indices
+
+grid1_left_indices = convert_to_indices(grid1_left, color_indices)
+grid1_right_indices = convert_to_indices(grid1_right, color_indices)
+
+(grid1_left_indices, grid1_right_indices)
+
+# Extract and convert the grid of the second image to indices
+grid2_indices = convert_to_indices(image2_array, color_indices)
+
+# Analyze and apply a similar transformation
+def apply_transformation(grid, target_indices):
+    """"""Apply a transformation by retaining only cells with target indices""""""
+    h, w = grid.shape
+    transformed_grid = np.zeros((h, w), dtype=int)
+    unique_values = np.unique(target_indices)
+    for value in unique_values:
+        transformed_grid[grid == value] = value
+    return transformed_grid
+
+# Identify unique values in the example transformation
+unique_left_values = np.unique(grid1_left_indices)
+unique_right_values = np.unique(grid1_right_indices)
+# Apply the rule identified as retaining unique colors from right transformation
+transformed_grid2_indices = apply_transformation(grid2_indices, unique_right_values)
+
+# Create a string representation of the final grid
+def grid_to_string(grid):
+    """"""Convert grid indices to string format""""""
+    return ""\n"".join("" "".join(str(cell) for cell in row) for row in grid)
+
+transformed_grid2_string = grid_to_string(transformed_grid2_indices)
+rule_description = ""Extract specific color indices from the grid as observed in transformations.""
+
+{
+    ""reasoning"": ""The transformation involves keeping specific color indices from the grid."",
+    ""rule"": rule_description,
+    ""grid"": transformed_grid2_string
+}",Extract specific color indices from the grid as observed in transformations.,0
+2025-08-01T19:31:52,InsideOutside,InsideOutside7,1,low,0,mismatch,0,"0 0 0 3 0 0
+3 0 0 3 0 3
+0 3 3 0 0 0
+0 0 3 0 3 0
+0 0 0 0 0 0","The transformations in the images show that each grid sequence on the left is broken into distinct color blocks, and for each transformation, the rule appears to be that the color block is reduced to a smaller form representing only the unique color and position types across the original block. First, capture the colors used in each grid, then identify the transformation as simplifying or distilling the color matrices. The grid in the first provided image seems to emphasize reduced representations of the colored blocks without altering sequences. Apply this transformation to the second grid image by identifying these blocks and reducing them similarly, keeping track of the color position within its reduced form, following the patterns depicted.
+
+Rule: Reduce each grid by identifying prominent color blocks and simplifying them into smaller segments that represent the distinct colors.",,Reduce each grid by identifying prominent color blocks and simplifying them into smaller segments that represent the distinct colors.,0
+2025-08-01T19:31:48,InsideOutside,InsideOutside7,2,low,0,mismatch,1,"2 2 2 2 2 2 2 2 2 2 2 3
+2 2 2 2 2 2 2 2 2 2 2 3
+2 2 3 3 3 3 3 3 3 3 2 3
+2 2 3 0 0 0 0 0 0 3 2 3
+2 2 3 0 2 2 2 2 0 3 3 3
+2 2 3 0 0 0 0 0 0 0 0 0
+2 2 3 0 0 0 2 2 2 2 2 3
+2 2 3 3 3 3 3 3 3 3 3 3
+2 2 2 3 3 2 2 3 3 2 2 3","In the training image, each grid on the right is a transformed version of the grid on the left. The transformation involves replacing the smallest color region inside each grid with the next smallest color region, and the pattern continues affecting regions sequentially through the grid. Applying this rule to the test grid results in identifying and replacing similarly smaller regions with the next color.
+
+Rule: Identify small regions and replace them sequentially with the next larger color.","from PIL import Image
+
+# Load the images
+train_image_path = '/mnt/data/file-Duj54LcmB9YR1uumZLWGWh-train.png'
+test_image_path = '/mnt/data/file-J87xtNykNea1TSzQsR4hxp-test_2.png'
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+# Get the colors used in the training image to understand the transformation
+train_image_colors = train_image.getcolors()
+test_image_colors = test_image.getcolors()
+
+train_image_colors, test_image_colors",Identify small regions and replace them sequentially with the next larger color.,0
+2025-08-01T19:30:37,InsideOutside,InsideOutside7,3,low,0,mismatch,0,"0 0 0 3 0
+3 0 0 0 3
+0 0 0 0 0
+0 0 0 0 0
+3 3 0 0 3","The first image contains three pairs of grids on the left and right side. The right-side grid is a transformed version of the left-side grid. By analyzing each pair, the rule can be identified. The common transformation is that each color inside the blue border on the left side grid is changed to a specific new color in the right side grid. The transformation pattern can be noticed as yellow to red, red to orange, and green to magenta. In the second image, the grid also contains some magenta squares surrounded by a blue border. Applying the same transformation rule, magenta inside the blue border is mapped to cyan.
+
+Rule: Change each magenta pixel within the blue border to cyan.",,Change each magenta pixel within the blue border to cyan.,0
+2025-08-01T19:30:24,InsideOutside,InsideOutside8,1,low,0,mismatch,1,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,"The transformation retains only the squares of a specific color. In this case, only blue squares are kept, while others are turned black.
+
+Rule: Retain only blue squares, ignore others.","from PIL import Image
+import numpy as np
+
+# Load the image
+image_path = '/mnt/data/file-FvbkJ2qNG3BSH321fatHmJ-test_1.png'
+image = Image.open(image_path)
+
+# Convert the image to a numpy array to access pixel values
+image_array = np.array(image)
+
+# Define the RGB values for black, blue, and gray
+black = (0, 0, 0)
+blue = (0, 0, 255)
+
+# Create a grid to store the final transformation (same dimensions as the input)
+final_grid = np.full(image_array.shape[:2], 0)  # Start with all black
+
+# Iterate through the image array and apply the transformation rule
+for i in range(image_array.shape[0]):
+    for j in range(image_array.shape[1]):
+        if tuple(image_array[i, j]) == blue:
+            final_grid[i, j] = 1  # Set to blue index
+
+# Let's prepare the final grid result in the specified format
+final_grid_str = '\n'.join([' '.join(map(str, row)) for row in final_grid])
+final_grid_str[:200]  # Display the first 200 characters for context","Retain only blue squares, ignore others.",0
+2025-08-01T19:31:37,InsideOutside,InsideOutside8,2,low,0,mismatch,1,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 3 0 0 0 0 3 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,"The left grid in each pair contains colored patterns on a black grid. The right grid contains only the non-black tiles. This suggests that the transformation rule is extracting non-black tiles from the grid.
+
+Rule: Extract all non-black tiles from the grid.","from PIL import Image
+import numpy as np
+
+# Load the provided image
+image_path_train = '/mnt/data/file-LNxnCoK7Apg3fvotgrW6my-train.png'
+image_path_test = '/mnt/data/file-2yguieVHpqiZzFQDrXJrUM-test_2.png'
+
+# Open image and convert to RGB format
+img_train = Image.open(image_path_train).convert('RGB')
+img_test = Image.open(image_path_test).convert('RGB')
+
+# Define a function to extract grid colors
+def extract_grid_colors(img, grid_size):
+    img_array = np.array(img)
+    # Identify unique colors in the grid
+    unique_colors = np.unique(img_array.reshape(-1, img_array.shape[2]), axis=0)
+    
+    # Create a dictionary to map colors to indices
+    color_to_index = {tuple(color): index for index, color in enumerate(unique_colors)}
+    
+    # Convert the grid into indices
+    grid_indices = np.array([[color_to_index[tuple(img_array[i, j])]
+                              for j in range(img_array.shape[1])]
+                             for i in range(img_array.shape[0])])
+    return grid_indices, color_to_index
+
+# Extract colors and grid for train images
+train_grid, color_index_train = extract_grid_colors(img_train, 10)
+
+# Extract colors and grid for test images
+test_grid, color_index_test = extract_grid_colors(img_test, 10)
+
+train_grid, test_grid, color_index_train, color_index_test",Extract all non-black tiles from the grid.,0
+2025-08-01T19:29:47,InsideOutside,InsideOutside8,3,low,0,mismatch,0,"0 0 0 0 0 2 0 0 0 0 0 0
+0 0 2 0 0 0 2 0 0 0 0 0
+0 0 0 0 0 0 0 0 2 0 0 0
+0 0 0 0 0 2 0 0 0 0 0 0","In the original image, the grids on the left side contain colored lines and dots, while the grids on the right side retain only the colored dots. The rule is to remove all continuous lines and keep only individual dots of colors other than black. Applying this rule to the grid in the second image, we remove the green line and retain only the isolated magenta dots.
+
+Rule: Remove continuous lines and keep only isolated colored dots.",,Remove continuous lines and keep only isolated colored dots.,0
+2025-08-01T19:30:22,InsideOutside,InsideOutside9,1,low,0,mismatch,1,"2 2 2 2 2 2
+4 0 0 0 0 0
+2 2 2 2 2 2
+0 0 4 0 0 0
+2 2 2 2 2 2
+0 0 0 0 4 0
+2 2 2 2 2 2
+0 0 0 0 0 0
+0 0 4 0 0 0
+0 0 4 0 0 0
+2 2 2 2 2 2","The transformation rule is derived by observing that the yellow squares on the left side of the first two grids mark positions around which red vertical lines are created on the right side. In the second image, the horizontal red line is also transformed similarly. Thus, the position of the yellow marking dictates the formation of red lines either horizontally or vertically, depending on their orientation in the grid. The same rule should be applied to the test image.
+
+Rule: For each yellow (4) square in the grid, create a horizontal or vertical red (2) line where it's not obstructed by another yellow dot, with the orientation matching the alignment seen prior to transformation.","from PIL import Image
+import numpy as np
+
+# Load images
+train_img = Image.open('/mnt/data/file-UqvCRbF9N5Der52Y1zC5zb-train.png')
+test_img = Image.open('/mnt/data/file-FJm1gXLnyh7r9ob4fqafXV-test_1.png')
+
+# Convert images to numpy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+train_array.shape, test_array.shape","For each yellow (4) square in the grid, create a horizontal or vertical red (2) line where it's not obstructed by another yellow dot, with the orientation matching the alignment seen prior to transformation.",0
+2025-08-01T19:29:48,InsideOutside,InsideOutside9,2,low,0,mismatch,0,"1 1 0 0 0 0 0 0 0 0 0 0 1 1
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 1 0 0 0 0 0 0 0 0 0 0 1 1
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 1 0 0 0 0 0 0 0 0 0 0 1 1
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 1 0 0 0 0 0 0 0 0 0 0 1 1
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 1 0 0 0 0 0 0 0 0 0 0 0 0","The transformation from the first to the second grid involves changing vertical red lines into horizontal red lines and removing any yellow squares. Applying this rule to the new grid involves converting all vertical red patterns into horizontal red patterns while eliminating yellow squares.
+
+Rule: Transform vertical red patterns into horizontal red patterns and remove yellow squares.",,Transform vertical red patterns into horizontal red patterns and remove yellow squares.,0
+2025-08-01T19:30:58,InsideOutside,InsideOutside9,3,low,0,mismatch,0,"0 0 3 0 0 0 0 3 0 0
+3 3 0 0 3 0 3 0 0 3
+0 0 0 0 0 3 0 0 0 0
+0 3 3 3 0 0 0 0 3 3
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 3 0 3 0 0 0
+0 3 0 3 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+3 0 0 0 3 0 0 3 3 0
+0 0 0 3 0 0 0 3 0 0","The left grids are transformed to the right grids by rotating yellow squares into horizontal rows or columns with intervening black squares, while red squares replace the row or column that had yellow. Applied to the test grid, similar transformation suggested horizontal positioning.
+
+Rule: Yellow squares are rotated into a horizontal row with a black square in between them, and any row or column containing a yellow square is filled with red.",,"Yellow squares are rotated into a horizontal row with a black square in between them, and any row or column containing a yellow square is filled with red.",0

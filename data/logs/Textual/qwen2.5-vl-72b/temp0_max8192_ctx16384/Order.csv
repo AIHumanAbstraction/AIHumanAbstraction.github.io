@@ -1,0 +1,201 @@
+"timestamp","concept","puzzle","test_idx","is_correct","err","tools_used","answer","summary","Rule_correct","rule_evaluation_reasoning","Rule","validated","Rule_correct_label","validation_level","starred","programming_calls"
+"2025-09-09T21:35:20","Order","Order1","1","0","mismatch","0","666044088888866604408888888000008888888000008888888000008888888","The transformation rule appears to be rotating the grid 180 degrees. This means that each element in the input grid at position (i,j) will move to position (n-i-1,m-j-1) in the output grid, where n and m are the number of rows and columns respectively.","0","","Rotate the grid 180 degrees","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order1","2","0","mismatch","0","0 0 0 7 7 7
+0 0 0 7 7 7
+0 0 0 7 7 7
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The transformation rule appears to be rotating the input grid 180 degrees. This means that each element in the input grid at position (i,j) will move to position (n-i-1,m-j-1) in the output grid, where n is the number of rows and m is the number of columns.","0","","Rotate the input grid 180 degrees","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order1","3","0","mismatch","0","60555022220050500020005000002002","The transformation rule appears to be rotating the input grid 180 degrees. This means that each element in the input grid at position (i,j) will move to position (n-i-1,m-j-1) in the output grid, where n and m are the number of rows and columns respectively.","0","","Rotate the input grid 180 degrees","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order10","1","0","parse:non-integer token in row 1","0","[2,4,6]","The rule appears to be extracting the unique non-zero numbers from the innermost non-zero layer of the grid.","0","","Extract unique non-zero numbers from the innermost non-zero layer.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order10","2","0","parse:non-integer token in row 1","0","[7,8,4,2,3,5]","The rule appears to be extracting the unique non-zero numbers from the innermost non-zero layer of the grid.","0","","Extract unique non-zero numbers from the innermost non-zero layer.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order10","3","0","parse:non-integer token in row 1","0","[4,3]","The rule appears to be extracting the unique non-zero numbers from the innermost non-zero layer of the grid.","0","","Extract unique non-zero numbers from the innermost non-zero layer.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order2","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+7 7 7 7 7 7 7 7 7 0 0 0","The transformation rule appears to be shifting all non-zero values in the input grid to the bottom-left corner of the grid while maintaining their relative order. This means that for each row, non-zero values are moved as far left as possible, and then the entire sequence of non-zero values is shifted down as far as possible.","0","","Shift all non-zero values to the bottom-left corner of the grid while preserving their relative order.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order2","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, it moves down and to the right until it reaches the bottom-right corner of its connected group of the same value. The connected group is defined as adjacent cells (including diagonals) with the same value.","0","","For each non-zero value, move it down and to the right within its connected group until it reaches the bottom-right corner of that group.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order2","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+5 5 5 5 5 5 5 0 0 0 0","The transformation rule appears to be shifting all non-zero values in the input grid to the bottom-left corner of the grid while maintaining their relative order. The non-zero values move as far left and down as possible without overlapping.","0","","Shift all non-zero values to the bottom-left corner of the grid while preserving their relative order.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order3","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+5 1 0 1 1 0 1 1 0 1 5
+1 1 0 1 1 0 1 1 0 5 1
+5 1 0 1 5 0 1 1 0 1 1
+1 1 0 1 1 0 1 1 0 5 1","The transformation rule appears to involve swapping certain values in the grid based on their positions and values. Specifically, it seems that when a '4' is adjacent to a '3', they swap places. Similarly, in Example 2, '6's and '7's swap under similar conditions. Applying this logic to the test input, we look for adjacent pairs of '1' and '5' and swap them.","0","","Swap adjacent '1' and '5' values in the grid.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order3","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 4 4 0 4 4 4 4 4 4
+4 8 8 8 8 8 0 4 4 4 4 4 4
+4 4 4 4 4 4 0 4 4 4 4 4 4
+4 4 4 4 4 4 0 4 8 8 8 8 4
+4 4 4 4 4 4 0 4 4 4 4 4 4","The transformation rule appears to be swapping the positions of adjacent numbers in the grid if they are different and one of them is a 4. This is observed in both examples where 4s are involved in swaps with their neighbors.","0","","Swap adjacent numbers if one is 4 and they are different.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order3","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 0 2 2 0 2 2 0 2 2 0 0
+2 2 0 2 2 0 2 2 0 0 2 0 0
+0 2 0 2 2 0 2 2 0 0 2 0 0
+2 0 0 2 0 0 2 2 0 0 2 0 0
+2 2 0 2 2 0 2 2 0 2 2 0 0","The transformation rule appears to be swapping the positions of certain numbers in the grid while keeping the zeros and some other numbers unchanged. Specifically, it seems that for each row, if there are two identical non-zero numbers adjacent to each other, they remain the same. If there are different non-zero numbers adjacent, they swap places. This pattern holds for both examples provided.","0","","Swap adjacent different non-zero numbers in each row, keep identical adjacent non-zero numbers and zeros unchanged.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order4","1","0","parse:non-integer token in row 1","0","0,0,0,0,0,0,0,0,0
+7,7,7,0,3,0,1,0,6
+7,7,7,0,3,0,1,0,4
+7,7,7,0,3,0,1,0,2
+7,7,7,0,3,0,1,0,2
+7,7,7,0,3,0,1,0,2
+7,7,7,0,3,0,1,0,6
+7,7,7,0,3,0,1,0,6","The transformation rule appears to rotate the non-zero elements of the grid 90 degrees clockwise while keeping the zeros in place. The numbers shift positions as if the grid were rotated but the zeros remain stationary.","0","","Rotate non-zero elements 90 degrees clockwise","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order4","2","0","parse:non-integer token in row 1","0","[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0][0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]","The transformation rule appears to rotate the non-zero elements of the grid 90 degrees clockwise while keeping the zeros in place. This is observed by comparing the positions of the numbers in the input and output grids.","0","","Rotate non-zero elements 90 degrees clockwise","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order4","3","0","no_json_found","0",":","The transformation rule appears to rotate the non-zero elements of the grid 90 degrees clockwise while keeping the zeros in place. The numbers shift positions as if the grid were rotated but the zeros remain stationary.","0","","","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order5","1","0","mismatch","0","3 0 0 0 0 3 0 0 4 0 3 0 0 0 0 3 0 0 4 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 4 0 0 3
+3 0 0 0 0 3 0 0 4 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 4 0 3
+3 0 4 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 4 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3","The transformation rule appears to be shifting all '4's in the input grid one position to the right, wrapping around if necessary. If a '4' is at the last column, it moves to the first column of the same row.","0","","Shift all '4's one position to the right, wrapping around if at the end of a row.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order5","2","0","mismatch","0","3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3
+3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3","The transformation rule appears to involve shifting the positions of '4's in the input grid. Specifically, each '4' moves one position to the right and one position down if possible. If moving right or down would place the '4' outside the grid, it wraps around to the opposite side.","0","","Each '4' in the input grid moves one position to the right and one position down, wrapping around the edges of the grid if necessary.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order5","3","0","mismatch","0","3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 43 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 43 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 43 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 33 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 33 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3 0 0 0 0 3","The transformation rule appears to be shifting all '4's in the input grid one position to the right, wrapping around if necessary. If a '4' is at the last column, it moves to the first column of the same row.","0","","Shift all '4's one position to the right, wrapping around if at the end of a row.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order6","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+4 0 0 0 0 0 0 0 0 0
+7 7 0 0 0 0 0 0 0 0
+7 7 0 0 0 0 0 0 0 0
+3 3 3 3 3 3 3 0 0 0
+3 3 3 3 3 3 3 0 0 0
+3 3 3 3 3 3 3 0 0 0
+3 3 3 3 3 3 3 0 0 0
+3 3 3 3 3 3 3 0 0 0
+3 3 3 3 3 3 3 0 0 0
+6 6 6 6 6 0 0 0 0 0
+6 6 6 6 5 0 0 0 0 0
+6 6 6 6 5 0 0 0 0 0
+6 6 6 6 5 0 0 0 0 0","The transformation rule appears to be sorting the rows of the grid based on the first non-zero element in each row, in ascending order. If two rows have the same first non-zero element, they maintain their relative order.","0","","Sort rows based on the first non-zero element in ascending order, maintaining relative order for rows with the same first non-zero element.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order6","2","0","parse:non-integer token in row 1","0","0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3,0,0,3,0,0,0,0,0,0,0,0,0,0
+3,0,0,3,0,0,0,0,0,0,0,0,0,0
+3,3,3,3,0,0,0,0,0,0,0,0,0,0
+4,0,0,0,4,0,0,0,0,0,0,0,0,0
+4,0,0,0,4,0,0,0,0,0,0,0,0,0
+4,0,0,0,4,0,0,0,0,0,0,0,0,0
+4,4,4,4,4,0,0,0,0,0,0,0,0,0
+5,0,0,0,0,0,0,5,0,0,0,0,0,0
+5,0,0,0,0,0,0,5,0,0,0,0,0,0
+5,0,0,0,0,0,0,5,0,0,0,0,0,0
+5,0,0,0,0,0,0,5,0,0,0,0,0,0
+5,0,0,0,0,0,0,5,0,0,0,0,0,0
+5,5,5,5,5,5,5,5,0,0,0,0,0,0
+8,8,0,0,0,0,0,0,0,0,0,0,0,0
+8,8,0,0,0,0,0,0,0,0,0,0,0,0","The transformation rule appears to be sorting the rows of the grid based on the first non-zero element in each row. Rows with smaller first non-zero elements come before rows with larger ones.","0","","Sort rows based on the first non-zero element in ascending order.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order6","3","0","parse:non-integer token in row 1","0","0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2,0,0,0,0,0,2,0,0,0,0,0,0,0
+2,0,0,0,0,0,2,0,0,0,0,0,0,0
+2,0,0,0,0,0,2,0,0,0,0,0,0,0
+2,0,2,0,2,0,2,0,0,0,0,0,0,0
+2,0,2,0,2,0,2,0,0,0,0,0,0,0
+4,0,0,0,4,0,0,0,0,0,0,0,0,0
+4,0,4,0,4,0,0,0,0,0,0,0,0,0
+4,0,4,0,4,0,0,0,0,0,0,0,0,0
+8,0,8,0,0,0,0,0,0,0,0,0,0,0
+8,0,8,0,0,0,0,0,0,0,0,0,0,0","The transformation rule appears to be sorting the rows of the grid based on the first non-zero element in each row, in ascending order. If two rows have the same first non-zero element, they maintain their relative order.","0","","Sort rows based on the first non-zero element in ascending order, maintaining relative order for rows with the same first non-zero element.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order7","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 4 4
+0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 4 4","The transformation rule appears to be shifting all '4's one position to the left and one position down, while keeping the '5's in their original positions. This is consistent across all provided examples.","0","","Shift all '4's one position to the left and one position down, keep '5's unchanged.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order7","2","0","mismatch","0","0000000000500440044044000440050044004404400000000050000000000000000005004400440000000000500440044000000000050000000000","The transformation rule appears to be shifting all '4's one position to the left and one position up while keeping the '5's in their original positions. This is observed consistently across all examples.","0","","Shift all '4's one position to the left and one position up, keep '5's unchanged.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order7","3","0","mismatch","0","00000000005000000000000440004400500000440000000000500000440000000000050000000000000000000500000000000000000005000000000","The transformation rule appears to be shifting all '4's one position to the left and one position up in the grid while keeping the '5's in their original positions.","0","","Shift all '4's one position to the left and one position up, keep '5's unchanged.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order8","1","1","","0","8 7 3 1 5","The rule appears to be extracting the unique non-zero numbers from each row of the input grid and listing them in the order they first appear.","1","","Extract unique non-zero numbers from each row in the order they first appear.","0","Correct","0","0",""
+"2025-09-09T21:35:20","Order","Order8","2","1","","0","7 1 6 4","The rule appears to be extracting the unique non-zero numbers from each row of the input grid and listing them in the order they first appear.","1","","Extract unique non-zero numbers from each row in the order they first appear.","0","Correct","0","0",""
+"2025-09-09T21:35:20","Order","Order8","3","1","","0","2 4 3 8 2 4 9","The rule appears to be extracting the unique non-zero numbers from each row of the input grid and listing them in the order they first appear.","1","","Extract unique non-zero numbers from each row in the order they first appear.","0","Correct","0","0",""
+"2025-09-09T21:35:20","Order","Order9","1","0","mismatch","0","0 0 0
+0 0 0
+0 0 0
+0 0 0
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+3 3 3
+0 0 0
+3 3 3
+3 3 3
+0 0 0
+3 3 3
+0 0 0
+3 3 3
+3 3 3
+3 3 3","The transformation rule appears to be that if a row in the input grid contains at least one '3', then all elements in that row are set to '3' in the output grid. Otherwise, the row remains unchanged.","0","","If a row contains at least one '3', set all elements in that row to '3'. Otherwise, keep the row as it is.","0","Incorrect","0","0",""
+"2025-09-09T21:35:20","Order","Order9","2","1","","0","0 0 0
+0 0 0
+0 0 0
+0 0 0
+0 0 0
+0 0 0
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+3 3 3
+3 3 3
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+0 0 0
+3 3 3","The transformation rule appears to be that if a row in the input grid contains at least one '3', then all elements in that row are set to '3' in the output grid. Otherwise, the row remains unchanged.","1","","If a row contains at least one '3', set all elements in that row to '3'. Otherwise, keep the row as it is.","0","Correct","0","0",""
+"2025-09-09T21:35:20","Order","Order9","3","0","mismatch","0","0 0 0
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+0 0 0
+3 3 3
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+3 3 3
+0 0 0
+3 3 3
+3 3 3
+3 3 3
+3 3 3
+3 3 3","The transformation rule appears to be that if a row contains at least one '3', then all elements in that row are set to '3'. Otherwise, the row remains unchanged.","0","","If a row contains at least one '3', set all elements in that row to '3'.","0","Incorrect","0","0",""

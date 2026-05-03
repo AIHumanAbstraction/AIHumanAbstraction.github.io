@@ -1,0 +1,3768 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule_correct,rule_evaluation_reasoning,Rule,validated,Rule_correct_label,validation_level,starred
+2025-07-17T20:35:05,Copy,Copy1,1,low,1,,0,"8 0 8 8 0 8
+0 0 0 0 0 0
+0 8 0 0 8 0
+0 0 0 0 0 0
+8 0 8 8 0 8","**Identifying transformation rules**
+
+I need to clarify the transformation rule at play here. It seems the input grid gets its columns doubled, replicating each row side-by-side. For instance, in the first example, a 3x5 input results in a 3x10 output, where each row, like Row1 (3, 0, 0, 0, 3), appears twice next to itself. This pattern shows up consistently in other examples. The goal is to confirm this row duplication holds across the various grid sizes.
+
+**Defining the transformation rule**
+
+The rule is to horizontally concatenate the input grid with itself to double its width while maintaining the same height. For a test grid of 5 rows by 3 columns, the output will be 5 rows by 6 columns. Each row will repeat, keeping the original format. 
+
+I'll format the output grid correctly, ensuring each row appears space-separated and that each grid line is separated by a newline. Then, I’ll return this as a JSON string representation without unnecessary spaces.
+
+Rule: Duplicate the entire grid horizontally by concatenating a copy of itself to the right (width doubled, height unchanged).",,1,"The Evaluated Rule specifies duplicating the grid to the right, while the Ground Truth Rule specifies appending a copy to the left. This results in different placements of the duplicated grid, making the two rules not equivalent.","Duplicate the entire grid horizontally by concatenating a copy of itself to the right (width doubled, height unchanged).",1,Correct - Intended,2,0
+2025-07-17T20:35:01,Copy,Copy1,2,low,1,,0,"6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6","**Deducing grid mapping rules**
+
+I need to figure out the mapping for the grids. In the examples, it seems the output grid doubles the width of the input. For instance, in example 1, a 3x5 input results in a 3x10 output. Each row appears to be duplicated horizontally. Checking further, the first input row does indeed repeat its elements. Example 2 follows the same rule, yielding a 3x6 output. In example 3, a 6x3 input leads to a 6x6 output, confirming the duplication pattern.
+
+**Creating grid output**
+
+I've established the rule: to duplicate the grid by horizontally concatenating it with itself, which doubles the number of columns. Now, I will test this with a grid of 2 rows and 5 columns. Each row has identical values of ""6,"" so after duplication, it should create 2 rows of ""6"" repeated, resulting in 10 columns each. I'll format the grid as whitespace-separated rows with newlines. Finally, I’ll construct a minified JSON representation of the grid and rule.
+
+Rule: concatenate each row with itself so the grid’s width doubles while height stays the same",,1,"The Evaluated Rule describes a transformation that duplicates each row of the grid, effectively doubling the width of the grid by repeating the content of each row. In contrast, the Ground Truth Rule specifies appending a copy of the entire grid to the left of the original grid, which results in a different structure where the entire grid is duplicated as a block rather than row by row. Therefore, the two rules are not equivalent.",concatenate each row with itself so the grid’s width doubles while height stays the same,1,Correct - Intended,2,0
+2025-07-17T20:35:18,Copy,Copy1,3,low,1,,0,"2 2 2 2 2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2 2 2 2 2
+2 1 1 1 1 2 2 1 1 1 1 2
+2 1 1 1 1 2 2 1 1 1 1 2
+2 2 2 2 2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2 2 2 2 2","**Analyzing input-output dimensions**
+
+I need to detect the rule for both input and output sizes. For example, with a 3x5 input grid, it looks like this:
+
+3 0 0 0 3  
+0 3 0 3 0  
+0 0 3 0 0  
+
+The output seems to concatenate the input lines horizontally, resulting in a doubled-width display. Each row simply repeats itself, maintaining the same height. So, the output of the first row combines as: 3 0 0 0 3 3 0 0 0 3. Let’s ensure I fully understand this process!
+
+**Defining grid duplication rule**
+
+I’m establishing a rule to duplicate the input grid horizontally, which means placing two copies side-by-side. For instance, with a 3x3 input like:
+
+2 0 2  
+2 0 2  
+2 2 2  
+
+The output will be:
+
+2 0 2 2 0 2  
+2 0 2 2 0 2  
+2 2 2 2 2 2  
+
+Similarly, for a 6x3 input, the output grows to 6 rows and 6 columns. I'll ensure I represent this clearly in a string format—with line breaks and spaces for neatness. Let's finalize the JSON to reflect this structure!
+
+Rule: Duplicate the input grid horizontally, concatenating two copies side-by-side (width doubles, height unchanged).",,1,"The Evaluated Rule describes the same transformation as the Ground Truth Rule, which is to duplicate the grid horizontally. Both rules result in a grid that has doubled in width while maintaining the same height, thus they are equivalent in functionality.","Duplicate the input grid horizontally, concatenating two copies side-by-side (width doubles, height unchanged).",1,Correct - Intended,2,0
+2025-07-17T20:37:11,Copy,Copy10,1,low,1,,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 6 6 6 6 6 6 6 6 0 6 6 6 6 6 6 6 6 0 0
+0 0 6 7 7 7 7 7 7 6 0 6 7 7 7 7 7 7 6 0 0
+0 0 6 7 7 7 7 7 7 6 0 6 7 7 7 7 7 7 6 0 0
+0 0 6 6 6 6 6 6 6 6 0 6 6 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing the pattern rules**
+
+I need to deduce the rules governing the example input of 12x22. It looks like the inner 10x10 pattern, bordered by 3s and filled with 2s, is duplicated to the right in the output. The original pattern covers certain rows and columns, creating a specific structure. The copy begins at column 12, so I’ll verify the indexing for each row, ensuring the relationships hold true as I analyze the overall grid and its placements. Let’s keep breaking it down!
+
+**Understanding the pattern replication**
+
+In the original input, the pattern occupies columns 2-9, with a copy appearing at columns 12-19, separated by two blank columns. It seems the rule is to duplicate the colored pattern horizontally while maintaining this gap. For Example 2, the input grid is likely 17 rows by 7 columns, with patterns appearing in the first 9 rows and then again from rows 11-13. The output retains the original pattern and inserts a new copy between them, creating a symmetric arrangement with blank spaces in between. Let's break this down further!
+
+**Breaking down the pattern rules**
+
+In Example 2, I’m examining the bounding box dimensions of the top shape, which spans rows 1-7 and columns 1-5. The outer ring, represented by colors 3 or 4, encloses the inner color represented by 1 or 2. The rule seems to be that if we identify an inner color, we can add the corresponding outer ring cells. I see that the outer color should surround inner patches of 7s found at specific positions. I need to ensure these rings are symmetrical and properly located. Let's clarify this further!
+
+Rule: Identify a fully-formed two-colour figure (an inner solid area surrounded by a 1-cell-thick border of a different colour). Wherever the grid contains only that inner area, copy the missing border cells in their correct relative positions so that every partial copy becomes a complete figure.",,1,"The Evaluated Rule focuses on identifying and completing a two-colour figure with a specific inner area and border, while the Ground Truth Rule describes a transformation that involves copying an outer object to a different position in the grid. The core transformation functionality is not aligned, as the Evaluated Rule does not encompass the concept of moving the outer object to enclose another object.","Identify a fully-formed two-colour figure (an inner solid area surrounded by a 1-cell-thick border of a different colour). Wherever the grid contains only that inner area, copy the missing border cells in their correct relative positions so that every partial copy becomes a complete figure.",1,Correct - Intended,2,0
+2025-07-17T20:39:36,Copy,Copy10,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 4 0 4 4 0 4 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 4 0 4 4 0 4 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing grid structure**
+
+I’m looking at an input grid that appears to be 12x22 with a notable 8x8 square of 2's surrounded by a frame of 3's. It seems like rows 4 to 7 and columns 4 to 7 contain this block of 2's. In examining the rows and columns, it looks like the grid showcases horizontal and vertical segments of 3's. So, I want to confirm that the overall structure includes a square border of 3's around that central block of 2's.
+
+**Identifying grid patterns**
+
+I see that in row 11, there's a pattern ""0 0 0 1 0 0 0,"" and in row 12, it reads ""0 0 1 1 1 0 0,"" followed by ""0 0 0 1 0 0 0"" in row 13. This central pattern lacks an outer 4 boundary, so I'll need to fill in that missing outer layer to recreate the full shape. 
+
+It seems the rule is to find shapes that appear partially and fill in the missing borders. I’ll also look at how these shapes replicate to determine a consistent tiling method across the grid. The minimal bounding box for this pattern looks like it extends from rows 0 to 7 and columns 0 to 6, and I can confirm it's repeated every 9 rows.
+
+**Determining mirroring rules**
+
+I’m considering how to mirror a 25-row grid. Observing specific patterns, I see alternating 8's in rows 2 and 10, along with symmetrical 4’s in the middle and a cluster of 4's at the bottom. The upper half includes some patterns, while the lower half shows these clusters without the 8's. 
+
+I think the best approach is to mirror horizontally across the middle row. For each cell, I'll fill in zeros below the axis. Existing non-zero values will remain unchanged. This way, I’ll preserve the 4's while adding the 8's where needed.
+
+```python
+grid_str = """"""0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 4 0 4 4 0 4 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 4 0 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 0 4 0 0 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+grid = [list(map(int,line.split())) for line in grid_str.strip().splitlines()]
+H=len(grid); W=len(grid[0])
+H,W
+
+```
+
+```python
+# apply rule: since height>width, mirror vertically (top to bottom along horizontal center)
+for r in range(H):
+    for c in range(W):
+        if grid[r][c]!=0:
+            r2 = H-1 - r
+            if grid[r2][c]==0:
+                grid[r2][c]=grid[r][c]
+grid_out = grid
+# produce multiline
+for row in grid_out:
+    print(' '.join(map(str,row)))
+
+```
+
+**Finalizing grid output**
+
+I'm examining the grid after mirroring, and it shows 8 additional rows replicating the pattern. I think it would be helpful to produce a final grid string. I'll create a minified JSON format that includes a ""rule"" for summary and a ""grid"" that consists of newline-separated rows with space-separated integers. This organization will help in presenting the information clearly. Let's finalize this grid string together!
+
+```python
+grid_str_out = '\n'.join(' '.join(map(str,row)) for row in grid_out)
+grid_str_out[:300]
+
+```
+
+```python
+print(grid_str_out)
+
+```
+
+Rule: Reflect the non-zero pattern across the grid’s central axis that corresponds to the longer dimension (vertical axis if the grid is wider, horizontal axis if it is taller). For every coloured cell copy its value to the symmetric position, but only when that target cell is currently 0, leaving existing colours unchanged.","grid_str = """"""0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 4 0 4 4 0 4 0 8 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 8 0 0 0 4 0 0 4 0 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 8 0 8 0 8 0 8 0 8 0 8 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 4 0 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 4 0 4 4 0 4 0 0 0
+0 0 0 0 0 4 0 0 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+grid = [list(map(int,line.split())) for line in grid_str.strip().splitlines()]
+H=len(grid); W=len(grid[0])
+H,W
+
+# apply rule: since height>width, mirror vertically (top to bottom along horizontal center)
+for r in range(H):
+    for c in range(W):
+        if grid[r][c]!=0:
+            r2 = H-1 - r
+            if grid[r2][c]==0:
+                grid[r2][c]=grid[r][c]
+grid_out = grid
+# produce multiline
+for row in grid_out:
+    print(' '.join(map(str,row)))
+
+grid_str_out = '\n'.join(' '.join(map(str,row)) for row in grid_out)
+grid_str_out[:300]
+
+print(grid_str_out)",1,"The Evaluated Rule describes a reflection across the central axis of the grid, which is fundamentally different from the Ground Truth Rule that specifies copying the outer object to enclose the inner object on the opposite side. The transformation functionalities are not similar, as one involves reflection and the other involves a specific copying action.","Reflect the non-zero pattern across the grid’s central axis that corresponds to the longer dimension (vertical axis if the grid is wider, horizontal axis if it is taller). For every coloured cell copy its value to the symmetric position, but only when that target cell is currently 0, leaving existing colours unchanged.",1,Correct - Unintended,2,0
+2025-07-17T20:37:59,Copy,Copy10,3,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 5 5 5 5 5 0 0 0 5 5 5 5 5 5 5 5 5 0 0
+0 0 5 0 3 3 3 3 0 0 0 0 0 0 5 0 3 3 3 3 0 0 0 0 0
+0 0 5 0 3 3 3 3 0 0 0 0 0 0 5 0 3 3 3 3 0 0 0 0 0
+0 0 5 5 5 5 5 5 5 5 5 0 0 0 5 5 5 5 5 5 5 5 5 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","**Deciphering grid rules**
+
+I'm examining how to decipher patterns from examples. For instance, in a 22x12 grid, it seems the output duplicates a pattern to the right with an offset. The input has a defined shape on the left, and the output shows this shape again starting at column 12, creating symmetry. The original object appears at columns 2-9, while the copy fits in columns 12-19. So, the rule might be to replicate colored blocks in the blank region to create a balanced design.
+
+**Examining grid patterns**
+
+I'm analyzing how the output replicates shapes based on the input grid. For the first example, I see 3's from columns 2-9 and additional copies in columns 12-19, creating a two-column gap. In the second example, the input grid is 7x17, and I notice a diamond shape that appears twice in the output, separated by a row gap. The rule seems to involve taking a top-left object and duplicating it in the blank area, aligning with any smaller parts as markers.
+
+```python
+grid = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,5,5,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,5,0,3,3,3,3,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0],
+[0,0,5,0,3,3,3,3,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0],
+[0,0,5,5,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+for row in grid:
+    pass
+```
+
+```python
+for r in range(1,5):
+    print(grid[r][2:11])
+
+```
+
+```python
+for r in range(6):
+    print(r, [ (c,val) for c,val in enumerate(grid[r]) if val==3])
+
+```
+
+**Calculating border transformations**
+
+I'm determining the border thickness: top and bottom are 1 row each, left has 2 columns, and right has 3 columns, meaning it isn't symmetric horizontally. I need to replicate this pattern. To do so, I should copy the border cells as they relate to the interior region for other interior groups. 
+
+Next, for the interior box on the right (rows 2-3, cols 16-19), I need to adjust the borders, including adding 5's in the specified areas, ensuring everything fits within a grid width of 25.
+
+**Analyzing border thickness**
+
+I’m examining the left border columns, specifically column 2, which has 5’s at both row 1 and row 4, and also in interior rows 2-3. Upon inspection, there’s indeed a 5 at column 2 for rows 2 and 3, but not at column 3. Earlier printings show that for row 2, column 2 is 5 and column 3 is 0. This means the left border thickness is 1 column, offset by 2 from the interior. 
+
+On the right side, column 10 has a 5, while column 9 maybe also has one. I need to check row 2 for the exact value at column 9.
+
+```python
+print(grid[2][2:11])
+```
+
+```python
+print(""row1"",grid[1][2:11])
+print(""row2"",grid[2][2:11])
+print(""row3"",grid[3][2:11])
+print(""row4"",grid[4][2:11])
+
+```
+
+I'm thinking about verifying the entire grid because I noticed we didn't inspect column 10, row 2. There might be a value of 5 in that column that's outside of our current slice. To be thorough, I should print the actual value in column 10 for row 2 globally so I can confirm if it really exists. I want to make sure I'm catching any potential issues. Let's check that to ensure accuracy!
+
+```python
+print(grid[2][10])
+
+```
+
+**Inspecting visualization details**
+
+I'm thinking about the vertical border in the visualization. It looks like the border at column 10 ended earlier. The rightmost border appears as a vertical line, but it only connects rows 1 and 4, and doesn't continue through rows 2 and 3. I find that puzzling because it should be continuous. I need to print out all the coordinates for the 5's to check their positioning and see what's happening there!
+
+```python
+coords=[]
+for r,row in enumerate(grid):
+    for c,val in enumerate(row):
+        if val==5:
+            coords.append((r,c))
+coords[:20], len(coords)
+
+```
+
+**Analyzing border patterns**
+
+I'm noticing that the coordinates show a right vertical edge only at row 4 and column 10, but not at rows 2 and 3. The pattern is intriguing, with the top edge at row 1 and a left vertical edge at column 2. The bottom edge is at row 4. It seems like there might be lines drawn by a border representing maximal segments, and the right edge is missing where the interior isn’t extended far enough. The overall shape might represent an arrow or a ""folder"" missing its right side edges.
+
+```python
+for r in range(1,5):
+    print(''.join(str(grid[r][c]) if grid[r][c]!=0 else '.' for c in range(2,11)))
+
+```
+
+```python
+out=[row[:] for row in grid]
+for c in range(14,23):
+    out[1][c]=5
+    out[4][c]=5
+for r in [2,3]:
+    out[r][14]=5
+# Print
+for row in out:
+    print(' '.join(map(str,row)))
+
+```
+
+```python
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:200]
+
+```
+
+Rule: Identify the one complete figure made of two colours (an outline colour surrounding an inner-colour pattern). Every other place where only that inner-colour pattern appears is an incomplete copy. Recreate the missing outline by placing the outline-colour pixels in exactly the same relative positions they have around the reference figure, thus completing every incomplete copy while leaving the original unchanged.","grid = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,5,5,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,5,0,3,3,3,3,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0],
+[0,0,5,0,3,3,3,3,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0],
+[0,0,5,5,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+for row in grid:
+    pass
+
+for r in range(1,5):
+    print(grid[r][2:11])
+
+for r in range(6):
+    print(r, [ (c,val) for c,val in enumerate(grid[r]) if val==3])
+
+print(grid[2][2:11])
+
+print(""row1"",grid[1][2:11])
+print(""row2"",grid[2][2:11])
+print(""row3"",grid[3][2:11])
+print(""row4"",grid[4][2:11])
+
+print(grid[2][10])
+
+coords=[]
+for r,row in enumerate(grid):
+    for c,val in enumerate(row):
+        if val==5:
+            coords.append((r,c))
+coords[:20], len(coords)
+
+for r in range(1,5):
+    print(''.join(str(grid[r][c]) if grid[r][c]!=0 else '.' for c in range(2,11)))
+
+out=[row[:] for row in grid]
+for c in range(14,23):
+    out[1][c]=5
+    out[4][c]=5
+for r in [2,3]:
+    out[r][14]=5
+# Print
+for row in out:
+    print(' '.join(map(str,row)))
+
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:200]",1,"The Evaluated Rule describes a process of identifying and completing the outline of an object based on a reference figure, which aligns with the Ground Truth Rule's intent of copying the outer object to enclose another. Both rules focus on the transformation of enclosing an inner object with an outer outline, albeit with different phrasing and additional details in the Evaluated Rule.","Identify the one complete figure made of two colours (an outline colour surrounding an inner-colour pattern). Every other place where only that inner-colour pattern appears is an incomplete copy. Recreate the missing outline by placing the outline-colour pixels in exactly the same relative positions they have around the reference figure, thus completing every incomplete copy while leaving the original unchanged.",1,Correct - Intended,2,0
+2025-07-17T20:38:31,Copy,Copy2,1,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 3 0 0 0 0 0 0 0 0
+0 3 3 2 3 3 0 0 0 0 0 0
+0 3 3 2 3 3 0 0 0 0 0 0
+0 0 0 3 0 0 0 0 0 0 0 0
+0 0 8 8 8 8 8 8 8 0 0 0
+0 0 8 0 0 3 0 0 8 0 0 0
+0 0 8 3 3 2 3 3 8 0 0 0
+0 0 8 3 3 2 3 3 8 0 0 0
+0 0 8 0 0 3 0 0 8 0 0 0
+0 0 8 8 8 8 8 8 8 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing grid patterns**
+
+I'm noticing that the input grid contains two different shapes: a small pattern in the top-left and a larger hollow rectangle of 8's. It seems like the small pattern is duplicated within the hollow rectangle while keeping the same orientation, centered perhaps? For example, in the first case, a 3x3 pattern gets positioned inside the rectangle formed by the 8's. The values inside the rectangle match the original small pattern, and the rest are zeros. This needs to be aligned correctly.
+
+**Copying patterns into rectangles**
+
+I'm working on a task where I need to copy a pattern into the interior of a hollow rectangle from the input grid. In the second example, the small diamond-shaped pattern sits at the top-left, while the hollow rectangle of 8’s starts further down. The output shows the pattern correctly placed within the rectangle, though some zero positions are replaced. I need to ensure I detect non-zero patterns outside the 8 frame and align them properly in the rectangle interior. I'll continue by checking the next input grid.
+
+**Reviewing column and row indices**
+
+I'm figuring out the column indices for my grid. It looks like Row 2 has a value at index 3, while previous rows also show action at column 3. However, the bounding area for the pattern encompasses 4 rows (rows 1 to 4) with 5 columns. That's strange since past patterns were square (like 3x3 or 5x5). I’ll check the height and width of these rows to confirm their dimensions by quickly printing out the lines from rows 1 to 4.
+
+```python
+pattern_rows=[[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0]]
+
+```
+
+**Counting pattern rows and columns**
+
+I’m figuring out the rows and columns of a pattern. I initially wondered if there are 5 rows, but I realized I should focus on rows 1 to 4, which gives me 4 rows instead. It seems like row indices 0 to 4 actually count as 5 rows, but since I’m looking at the non-zero color, I should only count rows 1 to 4. I also see that there are 5 columns. So, it looks like I have a 4x5 rectangle!
+
+**Analyzing grid frame and pattern replication**
+
+I'm looking at the rectangle's interior in a test grid. The frame includes rows 5 to 10, and it seems that row 5 has a top boundary with continuous 8s from columns 2 to 8, making a total of 7 columns. The same applies to row 10 at the bottom. This gives me a pattern size of 4 rows by 5 columns to work with. I need to copy this pattern into the frame's interior and fill it, aligning it correctly while replacing zeros.
+
+```python
+import numpy as np
+inp=np.array([
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,8,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,8,8,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0]
+])
+# find frame interior
+rows,cols=np.where(inp==8)
+top=min(rows);bottom=max(rows);left=min(cols);right=max(cols)
+# interior
+int_rows=range(top+1,bottom)
+int_cols=range(left+1,right)
+# pattern bounding rows/cols where values not 0 and not 8
+pat_rows,pat_cols=np.where((inp!=0)&(inp!=8))
+prowmin,prowmax=min(pat_rows),max(pat_rows)
+pcolmin,pcolmax=min(pat_cols),max(pat_cols)
+pattern=inp[prowmin:prowmax+1,pcolmin:pcolmax+1]
+out=inp.copy()
+out[int_rows.start:int_rows.stop,int_cols.start:int_cols.stop]=pattern
+out
+```
+
+```python
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str
+```
+
+Rule: Copy the smallest non-8 coloured pattern that lies outside the blue 8-frame and paste it, unchanged, into the empty interior of that frame","pattern_rows=[[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0]]
+
+import numpy as np
+inp=np.array([
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,3,3,2,3,3,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,8,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,0,0,0,0,0,8,0,0,0],
+[0,0,8,8,8,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0]
+])
+# find frame interior
+rows,cols=np.where(inp==8)
+top=min(rows);bottom=max(rows);left=min(cols);right=max(cols)
+# interior
+int_rows=range(top+1,bottom)
+int_cols=range(left+1,right)
+# pattern bounding rows/cols where values not 0 and not 8
+pat_rows,pat_cols=np.where((inp!=0)&(inp!=8))
+prowmin,prowmax=min(pat_rows),max(pat_rows)
+pcolmin,pcolmax=min(pat_cols),max(pat_cols)
+pattern=inp[prowmin:prowmax+1,pcolmin:pcolmax+1]
+out=inp.copy()
+out[int_rows.start:int_rows.stop,int_cols.start:int_cols.stop]=pattern
+out
+
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str",1,"The Evaluated Rule specifies copying the smallest non-8 coloured pattern outside the blue 8-frame, which introduces a specific condition regarding color and location that is not present in the Ground Truth Rule. The Ground Truth Rule is more general and does not limit the shape based on color or its position relative to a specific frame.","Copy the smallest non-8 coloured pattern that lies outside the blue 8-frame and paste it, unchanged, into the empty interior of that frame",1,Correct - Unintended,2,0
+2025-07-17T20:40:19,Copy,Copy2,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 8 8 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 8 8 8 8 8 8 8 8 8 8 0 0
+0 0 0 0 0 0 0 0 8 4 4 4 4 4 4 4 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 3 3 3 3 3 3 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 3 5 5 5 5 3 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 3 5 8 8 5 3 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 3 5 5 5 5 3 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 3 3 3 3 3 3 4 8 0 0
+0 0 0 0 0 0 0 0 8 4 4 4 4 4 4 4 4 8 0 0
+0 0 0 0 0 0 0 0 8 8 8 8 8 8 8 8 8 8 0 0","**Analyzing pattern embedding**
+
+I need to figure out the rule from the examples. It looks like there are two main components: a colored pattern like (2,4) or (6,1) that repeats, and a large rectangular ""8"" frame structure. The smaller colored pattern seems to fit in the center of the ""8"" frame, with a padding of one cell around it.
+
+In Example 1, the grid is 10x10, featuring a colored pattern described by a 3x3 area bordered by 2’s and centered with a 4. The ""8"" frame occupies the lower area, forming a rectangular hollow square with outer ""8s"" and zeros inside.
+
+```python
+grid_str = """"""0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 8 8 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 8 8 8 8 8 8 8 8 8 8 0 0
+0 0 0 0 0 0 0 0 8 0 0 0 0 0 0 0 0 8 0 0
+13 13""""""
+```
+
+**Analyzing geometric patterns**
+
+I'm breaking down this pattern, visualizing an 8x8 square surrounded by 4's, with an inner design made up of 3, 5, and 8. The larger frame seems to be a 10x10 area formed between rows 11 to 19 and columns 8 to 17. I find that these lines create a rectangle filled with 8's and zeros inside. After calculating, the outer dimension appears to be 9 by 10. It shows a consistent pattern, with the small pattern matching its interior perfectly!
+
+**Creating the final grid**
+
+I’m looking to copy the small pattern into the interior of the 8-frame, specifically rows 12 to 18 and columns 9 to 16. I need to produce that final grid layout. It’s a critical part of the process, so let’s simulate it quickly to see how it looks! I want to make sure everything aligns correctly and looks just right. Getting this right is important for the overall design. Let’s dive in and create that layout!
+
+```python
+import numpy as np, textwrap, itertools, json, sys
+```
+
+```python
+inp = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,8,8,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+]
+]
+
+```
+
+```python
+inp = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,8,8,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+]
+
+```
+
+**Determining bounding box for rectangles**
+
+I need to find the bounding box for a large rectangle defined by the value 8. To do this, I’ll look for rows that contain multiple contiguous 8's. My goal is to identify the minimum and maximum row and column indices that encompass all of these 8's. Once I gather this information, I’ll be able to compute the bounding box accurately. Let’s get started on that!
+
+```python
+coords=[(r,c) for r,row in enumerate(inp) for c,v in enumerate(row) if v==8]
+minr=min(r for r,c in coords)
+maxr=max(r for r,c in coords)
+minc=min(c for r,c in coords)
+maxc=max(c for r,c in coords)
+(minr,maxr,minc,maxc)
+
+```
+
+**Identifying patterns in a grid**
+
+I’m noticing that in the grid, I should consider a minimum of five rows, mainly because there are eights in a small pattern at row five, columns five and six. This is a bit confusing! We need to identify a larger frame, maybe by checking connectivity. The bigger frame will have a non-zero area with a continuous border of eights, while the smaller eights are more like interior clusters. Let’s manually focus on the specific interior rows and columns to create a new grid.
+
+```python
+import copy, pprint, itertools, json, textwrap
+grid = copy.deepcopy(inp)
+# copy pattern
+for i in range(7): # rows
+    for j in range(8): # cols
+        grid[12+i][9+j] = inp[2+i][2+j]
+# show some lines
+pprint.pprint(grid[11:20])
+
+```
+
+```python
+rows_str = [' '.join(map(str,row)) for row in grid]
+grid_str = '\n'.join(rows_str)
+grid_str[:200]
+
+```
+
+Rule: Identify the solid coloured figure that is not made of 8s, copy it unchanged into the empty interior of the hollow rectangle whose border is made of 8s, leaving the original figure untouched.","grid_str = """"""0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 8 8 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 5 5 5 5 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 3 3 3 3 3 3 4 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 8 8 8 8 8 8 8 8 8 8 0 0
+0 0 0 0 0 0 0 0 8 0 0 0 0 0 0 0 0 8 0 0
+13 13""""""
+
+import numpy as np, textwrap, itertools, json, sys
+
+inp = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,8,8,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+]
+]
+
+inp = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,8,8,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,5,5,5,5,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,8,0,0],
+[0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,0,0],
+]
+
+coords=[(r,c) for r,row in enumerate(inp) for c,v in enumerate(row) if v==8]
+minr=min(r for r,c in coords)
+maxr=max(r for r,c in coords)
+minc=min(c for r,c in coords)
+maxc=max(c for r,c in coords)
+(minr,maxr,minc,maxc)
+
+import copy, pprint, itertools, json, textwrap
+grid = copy.deepcopy(inp)
+# copy pattern
+for i in range(7): # rows
+    for j in range(8): # cols
+        grid[12+i][9+j] = inp[2+i][2+j]
+# show some lines
+pprint.pprint(grid[11:20])
+
+rows_str = [' '.join(map(str,row)) for row in grid]
+grid_str = '\n'.join(rows_str)
+grid_str[:200]",1,"The Evaluated Rule describes a similar transformation by copying a solid colored figure into a hollow rectangle, which aligns with the Ground Truth Rule's intent of placing a smaller shape inside a larger unfilled rectangle. The additional specification about the solid colored figure not being made of 8s does not change the core transformation functionality.","Identify the solid coloured figure that is not made of 8s, copy it unchanged into the empty interior of the hollow rectangle whose border is made of 8s, leaving the original figure untouched.",1,Correct - Unintended,2,0
+2025-07-17T20:40:50,Copy,Copy2,3,low,1,,1,"0 0 0 0 0 0 0 8 8 8 8 8 8 8 0
+0 0 8 0 0 0 0 8 0 0 8 0 0 8 0
+0 8 0 8 0 0 0 8 0 8 0 8 0 8 0
+8 0 0 0 8 0 0 8 8 0 0 0 8 8 0
+0 8 0 8 0 0 0 8 0 8 0 8 0 8 0
+0 0 8 0 0 0 0 8 0 0 8 0 0 8 0
+0 0 0 0 0 0 0 8 8 8 8 8 8 8 0","**Evaluating pattern replication**
+
+I need to clarify the rule here. There are two regions in the input: a smaller centered pattern with specific colors and a larger rectangle border of a different color. The output seems to involve replicating the small pattern within the hollow space of the larger rectangle. For instance, in the first example, the small pattern is 3x3 and is placed inside the boundaries of the hollow area within the larger rectangle, maintaining its orientation. Let’s confirm the details further.
+
+**Identifying pattern extraction**
+
+I've figured out the rule: I need to detect the non-zero pattern without using color 8 and then copy it into the hollow space of the 8 rectangle. In the second example, the small pattern resembles a 5x5 cross shape with a border of 6 and an interior of 1. I’ll extract the grid values to confirm this shape. After observing the correct indices, it looks like I can replicate the diamond pattern centered in the hollow area of the 8 rectangle. Let’s analyze further.
+
+**Analyzing pattern replication**
+
+There’s a rectangle border with vertical sides at specific columns and horizontal sides on specific rows. I've noticed a diamond shape formed by 8s connected to the rectangle. It seems like this diamond might replicate an earlier pattern. The challenge is that our grid only contains colors 0 and 8, limiting what can be replicated. I suspect the rule might involve finding shapes within the rectangle that can be copied elsewhere, though it lacks distinct colors. It appears the connectivity may also play a role. Let’s investigate further!
+
+```python
+input_grid = [
+[0,0,0,0,0,0,0,8,8,8,8,8,8,8,0],
+[0,0,8,0,0,0,0,8,0,0,0,0,0,8,0],
+[0,8,0,8,0,0,0,8,0,0,0,0,0,8,0],
+[8,0,0,0,8,0,0,8,0,0,0,0,0,8,0],
+[0,8,0,8,0,0,0,8,0,0,0,0,0,8,0],
+[0,0,8,0,0,0,0,8,0,0,0,0,0,8,0],
+[0,0,0,0,0,0,0,8,8,8,8,8,8,8,0]
+]
+
+rows,cols=len(input_grid),len(input_grid[0])
+# find rectangle border of 8 (largest maybe)
+# Let's manually assumed border: min row with horizontal run length>1
+top=0
+while 8 not in input_grid[top]:
+    top+=1
+print(""top"",top)
+# find left border col etc?
+
+```
+
+**Analyzing rectangle layout**
+
+I'm looking at the rectangle's corners, noting that the top row has eight 8's in columns 7 to 13 that are contiguous. The left border is defined in column 7 from rows 0 to 6, while the right border is in column 13 from rows 0 to 6. The bottom row stretches across row 6 in columns 7 to 13. This helps define the interior bounding, which is between rows 1 to 5 and columns 8 to 12, along with a diamond shape between rows 1 to 5 and columns 0 to 4. Time to copy this!
+
+```python
+out=[row[:] for row in input_grid]
+for r in range(1,6):
+    for c in range(0,5):
+        out[r][c+8] = input_grid[r][c]
+# print grid
+for row in out:
+    print(' '.join(map(str,row)))
+
+```
+
+```python
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str
+```
+
+Rule: Copy the entire smallest non-border coloured pattern (its complete bounding box, including zeros) into the empty interior of the rectangular frame made of colour 8, keeping the same orientation and centering it so the bounding boxes coincide in size.","input_grid = [
+[0,0,0,0,0,0,0,8,8,8,8,8,8,8,0],
+[0,0,8,0,0,0,0,8,0,0,0,0,0,8,0],
+[0,8,0,8,0,0,0,8,0,0,0,0,0,8,0],
+[8,0,0,0,8,0,0,8,0,0,0,0,0,8,0],
+[0,8,0,8,0,0,0,8,0,0,0,0,0,8,0],
+[0,0,8,0,0,0,0,8,0,0,0,0,0,8,0],
+[0,0,0,0,0,0,0,8,8,8,8,8,8,8,0]
+]
+
+rows,cols=len(input_grid),len(input_grid[0])
+# find rectangle border of 8 (largest maybe)
+# Let's manually assumed border: min row with horizontal run length>1
+top=0
+while 8 not in input_grid[top]:
+    top+=1
+print(""top"",top)
+# find left border col etc?
+
+out=[row[:] for row in input_grid]
+for r in range(1,6):
+    for c in range(0,5):
+        out[r][c+8] = input_grid[r][c]
+# print grid
+for row in out:
+    print(' '.join(map(str,row)))
+
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str",1,"The Evaluated Rule describes a similar transformation by copying a smaller shape into a larger rectangle while maintaining orientation and size. It specifies the bounding box and centering, which aligns with the intent of the Ground Truth Rule to place the smaller shape inside the larger rectangle.","Copy the entire smallest non-border coloured pattern (its complete bounding box, including zeros) into the empty interior of the rectangular frame made of colour 8, keeping the same orientation and centering it so the bounding boxes coincide in size.",1,Correct - Intended,2,0
+2025-07-17T20:42:19,Copy,Copy3,1,low,1,,1,"7 7 7 7 7 0 0 0 0 0 0 7 7 7 7 7 0 0 0 0
+0 0 4 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 4 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0 0
+8 8 8 8 8 0 0 0 0 0 0 8 8 8 8 8 0 0 0 0
+0 0 3 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0
+2 2 2 2 2 0 0 0 0 0 0 2 2 2 2 2 0 0 0 0","**Analyzing transformation rules**
+
+I need to figure out the transformation rule from the examples provided. The grids seem to be 11x16. In comparing input to output, it looks like there's horizontal duplication, possibly reflecting patterns rightward. 
+
+Both the input and output grids maintain the same dimensions. Notably, the right half of the output replicates shapes based on non-zero values in corresponding rows. For instance, in Row0, the output matches the input exactly, while the pattern in Row1 adds a value in a different column, suggesting a shifted duplication. Row2 shows a similar pattern duplication starting from column 9.
+
+**Refining the transformation rule**
+
+Okay, so for row 2, the output is ""0 0 1 0 1 0 1 0 0 1 0 1 0 1 0 0,"" indicating that the second copy is shifted by 7 columns. In general, it appears that I need to find patterns of non-zero values in reference rows and align those within groups of columns.
+
+The input seems to separate into two alignments: columns 0-7 and 8-15, with some shapes present in both. For example, Row0's “4 4 4” appears in both halves, while Row2 only has the left pattern duplicated into the right. So, I think the rule involves mirrored copying from left to right, possibly with a fixed offset of 7.
+
+```python
+input_str = """"""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 0 0 7 0 0 0 0
+4 0 0 0 0 0 0 0 7 0 0 0 0
+0 4 0 0 0 0 0 0 7 0 0 0 0
+0 0 6 6 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+grid = [list(map(int,line.split())) for line in input_str.splitlines()]
+output_str = """"""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 3 0 7 0 0 0 0
+4 0 0 0 0 0 3 4 7 0 0 0 0
+0 4 0 0 0 0 3 0 7 0 0 0 0
+0 0 6 6 0 0 3 4 7 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+outgrid = [list(map(int,line.split())) for line in output_str.splitlines()]
+# find differences
+diff=[]
+for r in range(len(grid)):
+    for c in range(len(grid[0])):
+        if grid[r][c]!=outgrid[r][c]:
+            diff.append((r,c,grid[r][c],outgrid[r][c]))
+len(diff), diff[:20]
+
+```
+
+```python
+input1=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 1 0 1 0 1 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+output1=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 1 0 1 0 1 0 0 1 0 1 0 1 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 3 3 3 3 3 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+g1=[list(map(int,l.split())) for l in input1.splitlines()]
+o1=[list(map(int,l.split())) for l in output1.splitlines()]
+diff=[]
+for r in range(len(g1)):
+    for c in range(len(g1[0])):
+        if g1[r][c]!=o1[r][c]:
+            diff.append((r,c,g1[r][c],o1[r][c]))
+len(diff)
+
+```
+
+```python
+diff[:15]
+
+```
+
+**Analyzing color clusters**
+
+I’m trying to determine the most frequent color and find the smallest non-zero vector where the pattern overlaps. For color 4, there are clusters on different rows that seem identical. The pattern repeats in row 0 and row 10, with the 4 cells forming a symmetrical shape. The vector between two 4 cells defining the repetition is (0, +7). For color 7, clusters are isolated in different rows, like (2, 2) and (5, 8), leading to a defined rule for vector identification.
+
+**Determining color clusters**
+
+I'm identifying colors that appear in at least two identical patterns. Color 4 had two horizontal clusters of three cells, while color 7 has many single cells, but they still count. The test input grid is 6 rows by 20 columns, and I need to detect vectors. 
+
+For color 7, there are two clusters on row 0, separated by 11 columns. For color 8, a single cluster exists in row 3, and color 2 has a cluster in row 5. The rule here is to copy all non-zero cells by a vector offset of (0, +11) while ensuring we stay within the grid boundaries.
+
+**Computing grid duplications**
+
+In Example 1, I noticed that duplications only come from the left half because copying cells across the entire grid could push new cells beyond the width limit. For Instance, if I copy right-side cells, which are currently at column 9, to column 16, that exceeds the grid width. I realize that the rule should only copy cells where their destination remains within bounds. 
+
+In Example 2, I have a shift vector of (3, 6) — cells near the bottom may exceed row limits. I only want to copy cells whose shifted positions fit within the grid, producing new overlaps without exceeding bounds.
+
+```python
+grid_test = [
+[7,7,7,7,7,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0],
+[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+rows=len(grid_test)
+cols=len(grid_test[0])
+dr,dc=0,11
+out=[row[:] for row in grid_test]
+for r in range(rows):
+    for c in range(cols):
+        if grid_test[r][c]!=0:
+            nr=r+dr
+            nc=c+dc
+            if 0<=nr<rows and 0<=nc<cols:
+                out[nr][nc]=grid_test[r][c]
+out
+```
+
+```python
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str
+```
+
+Rule: Find a colour that already forms two matching shapes; the displacement (dr,dc) between those two occurrences is the grid’s translation vector. Copy every non-zero cell of the input to position (r+dr,c+dc) whenever that target cell is inside the grid, leaving all original cells unchanged.","input_str = """"""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 0 0 7 0 0 0 0
+4 0 0 0 0 0 0 0 7 0 0 0 0
+0 4 0 0 0 0 0 0 7 0 0 0 0
+0 0 6 6 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+grid = [list(map(int,line.split())) for line in input_str.splitlines()]
+output_str = """"""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 3 0 7 0 0 0 0
+4 0 0 0 0 0 3 4 7 0 0 0 0
+0 4 0 0 0 0 3 0 7 0 0 0 0
+0 0 6 6 0 0 3 4 7 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+outgrid = [list(map(int,line.split())) for line in output_str.splitlines()]
+# find differences
+diff=[]
+for r in range(len(grid)):
+    for c in range(len(grid[0])):
+        if grid[r][c]!=outgrid[r][c]:
+            diff.append((r,c,grid[r][c],outgrid[r][c]))
+len(diff), diff[:20]
+
+input1=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 1 0 1 0 1 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+output1=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 1 0 1 0 1 0 0 1 0 1 0 1 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 3 3 3 3 3 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+g1=[list(map(int,l.split())) for l in input1.splitlines()]
+o1=[list(map(int,l.split())) for l in output1.splitlines()]
+diff=[]
+for r in range(len(g1)):
+    for c in range(len(g1[0])):
+        if g1[r][c]!=o1[r][c]:
+            diff.append((r,c,g1[r][c],o1[r][c]))
+len(diff)
+
+diff[:15]
+
+grid_test = [
+[7,7,7,7,7,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0],
+[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+rows=len(grid_test)
+cols=len(grid_test[0])
+dr,dc=0,11
+out=[row[:] for row in grid_test]
+for r in range(rows):
+    for c in range(cols):
+        if grid_test[r][c]!=0:
+            nr=r+dr
+            nc=c+dc
+            if 0<=nr<rows and 0<=nc<cols:
+                out[nr][nc]=grid_test[r][c]
+out
+
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str",1,"The Evaluated Rule focuses on finding a translation vector based on existing matching shapes and copying non-zero cells, which does not directly achieve the goal of making the right part of the grid identical to the left part as stated in the Ground Truth Rule. The transformation described in the Evaluated Rule is not equivalent to the requirement of adding pixels to achieve identical halves.","Find a colour that already forms two matching shapes; the displacement (dr,dc) between those two occurrences is the grid’s translation vector. Copy every non-zero cell of the input to position (r+dr,c+dc) whenever that target cell is inside the grid, leaving all original cells unchanged.",1,Correct - Unintended,2,0
+2025-07-17T20:36:58,Copy,Copy3,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 8 8 8 8 8 0
+0 8 8 8 8 8 0 0 0 0 8 0 0 0 8 0
+0 8 0 0 0 8 0 0 0 0 8 0 2 0 8 0
+0 8 0 2 0 8 0 0 0 0 8 0 0 0 8 0
+0 8 0 0 0 8 0 0 0 0 8 8 8 8 8 0
+0 8 8 8 8 8 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0
+0 0 0 2 0 0 0 0 0 0 0 0 2 0 0 0
+0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 8 8 8 8 8 8 8
+8 8 8 8 8 8 8 0 0 8 8 8 8 8 8 8
+8 8 8 8 8 8 8 0 0 0 0 0 0 0 0 0","**Analyzing transformation rules**
+
+I’m examining a transformation rule by comparing input and output grids, which seem to have the same dimensions of 11x16. It looks like output patterns from the left half are duplicated into the right half, with some changes. For example, in Row 2, a non-zero element in column 5 replicates to column 12, suggesting an offset of 7 columns. I’ll keep looking at other rows to see if this pattern holds consistently throughout.
+
+**Identifying duplication patterns**
+
+In examining the grid, I've noticed that elements from each row are being shifted right by 7 columns, duplicating certain non-zero values. For instance, Row 6 has 4s at columns 5 and 6, with duplicates appearing at columns 12 and 13. Similarly, Row 8 has 3s at columns 3-7, which are repeated at 10-14. It seems the rule is to copy non-zero patterns with a horizontal shift, leaving the originals intact. Now, I’ll analyze Example 2 to see if the same logic applies.
+
+**Examining color clusters**
+
+I'm analyzing non-zero cells and their patterns based on input from Example 2. I see a vertical cluster of 3's in the first column and some adjacent 4's. There's also a diagonal cluster of 7's. Looking at the output, it seems like these clusters have been replicated in different positions. My hypothesis is that for each unique non-zero color, the pattern is duplicated across blank areas until it encounters another cluster or a boundary. Now, I need to confirm if there are new duplicates for the color 6 as I compare inputs and outputs.
+
+```python
+input2 = [
+[6,6,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,6,6,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,0,0,7,0,0,0,0],
+[4,0,0,0,0,0,0,0,7,0,0,0,0],
+[0,4,0,0,0,0,0,0,7,0,0,0,0],
+[0,0,6,6,0,0,0,0,7,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+output2=[
+[6,6,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,6,6,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,3,0,7,0,0,0,0],
+[4,0,0,0,0,0,3,4,7,0,0,0,0],
+[0,4,0,0,0,0,3,0,7,0,0,0,0],
+[0,0,6,6,0,0,3,4,7,0,0,0,0],
+[0,0,0,0,0,0,4,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,4,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+dif=[]
+for r in range(len(input2)):
+    for c in range(len(input2[0])):
+        if input2[r][c]!=output2[r][c]:
+            dif.append((r,c, input2[r][c], output2[r][c]))
+len(dif)
+
+```
+
+```python
+dif
+```
+
+**Analyzing duplicate clusters**
+
+I'm looking at some duplicate clusters in rows and columns. I've noted that specific values replicate into designated positions. So, I need to establish a rule for duplicating these clusters effectively. 
+
+It's interesting that there’s a difference in the shift between examples, and I’m wondering how to derive these shifts automatically. I think the rule could involve replicating clusters next to the maximum color value, especially when they’re placed symmetrically. This creates a smooth transition while maintaining the bounding box of non-zero values.
+
+**Defining a duplication rule**
+
+I’m thinking about a simpler rule for duplicating patterns across a grid. The idea is to take the horizontal arrangement of the first half and replicate it to the second half, maybe offsetting by 6 or 7 columns for equal spacing. 
+
+In the examples, the distance between clusters defines how they align. The goal is to identify two identical segments with the same color, which will determine the translation vector for duplication. This concept involves finding recurring shapes and applying the shift to replicate corresponding colors across the grid.
+
+**Establishing a duplication rule**
+
+I’m working on a rule to determine how to translate and replicate occurrences of colors within a grid. The idea is to duplicate everything based on the offset between two identical color clusters, like color 4 or 7. 
+
+In my examples, the shifts vary — one shifts 7 columns while the other shifts 6 columns and 3 rows. We want to identify a main color that appears in two clusters and replicate any additional colors only from the source cluster to the target. Now, I need to narrow down which color clusters we can use for this process and check for duplicates and their arrangements.
+
+```python
+input3 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,8,8,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,0,0,0,8,0,0,0,0,0,0,2,0,0,0],
+[0,8,0,2,0,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,0,0,0,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,8,8,8,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],
+[0,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0],
+[0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,0],
+]
+rows=len(input3); cols=len(input3[0])
+coords={}
+for r in range(rows):
+    for c in range(cols):
+        val=input3[r][c]
+        if val!=0:
+            coords.setdefault(val, []).append((r,c))
+{color:len(lst) for color,lst in coords.items()}
+
+```
+
+**Analyzing shape coordinates**
+
+I’m looking at the coordinates where the number 8 appears frequently, while 2 shows up six times. I wonder if we have two different shapes for 8: possibly a hollow rectangle at the top and a solid line at the bottom. It seems that 2 could represent two vertical lines — one at column 3 and another at column 12. I should list these coordinates clearly to understand the arrangement better.
+
+```python
+coords[2]
+
+```
+
+**Analyzing column patterns**
+
+I have two columns to examine: column 3 with rows 3, 7, and 8, and column 12 with rows 2, 6, and 7. Both seem vertically contiguous with some gaps. First, I note the relative row positions: the first column’s rows seem offset by -1 compared to the second. As I calculate the differences row-wise, I find the offsets create identical patterns. The shift from column 3 to column 12 appears consistent at +9 columns and -1 row.
+
+**Testing translation vector**
+
+I want to see if applying the offset vector (row -1, column +9) adequately transforms the first pattern into the second. Starting from (3,3), the transformation leads to (2,12), which works for all points I check. This means the translation vector is indeed valid. The anchor color is 2, and there are two identical clusters separated by this vector. I’m pondering how to copy similar passenger colors from the anchor's source cluster and verifying if all non-zero cells apply the same translation. That's interesting!
+
+**Applying translation to grid**
+
+I’m exploring the translation process where I apply a shift of (+6, +3) to non-zero cells, particularly focusing on the value 6. This mapping leads to checking if duplicates occur in the output grid. While examining overlaps, I find that if existing values remain unchanged, they don't count as new differences. It seems the rule is to copy all non-zero cells shifted by the translation vector, creating a union of the original and shifted grids. I need to compute to finalize the output.
+
+```python
+rows, cols = len(input3), len(input3[0])
+shift = (-1, 9)
+grid_out = [row[:] for row in input3]
+for r in range(rows):
+    for c in range(cols):
+        val = input3[r][c]
+        if val!=0:
+            r2 = r+shift[0]
+            c2 = c+shift[1]
+            if 0<=r2<rows and 0<=c2<cols:
+                if grid_out[r2][c2]==0:
+                    grid_out[r2][c2]=val
+grid_out
+```
+
+```python
+def grid_to_string(grid):
+    return ""\n"".join("" "".join(str(x) for x in row) for row in grid)
+grid_string = grid_to_string(grid_out)
+grid_string[:300]
+```
+
+```python
+grid_string
+```
+
+Rule: find a colour that appears twice with exactly the same shape; the vector that links the two identical shapes is the translation vector; add to the grid a copy of every non-zero cell shifted by that vector (cells falling outside the grid or landing on an already non-zero cell are ignored)","input2 = [
+[6,6,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,6,6,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,0,0,7,0,0,0,0],
+[4,0,0,0,0,0,0,0,7,0,0,0,0],
+[0,4,0,0,0,0,0,0,7,0,0,0,0],
+[0,0,6,6,0,0,0,0,7,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+output2=[
+[6,6,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,6,6,0,0,0,0,0],
+[3,0,7,0,0,0,0,0,0,0,0,0,0],
+[3,4,7,0,0,0,3,0,7,0,0,0,0],
+[4,0,0,0,0,0,3,4,7,0,0,0,0],
+[0,4,0,0,0,0,3,0,7,0,0,0,0],
+[0,0,6,6,0,0,3,4,7,0,0,0,0],
+[0,0,0,0,0,0,4,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,4,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+dif=[]
+for r in range(len(input2)):
+    for c in range(len(input2[0])):
+        if input2[r][c]!=output2[r][c]:
+            dif.append((r,c, input2[r][c], output2[r][c]))
+len(dif)
+
+dif
+
+input3 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,8,8,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,0,0,0,8,0,0,0,0,0,0,2,0,0,0],
+[0,8,0,2,0,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,0,0,0,8,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,8,8,8,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],
+[0,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0],
+[0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,0],
+]
+rows=len(input3); cols=len(input3[0])
+coords={}
+for r in range(rows):
+    for c in range(cols):
+        val=input3[r][c]
+        if val!=0:
+            coords.setdefault(val, []).append((r,c))
+{color:len(lst) for color,lst in coords.items()}
+
+coords[2]
+
+rows, cols = len(input3), len(input3[0])
+shift = (-1, 9)
+grid_out = [row[:] for row in input3]
+for r in range(rows):
+    for c in range(cols):
+        val = input3[r][c]
+        if val!=0:
+            r2 = r+shift[0]
+            c2 = c+shift[1]
+            if 0<=r2<rows and 0<=c2<cols:
+                if grid_out[r2][c2]==0:
+                    grid_out[r2][c2]=val
+grid_out
+
+def grid_to_string(grid):
+    return ""\n"".join("" "".join(str(x) for x in row) for row in grid)
+grid_string = grid_to_string(grid_out)
+grid_string[:300]
+
+grid_string",1,"The Evaluated Rule introduces a specific method of finding identical shapes and applying a translation vector, which is not necessarily equivalent to simply adding pixels to the right part of the grid to make it identical to the left part. The focus on color and shape matching adds constraints that are not present in the Ground Truth Rule.",find a colour that appears twice with exactly the same shape; the vector that links the two identical shapes is the translation vector; add to the grid a copy of every non-zero cell shifted by that vector (cells falling outside the grid or landing on an already non-zero cell are ignored),1,Correct - Unintended,2,0
+2025-07-17T20:38:23,Copy,Copy3,3,low,0,mismatch,1,"9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 9 9 9 9 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 9 9 9 9 0
+4 4 4 4 0 0 0 0 0 0 0 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","```python
+import numpy as np, textwrap, itertools, json, sys
+```
+
+```python
+ex1_in_str=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 1 0 1 0 1 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+ex1_out_str=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 1 0 1 0 1 0 0 1 0 1 0 1 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 3 3 3 3 3 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+ex1_in= np.array([[int(x) for x in line.split()] for line in ex1_in_str.splitlines()])
+ex1_out= np.array([[int(x) for x in line.split()] for line in ex1_out_str.splitlines()])
+ex1_in.shape
+```
+
+```python
+diff1=np.where(ex1_out!=ex1_in,1,0)
+np.argwhere(diff1)[:20]
+```
+
+```python
+[(tuple(p),ex1_out[tuple(p)]) for p in np.argwhere(diff1)]
+```
+
+```python
+ex2_in_str=""""""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 0 0 7 0 0 0 0
+4 0 0 0 0 0 0 0 7 0 0 0 0
+0 4 0 0 0 0 0 0 7 0 0 0 0
+0 0 6 6 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+ex2_out_str=""""""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 3 0 7 0 0 0 0
+4 0 0 0 0 0 3 4 7 0 0 0 0
+0 4 0 0 0 0 3 0 7 0 0 0 0
+0 0 6 6 0 0 3 4 7 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+ex2_in=np.array([[int(x) for x in line.split()] for line in ex2_in_str.splitlines()])
+ex2_out=np.array([[int(x) for x in line.split()] for line in ex2_out_str.splitlines()])
+diff2=np.where(ex2_out!=ex2_in,1,0)
+add_positions2=np.argwhere(diff2)
+len(add_positions2)
+```
+
+```python
+[(tuple(p),ex2_out[tuple(p)]) for p in add_positions2]
+```
+
+**Analyzing patterns in coordinates**
+
+I'm looking at the pattern near the coordinates (3,1) and see a value of 4. For (4,0 or 1), I have a question mark, as I'm uncertain what the value is there. At (5,1), I again find 4. It seems like along the same rows, the number 4 appears just to the left of the number 3, which is intriguing. So, I think I should print a small area to visualize this better.
+
+```python
+# gather triplets for rows2-5
+for r in range(2,6):
+    print(r, ex2_in[r,0:4])
+```
+
+**Analyzing pattern replication**
+
+I'm identifying a repeating pattern in the top-left area of a grid to replicate it where part of the pattern is already colored. This gets complicated, but a simpler rule might be to extend the pattern across every row that has a non-zero element.  
+
+I also wonder about using the most frequent colors as a backbone and replicating the relative offsets of other colors based on their first appearances. For example, I might consider the number 4 as the backbone in one of my examples.
+
+**Examining pattern anchors**
+
+I'm choosing anchor positions where color 4 appears and considering how the pattern includes the other numbers. It seems that the relationship isn't always straightforward; for example, in row 2, there's a 1 but not a 4. Maybe the anchor should be based on the ""background zero"" concept.  
+
+If we analyze the examples, the 4 acts as a backbone, with numbers 1 and 3 represented relative to each 4. However, in Example 2, it looks like the 7s create a diagonal pattern with a consistent translation vector. Hence, my rule is to ensure all colors replicate along this vector to maintain the pattern.
+
+**Understanding translation vectors**
+
+I've identified the translation vectors for my examples: it's (0, +7) for Example 1 and (+3, +6) for Example 2. I need to replicate additional elements like 1s, 3s, and 4s along these vectors to complete the patterns.  
+
+My plan involves finding the vector between repeated occurrences of any color appearing at least twice with the same arrangement. I’ll duplicate cells along these vectors if the target positions are empty, ensuring each color is represented accurately. Now I’ll test this approach on grid 2.
+
+```python
+def apply_vector(grid,vec):
+    out=grid.copy()
+    h,w=out.shape
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+vec1=(0,7)
+guess1=apply_vector(ex1_in,vec1)
+(np.array_equal(guess1,ex1_out))
+```
+
+**Verifying example vectors**
+
+I'm looking closely at Example 1, where the vector (0,7) replicates successfully. Now, for Example 2, I need to verify the vector (3,6). It's important to ensure everything aligns correctly. I want to double-check if the new vector behaves as expected. Let’s dig in and confirm the details — accuracy is key here! It's a bit of a task, but I’m focused on getting it right for clarity!
+
+```python
+vec2=(3,6)
+guess2=apply_vector(ex2_in,vec2)
+np.array_equal(guess2,ex2_out)
+```
+
+```python
+diff=np.where(guess2!=ex2_out)
+len(diff[0])
+```
+
+```python
+diff
+```
+
+```python
+guess2[6,12],ex2_out[6,12]
+```
+
+**Verifying values in grid**
+
+I'm working through the grid values and it seems like there might be some confusion around the number 7. Initially, I thought there was a destination for base 7 at (2,2) that could create (5,8) using the vector (3,6). But then I realized that a 7 already existed there, so it wouldn't be new. I found a 6 at (3,6) instead of a 7, which changes my perspective on this grid's anchor point. I need to verify these locations further.
+
+```python
+ex2_in[3,6]
+```
+
+**Formulating the algorithm**
+
+I see that the current rule leads to incorrect duplicates when dealing with the color 6. My thoughts are shifting to a new rule: copy only colors present to the left of the anchor pattern. I realize that row 6, column 12 might be out of bounds, and I didn’t replicate 6, which is a key insight. It leads me to develop a clearer algorithm: first, identify a fundamental pattern of unique colors before any replication. That could help!
+
+**Defining replication rules**
+
+I’m examining whether color 6 appears in both the source and vector components. I’ve realized 6 is indeed in the source at (0,0) and also appears at (3,6), confirming it's already been replicated. It seems any color already periodic along a vector shouldn’t be copied again. So, to avoid infinite replication, I’ll only copy cells that don’t already have the same color at the destination. This means we must ensure that the destination is empty before replicating any color.
+
+**Deriving replication rules**
+
+I’m looking at Example 1’s vector (0,7) and noticing that (4,10) translates to (4,3), where I see that row 4, column 3 does indeed have a 4 from the initial pattern. This raises a contradiction because we shouldn’t have replicated this. I think I need to derive a better rule for the test grid, focusing on identifying the translation vector that allows color replication while maintaining pattern integrity. It’s time to compute the occurrences to figure this out!
+
+```python
+test_in_str=""""""9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 9 9 9 9 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+test_in=np.array([[int(x) for x in line.split()] for line in test_in_str.splitlines()])
+test_in.shape
+```
+
+```python
+coords9=np.argwhere(test_in==9)
+coords9
+```
+
+**Identifying patterns in vectors**
+
+I'm exploring different vector possibilities, like (3,0) and (4,11), considering colors and groups. It seems there's a pattern replicating every few rows, particularly with vector (3,0) going downward, showing groups like 9, 2, and 4. The vector (4,11) also seems relevant. I realize that by analyzing the specific rows and columns, I've identified that 9 replicates in certain areas, but I’m unsure if rows fully match with these vectors, particularly with those shifts in columns. Let's keep examining this.
+
+**Testing group replication**
+
+I'm examining if any group of four replicates along a specific vector. For instance, checking from row 2, column 0 to row 6 shows there isn't a group of four in row 6. It seems vector (3,0) allows the group to replicate downward: from row 0 to row 3 for nine, row 1 to row 4 for two, and then row 2 to row 5 for four. So, the downward replication rule following vector (3,0) appears valid. Let’s test this further!
+
+```python
+vec_test=(3,0)
+def apply(grid,vec):
+    h,w=grid.shape
+    out=grid.copy()
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+out_test=apply(test_in,vec_test)
+out_test
+```
+
+```python
+def apply_first(grid,vec):
+    h,w=grid.shape
+    out=grid.copy()
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                pr=r-vec[0]; pc=c-vec[1]
+                if 0<=pr<h and 0<=pc<w and grid[pr,pc]==grid[r,c]:
+                    continue
+                # else first in chain
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+out2=apply_first(ex2_in,vec2)
+np.array_equal(out2,ex2_out)
+```
+
+```python
+out1=apply_first(ex1_in,vec1)
+np.array_equal(out1,ex1_out)
+```
+
+```python
+grid_lines=[' '.join(map(str,row)) for row in out_test]
+grid_str='\n'.join(grid_lines)
+grid_str
+```
+
+Rule: Find the translation vector v that repeatedly relates identical-coloured cells (same colour appearing more than once at a constant offset). For every non-zero cell that has no predecessor of the same colour at position –v, copy that cell to position +v when the target cell is empty and inside the grid. (This extends the first copy of each repeating chain by one step along v.)","import numpy as np, textwrap, itertools, json, sys
+
+ex1_in_str=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 1 0 1 0 1 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+ex1_out_str=""""""0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 1 0 1 0 1 0 0 1 0 1 0 1 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 0 0 0 0 0 4 4 0 0 0 0
+0 0 0 0 4 4 0 0 0 0 0 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 3 3 3 3 3 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0
+0 0 4 4 4 0 0 0 0 4 4 4 0 0 0 0""""""
+ex1_in= np.array([[int(x) for x in line.split()] for line in ex1_in_str.splitlines()])
+ex1_out= np.array([[int(x) for x in line.split()] for line in ex1_out_str.splitlines()])
+ex1_in.shape
+
+diff1=np.where(ex1_out!=ex1_in,1,0)
+np.argwhere(diff1)[:20]
+
+[(tuple(p),ex1_out[tuple(p)]) for p in np.argwhere(diff1)]
+
+ex2_in_str=""""""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 0 0 7 0 0 0 0
+4 0 0 0 0 0 0 0 7 0 0 0 0
+0 4 0 0 0 0 0 0 7 0 0 0 0
+0 0 6 6 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+ex2_out_str=""""""6 6 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 6 6 0 0 0 0 0
+3 0 7 0 0 0 0 0 0 0 0 0 0
+3 4 7 0 0 0 3 0 7 0 0 0 0
+4 0 0 0 0 0 3 4 7 0 0 0 0
+0 4 0 0 0 0 3 0 7 0 0 0 0
+0 0 6 6 0 0 3 4 7 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+ex2_in=np.array([[int(x) for x in line.split()] for line in ex2_in_str.splitlines()])
+ex2_out=np.array([[int(x) for x in line.split()] for line in ex2_out_str.splitlines()])
+diff2=np.where(ex2_out!=ex2_in,1,0)
+add_positions2=np.argwhere(diff2)
+len(add_positions2)
+
+[(tuple(p),ex2_out[tuple(p)]) for p in add_positions2]
+
+# gather triplets for rows2-5
+for r in range(2,6):
+    print(r, ex2_in[r,0:4])
+
+def apply_vector(grid,vec):
+    out=grid.copy()
+    h,w=out.shape
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+vec1=(0,7)
+guess1=apply_vector(ex1_in,vec1)
+(np.array_equal(guess1,ex1_out))
+
+vec2=(3,6)
+guess2=apply_vector(ex2_in,vec2)
+np.array_equal(guess2,ex2_out)
+
+diff=np.where(guess2!=ex2_out)
+len(diff[0])
+
+diff
+
+guess2[6,12],ex2_out[6,12]
+
+ex2_in[3,6]
+
+test_in_str=""""""9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+9 9 9 9 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 2 2 0 0 0 0 0 0 0 9 9 9 9 0
+4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0""""""
+test_in=np.array([[int(x) for x in line.split()] for line in test_in_str.splitlines()])
+test_in.shape
+
+coords9=np.argwhere(test_in==9)
+coords9
+
+vec_test=(3,0)
+def apply(grid,vec):
+    h,w=grid.shape
+    out=grid.copy()
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+out_test=apply(test_in,vec_test)
+out_test
+
+def apply_first(grid,vec):
+    h,w=grid.shape
+    out=grid.copy()
+    for r in range(h):
+        for c in range(w):
+            if grid[r,c]!=0:
+                pr=r-vec[0]; pc=c-vec[1]
+                if 0<=pr<h and 0<=pc<w and grid[pr,pc]==grid[r,c]:
+                    continue
+                # else first in chain
+                nr=r+vec[0]; nc=c+vec[1]
+                if 0<=nr<h and 0<=nc<w and out[nr,nc]==0:
+                    out[nr,nc]=grid[r,c]
+    return out
+out2=apply_first(ex2_in,vec2)
+np.array_equal(out2,ex2_out)
+
+out1=apply_first(ex1_in,vec1)
+np.array_equal(out1,ex1_out)
+
+grid_lines=[' '.join(map(str,row)) for row in out_test]
+grid_str='\n'.join(grid_lines)
+grid_str",1,"The Evaluated Rule describes a process of copying cells based on a translation vector, which aligns with the Ground Truth Rule's goal of making the right part of the grid identical to the left part. While the Evaluated Rule includes additional specifications about finding translation vectors and conditions for copying, the core transformation of ensuring identical sections of the grid is maintained.","Find the translation vector v that repeatedly relates identical-coloured cells (same colour appearing more than once at a constant offset). For every non-zero cell that has no predecessor of the same colour at position –v, copy that cell to position +v when the target cell is empty and inside the grid. (This extends the first copy of each repeating chain by one step along v.)",1,Correct - Intended,2,1
+2025-07-17T20:37:19,Copy,Copy4,1,low,1,,0,"0 0 0 0 4 4 4 4 0 0 0 0 0
+0 0 0 0 4 4 4 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 2 2 2 2 0 0 0 0 0
+0 0 0 0 2 0 0 2 0 0 0 0 0
+0 0 0 0 2 0 0 2 0 0 0 0 0
+0 0 0 0 2 2 2 2 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 2 2 2 2 1 1 0 0 2 2 2 2
+0 2 0 0 2 1 1 0 0 2 0 0 2
+0 2 0 0 2 1 1 0 0 2 0 0 2
+0 2 2 2 2 1 1 0 0 2 2 2 2
+0 0 0 0 0 1 1 0 0 0 0 0 0","**Refining color component logic**
+
+I'm thinking about how to handle colors with multiple disconnects. I want to select the largest component as a template, including other colors inside. For any other components containing only that color, I think I can replace them with a copy of the template, aligning it with the original position. I'm careful not to erase existing non-zero cells unless I'm inserting something new. In examples, size 1 components replace with a template, but there's a question about the pattern for certain colors.
+
+**Analyzing color clusters**
+
+I’m noticing that there are several 6 clusters, but only the largest one replicates its pattern. Interestingly, color 6 doesn’t seem to follow the same rule as color 3, which is repeated. It looks like I should focus on colors with the most single occurrences and replicate their patterns. For the test grid, I see color 4 forming a large 2x4 rectangle and solitary elements. I need to examine the grid's layout closely, especially the clusters of colors 1 and 2 as well.
+
+Rule: For every colour that appears in several disconnected components, locate its largest connected component; call it the stencil. Copy the exact multicolour pattern found in the stencil (all colours, all 0s/holes) so that its upper-left corner is centred on every other component consisting of a single cell of that colour, overwriting only 0s. Leave all other cells unchanged.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by copying the pattern of the largest connected component (stencil) and applying it to single pixels of the same color. Although it introduces additional specifications regarding the overwriting of 0s and the centering of the stencil, the core transformation of replicating the filled square pattern based on color remains intact.","For every colour that appears in several disconnected components, locate its largest connected component; call it the stencil. Copy the exact multicolour pattern found in the stencil (all colours, all 0s/holes) so that its upper-left corner is centred on every other component consisting of a single cell of that colour, overwriting only 0s. Leave all other cells unchanged.",1,Correct - Intended,2,0
+2025-07-17T20:38:34,Copy,Copy4,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0
+0 5 5 5 5 5 5 5 5 0
+0 5 5 5 0 0 5 5 5 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 5 5 5 5 5 5 5 5 0
+0 5 5 5 0 0 5 5 5 0
+0 0 0 0 0 0 0 0 0 0
+0 5 5 5 5 5 5 5 5 0
+0 5 5 5 0 0 5 5 5 0
+0 0 0 0 0 0 0 0 0 0
+0 5 5 5 5 5 5 5 5 0
+0 5 5 5 0 0 5 5 5 0","```python
+row = ""0 4 4 4 4 4 0 0 0 4 0 0 0 0 0 0 0 4 0 0 0 0"".split()
+[i for i,v in enumerate(row) if v=='4']
+
+```
+
+```python
+rows = [
+""0 4 4 4 4 4 0 0 0 4 0 0 0 0 0 0 0 4 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0""]
+for r in rows:
+    print([i for i,v in enumerate(r.split()) if v=='4'])
+
+```
+
+**Analyzing output clusters**
+
+I'm looking at Example 2, where the input grid features two significant areas: a cluster of 6s in the top left and a large cluster of 6s on the right. Then, I see there's a 3/4 area in the top center and bottom. The output seems to duplicate the 3/4 square at the bottom left and central replicate. I think it's important to inspect the differences in Example 2 and analyze where new pixels appear in the output compared to the input.
+
+```python
+# parse example2 input vs output, show new pixels
+input_grid = [
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,3,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+output_grid = [
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,3,3,3,0,0,0,0,0,0,0,0],
+[0,0,3,4,4,3,0,0,0,0,0,0,6,6],
+[0,0,3,4,4,3,0,0,0,0,0,0,6,6],
+[0,0,3,3,3,3,0,3,3,3,3,0,6,6],
+[0,0,0,0,0,0,0,3,4,4,3,0,0,0],
+[0,0,0,0,0,0,0,3,4,4,3,0,0,0],
+[0,0,0,0,0,0,0,3,3,3,3,0,0,0]
+]
+# compute difference indices where output!=input
+diff=[]
+for r in range(len(input_grid)):
+    for c in range(len(input_grid[0])):
+        if input_grid[r][c]!=output_grid[r][c]:
+            diff.append((r,c,input_grid[r][c],output_grid[r][c]))
+len(diff)
+
+```
+
+```python
+diff[:20]
+
+```
+
+```python
+test_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,5,5,5,5,5,5,5,0],
+[0,5,5,5,0,0,5,5,5,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]]
+# dimensions 14x10? Actually rows14 columns10
+len(test_input), len(test_input[0])
+
+```
+
+**Analyzing block structure**
+
+I’m seeing there’s a top region with Row 1 filled with 5’s from column 1 to 8, forming a line of 8. Row 2 has 3 5’s at columns 1-3 and 6-8. Wait, Row 2 seems to be separated by zeros, creating segments that could resemble two squares. This doesn’t look like a rectangular block. I should investigate further to determine the connectivity of these regions and analyze them more closely.
+
+```python
+from collections import deque
+grid=test_input
+rows=len(grid)
+cols=len(grid[0])
+visited=[[False]*cols for _ in range(rows)]
+regions=[]
+for r in range(rows):
+    for c in range(cols):
+        if grid[r][c]!=0 and not visited[r][c]:
+            col=grid[r][c]
+            coords=[]
+            dq=deque([(r,c)])
+            visited[r][c]=True
+            while dq:
+                x,y=dq.popleft()
+                coords.append((x,y))
+                for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nx,ny=x+dx,y+dy
+                    if 0<=nx<rows and 0<=ny<cols and not visited[nx][ny] and grid[nx][ny]==col:
+                        visited[nx][ny]=True
+                        dq.append((nx,ny))
+            regions.append(coords)
+len(regions)
+
+```
+
+```python
+reginfo=[]
+for coords in regions:
+    rows_coords=[x for x,y in coords]
+    cols_coords=[y for x,y in coords]
+    reginfo.append((len(coords),min(rows_coords),min(cols_coords),coords))
+reginfo
+```
+
+**Computing pattern replication**
+
+I’m examining the marker at (0,9) and checking if it represents the top-left of a replicated pattern. It looks like it corresponds to the pixel color, which is consistent. So, I'll replicate the bounding box from rows 0 to 3 and columns 9 to 13. For each marker located outside the original pattern—like the markers at (6,1), (9,1), and (12,1)—I'll place a copy of the pattern. It’s essential to ensure we don’t overlap out-of-bounds while computing the output grid.
+
+**Verifying pattern coordinates**
+
+I’m working with the pattern shape coordinates relative to (1,1) and planning to shift the shape by (marker_row - 1, marker_col - 1). This means the marker aligns with the original top-left coordinate. For instance, if the original top-left is (3,1) and I have a marker at (9,2), the shift would be (6,1). That adjustment would apply to all coordinates. I also need to consider edge cases, like markers being within the original bounding box, but I see that (0,9) is valid. Now, I’ll compute the expected output grid!
+
+```python
+# produce output
+import copy
+out=[row[:] for row in test_input]
+# pattern coords as set
+pattern_coords=regions[0]  # determined earlier
+pattern_top_row=1
+pattern_top_col=1
+# markers
+markers=[(6,1),(9,1),(12,1)]
+for mr,mc in markers:
+    dr=mr-pattern_top_row
+    dc=mc-pattern_top_col
+    for r,c in pattern_coords:
+        nr=r+dr
+        nc=c+dc
+        # ensure inside
+        out[nr][nc]=5
+out
+```
+
+```python
+for row in out:
+    print(' '.join(map(str,row)))
+
+```
+
+```python
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:200]
+
+```
+
+Rule: Identify the unique multi-pixel shape (the only region of its colour with size >1). Every isolated single pixel of the same colour is a marker that indicates where another copy of the shape must be placed. Treat each marker as the top-left corner of a translated copy of the original shape and paste the shape there, overwriting zeros only.","row = ""0 4 4 4 4 4 0 0 0 4 0 0 0 0 0 0 0 4 0 0 0 0"".split()
+[i for i,v in enumerate(row) if v=='4']
+
+rows = [
+""0 4 4 4 4 4 0 0 0 4 0 0 0 0 0 0 0 4 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"",
+""0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0""]
+for r in rows:
+    print([i for i,v in enumerate(r.split()) if v=='4'])
+
+# parse example2 input vs output, show new pixels
+input_grid = [
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,3,0,0,0,0,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+output_grid = [
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,4,4,3,0,0,0,6,6,6,6,6,6],
+[0,3,3,3,3,0,0,0,6,6,6,6,6,6],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,3,3,3,3,0,0,0,0,0,0,0,0],
+[0,0,3,4,4,3,0,0,0,0,0,0,6,6],
+[0,0,3,4,4,3,0,0,0,0,0,0,6,6],
+[0,0,3,3,3,3,0,3,3,3,3,0,6,6],
+[0,0,0,0,0,0,0,3,4,4,3,0,0,0],
+[0,0,0,0,0,0,0,3,4,4,3,0,0,0],
+[0,0,0,0,0,0,0,3,3,3,3,0,0,0]
+]
+# compute difference indices where output!=input
+diff=[]
+for r in range(len(input_grid)):
+    for c in range(len(input_grid[0])):
+        if input_grid[r][c]!=output_grid[r][c]:
+            diff.append((r,c,input_grid[r][c],output_grid[r][c]))
+len(diff)
+
+diff[:20]
+
+test_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,5,5,5,5,5,5,5,0],
+[0,5,5,5,0,0,5,5,5,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,5,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]]
+# dimensions 14x10? Actually rows14 columns10
+len(test_input), len(test_input[0])
+
+from collections import deque
+grid=test_input
+rows=len(grid)
+cols=len(grid[0])
+visited=[[False]*cols for _ in range(rows)]
+regions=[]
+for r in range(rows):
+    for c in range(cols):
+        if grid[r][c]!=0 and not visited[r][c]:
+            col=grid[r][c]
+            coords=[]
+            dq=deque([(r,c)])
+            visited[r][c]=True
+            while dq:
+                x,y=dq.popleft()
+                coords.append((x,y))
+                for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nx,ny=x+dx,y+dy
+                    if 0<=nx<rows and 0<=ny<cols and not visited[nx][ny] and grid[nx][ny]==col:
+                        visited[nx][ny]=True
+                        dq.append((nx,ny))
+            regions.append(coords)
+len(regions)
+
+reginfo=[]
+for coords in regions:
+    rows_coords=[x for x,y in coords]
+    cols_coords=[y for x,y in coords]
+    reginfo.append((len(coords),min(rows_coords),min(cols_coords),coords))
+reginfo
+
+# produce output
+import copy
+out=[row[:] for row in test_input]
+# pattern coords as set
+pattern_coords=regions[0]  # determined earlier
+pattern_top_row=1
+pattern_top_col=1
+# markers
+markers=[(6,1),(9,1),(12,1)]
+for mr,mc in markers:
+    dr=mr-pattern_top_row
+    dc=mc-pattern_top_col
+    for r,c in pattern_coords:
+        nr=r+dr
+        nc=c+dc
+        # ensure inside
+        out[nr][nc]=5
+out
+
+for row in out:
+    print(' '.join(map(str,row)))
+
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:200]",0,"The Evaluated Rule captures the essence of the Ground Truth Rule by ensuring that each isolated single pixel serves as a marker for placing a copy of the unique multi-pixel shape. Both rules involve copying a filled square with the same outer color to the positions of single pixels, thus maintaining the underlying transformation functionality.","Identify the unique multi-pixel shape (the only region of its colour with size >1). Every isolated single pixel of the same colour is a marker that indicates where another copy of the shape must be placed. Treat each marker as the top-left corner of a translated copy of the original shape and paste the shape there, overwriting zeros only.",1,Incorrect,2,0
+2025-07-17T20:39:52,Copy,Copy4,3,low,1,,1,"6 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0
+6 0 7 7 7 7 7 0 6 0 0 0 7 7 7 7 7 0 0 0
+6 0 7 3 7 3 7 0 6 0 0 0 7 3 7 3 7 0 0 0
+6 0 7 3 7 3 7 0 6 0 0 0 7 3 7 3 7 0 0 0
+6 0 7 7 7 7 7 0 6 0 0 0 7 7 7 7 7 0 0 0
+6 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0","```python
+row1=[0,4,4,4,4,4,0,0,0,4,0,0,0,0,0,0,0,4,0,0,0,0]
+[(i,val) for i,val in enumerate(row1) if val==4]
+
+```
+
+```python
+grid=[
+[6,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,7,7,7,7,0,6,0,0,0,7,0,0,0,0,0,0,0],
+[6,0,7,3,7,3,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,3,7,3,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,7,7,7,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0]]
+# get positions of value 7
+[(r,c) for r,row in enumerate(grid) for c,val in enumerate(row) if val==7]
+
+```
+
+```python
+pattern = [row[2:7] for row in grid[1:5]]
+pattern
+```
+
+**Analyzing grid patterns**
+
+I'm examining a 4x5 pattern where I need to ensure it fits within a 20-width grid. The pattern starts at position (1,12), which means it will occupy columns 12 to 16. I'm confirming that this area initially contains zeros. However, row 1 column 12 already has a marker, a 7, but since I'm replacing it with the same number, that's fine. I'll replace the zeros in rows 2, 3, and 4 accordingly. I'll also be on the lookout for any single 7s in the grid.
+
+```python
+import copy, json, itertools, textwrap
+```
+
+```python
+out=copy.deepcopy(grid)
+rows=range(1,5)
+cols=range(12,17)
+for i,ri in enumerate(rows):
+    for j,cj in enumerate(cols):
+        out[ri][cj] = pattern[i][j]
+out
+```
+
+```python
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str
+```
+
+Rule: Identify the smallest multi-row/column coloured block that contains at least two different colours (the motif). Every isolated pixel whose colour equals the motif’s top-left pixel is a “marker”. Copy the entire motif so that its top-left corner sits on every marker position, leaving all other cells unchanged.","row1=[0,4,4,4,4,4,0,0,0,4,0,0,0,0,0,0,0,4,0,0,0,0]
+[(i,val) for i,val in enumerate(row1) if val==4]
+
+grid=[
+[6,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,7,7,7,7,0,6,0,0,0,7,0,0,0,0,0,0,0],
+[6,0,7,3,7,3,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,3,7,3,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,7,7,7,7,7,0,6,0,0,0,0,0,0,0,0,0,0,0],
+[6,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0]]
+# get positions of value 7
+[(r,c) for r,row in enumerate(grid) for c,val in enumerate(row) if val==7]
+
+pattern = [row[2:7] for row in grid[1:5]]
+pattern
+
+import copy, json, itertools, textwrap
+
+out=copy.deepcopy(grid)
+rows=range(1,5)
+cols=range(12,17)
+for i,ri in enumerate(rows):
+    for j,cj in enumerate(cols):
+        out[ri][cj] = pattern[i][j]
+out
+
+grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str",0,"The Evaluated Rule introduces the concept of a 'motif' and markers, which is not present in the Ground Truth Rule. The Ground Truth Rule focuses on copying filled squares based on the outer color of single pixels, while the Evaluated Rule involves identifying a multi-row/column block and using its top-left pixel for markers, which changes the fundamental transformation process.","Identify the smallest multi-row/column coloured block that contains at least two different colours (the motif). Every isolated pixel whose colour equals the motif’s top-left pixel is a “marker”. Copy the entire motif so that its top-left corner sits on every marker position, leaving all other cells unchanged.",1,Incorrect,2,0
+2025-07-17T20:40:31,Copy,Copy5,1,low,1,,0,"7 7 7
+7 3 7
+7 7 7
+0 0 0
+7 7 7
+7 3 7
+7 7 7
+0 0 0
+7 7 7
+7 3 7
+7 7 7","**Analyzing grid tiling**
+
+I'm considering how this 4x5 grid might tile horizontally, possibly twice to fit an output width of 9. If I repeat the 5 columns, I'd get 10, which is too much, leading me to think they must've removed the last column. It seems they split the grid into a left block of 4's and a right mostly-zero column. Therefore, the output would be a pattern of [4's block + 0's column] repeated, which fits the required length of 9 perfectly.
+
+**Exploring tiling patterns**
+
+It looks like I might have lost the final zero column in the previous examples. For Example 2, the template has 3 columns of 3's, but after evaluating, it seems zeros are replaced in columns 4 and 5. The observed output shows a pattern of three blocks of 3's separated by zeros. 
+
+Now, for the third example, I see a vertical arrangement of blocks with leading ones followed by zeros. After replacement, certain rows become all zeros, creating a pattern that repeats. The output appears to reflect the original height minus zeros, leading to a tiling that truncates at the edges based on this rule.
+
+**Verifying core patterns**
+
+In Example 3, I notice there are 3 zero rows, but the output shows 4 core patterns, which makes me curious. It looks like the pattern is a combination of 3 core rows and a zero row, repeated 4 times. However, the last cycle lacks a trailing zero row, which matches previous examples.
+
+So, the number of cores equals the number of zero rows plus one. The rule seems to be about replacing color 1 with 0 and identifying blocks of zeros, using them as separators. Thus, the output format is defined by the length of these cores, tiled with separators, showing that the zeros originally present are now distributed appropriately.
+
+**Generating grid output**
+
+I have a core pattern based on these three rows: 
+
+Row 0: 7 7 7  
+Row 1: 7 3 7  
+Row 2: 7 7 7  
+
+To achieve the goal output, I'll replicate this core three times, separated by a single row of zeros, resulting in a total of 11 rows. It looks like the pattern ends up being: core + zero row + core + zero row + core, which fits perfectly. 
+
+I'll create a grid string with the correct spacing and structure, then format it into JSON with the appropriate rule description. The JSON will detail the rule about replacing color 1 with 0 and handling the core appropriately.
+
+Rule: Replace every 1 with 0. If any entire column is now all-zero, work horizontally; otherwise work vertically. The non-zero block that precedes the first all-zero line is the core tile. Repeat this core (zero-line count + 1) times, inserting a single all-zero column/row as a spacer between copies and leaving no spacer after the final copy.",,1,The Evaluated Rule fundamentally alters the transformation process by replacing 1s with 0s and focusing on column and row manipulations rather than directly interpreting the blue pixels as indicators for object copies and their placement. The core tile concept and the method of inserting spacers do not align with the original intent of the Ground Truth Rule.,"Replace every 1 with 0. If any entire column is now all-zero, work horizontally; otherwise work vertically. The non-zero block that precedes the first all-zero line is the core tile. Repeat this core (zero-line count + 1) times, inserting a single all-zero column/row as a spacer between copies and leaving no spacer after the final copy.",1,Correct - Intended,2,0
+2025-07-17T20:41:34,Copy,Copy5,2,low,1,,0,"9 9 9 9 0 9 9 9 9
+9 9 9 9 0 9 9 9 9
+9 2 2 9 0 9 2 2 9
+9 9 9 9 0 9 9 9 9
+9 9 9 9 0 9 9 9 9","**Analyzing transformation rules**
+
+I'm looking to deduce a transformation rule from three example pairs. The first example shows a 5x5 grid, but it's interesting because there are really 4 rows and 5 columns. The first input has rows filled with ‘4’ and a single element, possibly indicating 1. 
+
+The output consists of 4 rows and 9 columns, almost doubling the width. It seems like the output is created by replicating the original columns followed by a modification to the last column. I'm piecing this together!
+
+**Identifying grid patterns**
+
+I'm noticing a mismatch in the transformation from input to output—specifically, where the last input column has a '1' but the output shows '0'. It seems like the output replaces the last column in the original row and may involve a sliding window. 
+
+In the second example, the output shows several zeros and follows a pattern that replicates the first four columns with zeros in between, suggesting a repeated structure. For the third example, the output seems to extend that pattern further, creating a larger grid with repeating elements. I'm piecing together these observations to understand the overall pattern!
+
+**Counting rows and patterns**
+
+I'm analyzing the output, which consists of 15 rows, and I see distinct groups within it. The format suggests a repetition of certain patterns, primarily the first four rows, followed by a total of 15 rows with a width unchanged at 4. It looks like there's a swapping of color 1 with 0 across all examples.
+
+In Example 1, I notice a pattern where the original rows are maintained, but the '1's are replaced with '0's, followed by replication of the first pattern. Example 2 repeats similar logic with additional elements. I'm piecing these together to find a consistent transformation rule!
+
+Rule: First turn every 1 into 0. If the grid ends with one or more full-zero columns (otherwise rows), let k be their count and let P be the part that lies before them. Output P repeated k+1 times in that direction, placing a single zero column (or row) between consecutive copies; the other dimension is left unchanged.",,1,"The Evaluated Rule fundamentally changes the transformation process by turning every 1 into 0 and focusing on full-zero columns or rows, which does not align with the Ground Truth Rule's specification of making copies based on single blue pixels and extending the grid in the direction of those pixels.","First turn every 1 into 0. If the grid ends with one or more full-zero columns (otherwise rows), let k be their count and let P be the part that lies before them. Output P repeated k+1 times in that direction, placing a single zero column (or row) between consecutive copies; the other dimension is left unchanged.",1,Correct - Intended,2,0
+2025-07-17T20:37:27,Copy,Copy5,3,low,0,mismatch,0,"0 0 0 0 0
+0 6 0 0 6
+0 0 0 0 0
+0 0 0 0 0","**Analyzing a grid pattern**
+
+I'm trying to uncover the rules of an example where the input grid is 4 rows and 5 columns, but outputs 4 rows with 9 columns. The last column seems distinct, with values interleaved from the original. For instance, the first row of input is all 4s, followed by a 1, while the output replicates this pattern. It looks like they replaced the last column's value. Observing these patterns carefully will help clarify the transformation rules.
+
+**Finding grid patterns**
+
+In analyzing the grid, it seems they replaced the fifth column with a constant value of 0 and then repeated the first four values to create a longer row. This results in a pattern like [first 4] + [value] + [first 4], giving a total of 9 columns. For the second set, even though the values vary, the constant values lead to similar outputs. It looks like the goal is to identify the majority value and adjust other values accordingly to create patterns across rows. I'll delve into Example 2 for clarity.
+
+**Determining orientation in patterns**
+
+I’m examining how to choose the orientation for a grid pattern based on contiguous blocks of zeros. It seems that the best approach is to identify sections of non-zero values adjacent to these zeros, making the bottom rows potentially more useful for extension. In this case, the top block must have non-zero values, which helps clarify the pattern's structure. I’ll consider whether the zeros are primarily on the edges or within the middle, as this impacts how I could replicate the pattern while ensuring it stays within the grid.
+
+Rule: Replace every 1 with 0, then find an all-0 edge stripe (rows or columns). Take the block of columns/rows that lies next to this stripe and use it as a tile. Duplicate that tile (zero-stripe-length + 1) times on the far side of the zero stripe, inserting a single zero stripe between tiles; keep original size in the other dimension.",,1,"The Evaluated Rule introduces a different mechanism for duplication and placement of tiles that does not align with the original intent of the Ground Truth Rule, which specifically focuses on the direction and number of copies based on the position of single blue pixels.","Replace every 1 with 0, then find an all-0 edge stripe (rows or columns). Take the block of columns/rows that lies next to this stripe and use it as a tile. Duplicate that tile (zero-stripe-length + 1) times on the far side of the zero stripe, inserting a single zero stripe between tiles; keep original size in the other dimension.",1,Correct - Unintended,2,0
+2025-07-17T20:35:17,Copy,Copy6,1,low,1,,0,"6 6 6 6 0 1 1 1 1
+6 4 4 6 0 1 3 3 1
+6 4 4 6 0 1 3 3 1
+6 6 6 6 0 1 1 1 1
+0 0 0 0 0 0 0 0 0
+6 6 6 6 0 1 1 1 1
+6 4 4 6 0 1 3 3 1
+6 4 4 6 0 1 3 3 1
+6 6 6 6 0 1 1 1 1","**Identifying grid transformation rules**
+
+I’m working on deducing the rules for transforming grids based on provided examples. In the first example, the 3x11 input grid became a 7x11 output grid by stacking the original grid twice with a blank row of zeros in between. So it seems the rule is to replicate the grid vertically with a separating row of zeros. In the second example, a 9x4 input turned into a 9x9 output, indicating a horizontal duplication with zero columns as separators. I’ll need to analyze this further!
+
+**Defining grid duplication rules**
+
+I’m analyzing how to transform grids based on examples. In the first case, I see the rule involves vertically duplicating the input while inserting a row of zeros between the duplicates. The second example shows horizontal duplication with a column of zeros. It looks like the rule is to duplicate along the shorter dimension to create a more symmetrical grid arrangement. 
+
+For a new test grid with dimensions 4x9, I’ll duplicate it vertically, resulting in a 9-row output. The output will replicate the original rows, followed by a row of zeros, then the original rows again.
+
+**Crafting the JSON output**
+
+I’m preparing to create a minified JSON structure based on the grid data. The rows of the grid have been clearly established, with a specific duplication rule in mind. I think the phrase that sums it up nicely is: ""Duplicate the grid along the shorter dimension with a separator row/column of zeros."" Now, I’ll compile this into a concise JSON format, ensuring that it meets the requirements neatly. Let’s get that done!
+
+Rule: Duplicate the grid along its shorter dimension, inserting a full separator line of zeros of matching length, then append a copy of the original grid on the opposite side.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by duplicating the grid along its shorter dimension and inserting a separator line. Although it uses zeros instead of black pixels and does not specify the exact orientation of the separator, the underlying transformation functionality remains similar.","Duplicate the grid along its shorter dimension, inserting a full separator line of zeros of matching length, then append a copy of the original grid on the opposite side.",1,Correct - Intended,2,0
+2025-07-17T20:35:44,Copy,Copy6,2,low,1,,1,"0 7 0 0 0 7 0
+7 1 7 0 7 1 7
+0 7 0 0 0 7 0
+0 0 0 0 0 0 0
+0 5 0 0 0 5 0
+5 6 5 0 5 6 5
+0 5 0 0 0 5 0
+0 0 0 0 0 0 0
+0 1 0 0 0 1 0
+1 3 1 0 1 3 1
+0 1 0 0 0 1 0","**Analyzing grid transformation rules**
+
+I'm looking into how to approach grid transformations based on given examples. For the first example, the input grid is 3 rows by 11 columns, creating an output that consists of 7 rows by 11 columns, effectively repeating the original rows with a zero-filled row in between. The rule is to replicate the input grid vertically twice while separating them with a blank row. In the second example, the setup is different, as it has 9 rows by 4 columns, leading to a 9 by 9 column output. Let's sort through this to clarify the transformation!
+
+**Clarifying grid replication rules**
+
+I'm trying to understand the rules for duplicating grids. It looks like we replicate the entire grid in the smaller dimension, whether it's horizontal or vertical. In the first example, we added a zero row, while in the second example, duplication happens horizontally. It's clear we should duplicate along the axis of the smaller dimension to enlarge the grid but not exceed the original size. For the test grid, with 11 rows and 3 columns, I'll replicate horizontally and add a zero column in between, resulting in an output of 11 rows by 7 columns. Time to build that!
+
+```python
+import numpy as np, textwrap, json, sys, math
+```
+
+```python
+grid = [
+[0,7,0],
+[7,1,7],
+[0,7,0],
+[0,0,0],
+[0,5,0],
+[5,6,5],
+[0,5,0],
+[0,0,0],
+[0,1,0],
+[1,3,1],
+[0,1,0],
+]
+out=[]
+for row in grid:
+    out.append(row + [0] + row)
+out
+```
+
+```python
+s = ""\n"".join("" "".join(map(str,row)) for row in out)
+s
+```
+
+Rule: Duplicate the entire input grid along its shorter dimension, placing a single separating line of zeros (row if height is shorter, column if width is shorter) between the two identical copies, while keeping the longer dimension unchanged.","import numpy as np, textwrap, json, sys, math
+
+grid = [
+[0,7,0],
+[7,1,7],
+[0,7,0],
+[0,0,0],
+[0,5,0],
+[5,6,5],
+[0,5,0],
+[0,0,0],
+[0,1,0],
+[1,3,1],
+[0,1,0],
+]
+out=[]
+for row in grid:
+    out.append(row + [0] + row)
+out
+
+s = ""\n"".join("" "".join(map(str,row)) for row in out)
+s",1,"The Evaluated Rule captures the essence of the Ground Truth Rule by duplicating the grid along its shorter dimension and inserting a separating line, which aligns with the original rule's intent of appending a copy with a separator. The specifics of using zeros instead of black pixels and the focus on the shorter dimension do not fundamentally alter the transformation's functionality.","Duplicate the entire input grid along its shorter dimension, placing a single separating line of zeros (row if height is shorter, column if width is shorter) between the two identical copies, while keeping the longer dimension unchanged.",1,Correct - Intended,2,0
+2025-07-17T20:37:33,Copy,Copy6,3,low,1,,0,"4 4 4 4 4 0 4 4 4 4 4
+4 4 4 4 4 0 4 4 4 4 4
+0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 4 0 4 4 4 4 4
+4 4 4 4 4 0 4 4 4 4 4
+0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 4 0 4 4 4 4 4
+4 4 4 4 4 0 4 4 4 4 4","**Deciphering ARC-like rules**
+
+I'm trying to make sense of ARC-like rules with some examples. In the first example, we have 3 rows and 11 columns. The output shows 7 rows and maintains the 11 columns, replicating the original 3 rows, adding a zero row, and then repeating the original. In the second example, the input has 9 rows and 4 columns, and the output is 9 rows and 9 columns, with a similar pattern of duplication but horizontally. It seems like the rule could involve replicating along the shorter dimension.
+
+**Analyzing grid replication**
+
+I'm working on computing sizes for a grid. In the first example, the input has 3 rows and 11 columns, so the output replicates vertically with an added zero row, resulting in 7 rows total. In the second example, with 9 rows and a width of 4, the output replicates horizontally, creating 9 columns with a zero column in between. For the next grid with 8 rows and 5 columns, since height exceeds width, I’ll replicate horizontally, yielding 11 columns while maintaining the 8 rows and integrating the patterns accordingly.
+
+Rule: Duplicate the entire grid along its shorter dimension, inserting a single separating line of zeros (a row if height<width, a column if width<height).",,1,"The Evaluated Rule does not correctly specify the conditions for appending the grid based on the orientation of the objects. It states to duplicate the grid along its shorter dimension, which does not align with the Ground Truth Rule's specific conditions of appending based on horizontal or vertical arrangement. Additionally, the use of zeros instead of black pixels for the separating line is a significant deviation from the original rule.","Duplicate the entire grid along its shorter dimension, inserting a single separating line of zeros (a row if height<width, a column if width<height).",1,Correct - Intended,2,0
+2025-07-17T20:39:15,Copy,Copy7,1,low,1,,0,"1 1 1 1 1
+1 1 1 1 1
+1 2 2 2 1
+1 1 1 1 1
+1 1 1 1 1
+0 0 0 0 0
+0 0 0 0 0
+7 7 7 7 7
+7 7 7 7 7
+7 2 2 2 7
+7 7 7 7 7
+7 7 7 7 7","**Analyzing grid examples**
+
+I need to clarify a particular rule, so let's break down the details of the examples. The first example describes a 6x13 grid with two colored rectangular blocks. The left block outlines a 6-value border, while the top row has values like 6, 3, and 0. It seems there's a diagonal of 3s inside a 6 border. The first part appears to be a 6x6 matrix, with the first six columns representing a filled border, and zeros inside — interesting to note!
+
+**Examining grid patterns**
+
+I’m analyzing a 6x6 section where rows 0-5 and columns 0-5 show a frame of 6s around zeros and a diagonal of 3s running from (0,1) to (4,5). The last diagonal position at (4,5) is indeed a 3. There also seems to be a mirrored diagonal in the right block, which consists of 7s that follows a similar pattern. The output shows the same arrangement, with new 3s placed relative to the left border of the right block, confirming there are two framed rectangles.
+
+**Implementing pattern replication**
+
+In the left rectangle, I see a diagonal of a different color and my task is to copy that internal pattern into other rectangles that currently have zeros. For the larger 10x10 grid, the top-left section consists of 4s with a 5x5 diamond-like shape formed by 1s. The 1s create an anti-diagonal effect in this section. 
+
+There's also a block of 2s in another section, and when replicating the pattern, I adjust the placements of 1s accordingly, scaling them to fit within a 3x3 area. The overall rule is that I need to copy and scale patterns from one block to another based on their size while maintaining their orientation.
+
+**Generating modified grid**
+
+I'm working with the original grid and need to insert 2s into row 9, which corresponds to the middle row of a bottom rectangle filled with 7s. The values in columns 1-3 of this row will be set to 2, while keeping the 7 border intact. 
+
+The updated grid will leave rows 0-4 unchanged and only adjust row 9 accordingly. Since example rules suggest scaling copies of internal patterns, I’ll format the final grid as a JSON string with newlines and spaces separating the numbers for clarity. This keeps values aligned and makes it easy to read.
+
+Rule: Copy the internal pattern (cells that differ from the region’s main colour) from the first uniform-coloured region to every other uniform-coloured region, placing the pattern at the same relative positions inside each region (scaling it when region sizes differ).",,1,"The Evaluated Rule describes a transformation that involves copying internal patterns from one region to others based on uniform color, which is fundamentally different from the Ground Truth Rule that focuses on copying a specific colored line from one object to another while keeping the original intact. The key transformation functionality is not similar.","Copy the internal pattern (cells that differ from the region’s main colour) from the first uniform-coloured region to every other uniform-coloured region, placing the pattern at the same relative positions inside each region (scaling it when region sizes differ).",1,Correct - Intended,2,0
+2025-07-17T20:39:02,Copy,Copy7,2,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0
+3 0 0 0 0 0 0 0 0 4 0 0
+3 9 0 0 0 0 0 0 4 4 0 0
+3 9 3 0 0 0 0 9 4 4 0 0
+3 9 3 3 0 0 4 9 4 4 0 0
+3 9 3 0 0 0 0 9 4 4 0 0
+3 9 0 0 0 0 0 0 4 4 0 0
+3 0 0 0 0 0 0 0 0 4 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing grid rules**
+
+I need to analyze the rules based on provided examples. The input grids show a large rectangular area filled with colors, like 6 in example one and 4 in example two. I should visualize example one, which has a grid of 6 rows and 13 columns. I see that there's a column segment of 6s creating the left border, along with 6s on the top and bottom lines. So, it seems like the shape of the 6s is forming a rectangular border.
+
+**Identifying triangular patterns**
+
+I've laid out a pattern with two triangles formed by 3s, diagonal from (0,1) and making an anti-diagonal in a 5x5 upper triangular area. Inside the pattern, there are zeros. The output seems to add new 3s into the right area of the 7s, with positions mirroring across a central vertical axis. For example, row 0 shows a change from 7 to 3 at column 8. It looks like the rule involves copying the anti-diagonal pattern of 3s from the left region into the right region of 7s, maintaining relative positions. This reflects two identical shape regions of different colors.
+
+**Analyzing pattern copying**
+
+One region has additional ""decoration"" marks in color 3, which I need to copy into another area, replacing its color while keeping the positions relative to the top-left corner. In example two, it seems like there's a diamond or triangle shape formed by 4s, with the left region mirroring the bottom-right. The 2s block appears to be 3x3 in size. I notice that the decoration of 1s follows an anti-diagonal within the 4 block, and this pattern is then transferred into the 2 region. It seems like the rule involves copying decorations from a filled region into the target area based on their relative positions.
+
+```python
+input_grid = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,0,0,0,0,0,0,0,4,0,0],
+[3,9,0,0,0,0,0,0,4,4,0,0],
+[3,9,3,0,0,0,0,4,4,4,0,0],
+[3,9,3,3,0,0,4,4,4,4,0,0],
+[3,9,3,0,0,0,0,4,4,4,0,0],
+[3,9,0,0,0,0,0,0,4,4,0,0],
+[3,0,0,0,0,0,0,0,0,4,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+
+#apply replacements
+output = [row.copy() for row in input_grid]
+replaced_coords=[]
+for r in range(2,7):
+    c=7
+    if output[r][c]==4:
+        output[r][c]=9
+        replaced_coords.append((r,c))
+output,replaced_coords
+```
+
+```python
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in output)
+grid_str
+```
+
+Rule: Two congruent solid-colour regions (A and B) exist. One of them (A) contains an extra pattern drawn with a third colour C, while the other (B) is still uniform. Copy that pattern: for every cell of colour C inside A, place colour C in the cell of B that has the same relative coordinates inside B’s bounding box, replacing B’s colour there (do nothing if the counterpart is not of colour B).","input_grid = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[3,0,0,0,0,0,0,0,0,4,0,0],
+[3,9,0,0,0,0,0,0,4,4,0,0],
+[3,9,3,0,0,0,0,4,4,4,0,0],
+[3,9,3,3,0,0,4,4,4,4,0,0],
+[3,9,3,0,0,0,0,4,4,4,0,0],
+[3,9,0,0,0,0,0,0,4,4,0,0],
+[3,0,0,0,0,0,0,0,0,4,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+
+#apply replacements
+output = [row.copy() for row in input_grid]
+replaced_coords=[]
+for r in range(2,7):
+    c=7
+    if output[r][c]==4:
+        output[r][c]=9
+        replaced_coords.append((r,c))
+output,replaced_coords
+
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in output)
+grid_str",1,"The Evaluated Rule captures the essence of the transformation described in the Ground Truth Rule by copying a pattern from one object to another based on their relative positions, despite the additional specification regarding congruence and color replacement. The core functionality of transferring a distinct feature from one object to another while preserving the original is maintained.","Two congruent solid-colour regions (A and B) exist. One of them (A) contains an extra pattern drawn with a third colour C, while the other (B) is still uniform. Copy that pattern: for every cell of colour C inside A, place colour C in the cell of B that has the same relative coordinates inside B’s bounding box, replacing B’s colour there (do nothing if the counterpart is not of colour B).",1,Correct - Unintended,2,0
+2025-07-17T20:40:21,Copy,Copy7,3,low,1,,1,"8 8 8 8 8 0 2 2 2 2 2
+8 7 7 7 8 0 2 7 7 7 2
+8 7 7 7 8 0 2 7 7 7 2
+8 7 7 7 8 0 2 7 7 7 2
+8 7 7 7 8 0 2 7 7 7 2
+8 8 8 8 8 0 2 2 2 2 2","**Analyzing grid patterns**
+
+I need to determine the rule based on the examples. In a 6x13 grid, there’s a border of 6s and columns of 7s on the right. A diagonal of 3s starts from the top left corner and slopes down. The output adds another diagonal of 3s within the region of 7s. Looking at the input, it seems they've inserted the diagonal while keeping the slope intact. The 3s start at (0,1) and extend into the 7 area at specific coordinates.
+
+**Examining row changes**
+
+It seems some zeros got replaced in the output. In row 1, column 9, the 7 changed to a 3, which is inside the 7 region. Similarly, in row 2, column 9, a 3 was inserted where there was previously a 0. The 7 region starts at column 7, and the output shows the change without overwriting the 7s.
+
+For row 1, the 3 replaced a 7 at column 9. So the rule appears to be extending the diagonal by replacing cells with the same color. I’ll need to look into Example 2 next.
+
+**Exploring diagonal patterns**
+
+In row 3, the output shows a new 1 at column 9, which replaced the original 2. This seems to indicate an extension of the diagonal across the 2-block area. Observing further, new 1s appear in row 4 at column 8 and row 5 at column 7, maintaining a down-left slope. 
+
+It looks like the rule involves replacing colors within specified areas to extend the diagonal until it hits a boundary or non-replaceable color. So, diagonals can extend horizontally, rather than just downwards.
+
+**Refining color patterns**
+
+In the test, rows 1-4 contain multiple 7's, which doesn't establish a clear pattern. I’m reevaluating my hypothesis about the rules for diagonal continuations. Initially, it seemed the diagonal would extend from the left rectangle into the right but that doesn’t hold up.
+
+I’m considering the color occurrences instead. The goal could be to replicate the color that appears the least, equal to the grid's height. In the test grid, 7 appears 12 times, potentially making it the least frequent, so I’ll replicate 7s by shifting their positions to fill gaps without overwriting other colors. Let’s generate the final grid based on that plan!
+
+```python
+input_grid = [
+[8,8,8,8,8,0,2,2,2,2,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,8,8,8,8,0,2,2,2,2,2]
+]
+h=len(input_grid); w=len(input_grid[0])
+# replicate 7 shift 6
+out=[row[:] for row in input_grid]
+shift=6
+for r in range(h):
+    for c in range(w):
+        if input_grid[r][c]==7:
+            target=c+shift
+            if target<w:
+                out[r][target]=7
+out
+```
+
+```python
+out_str=""\n"".join("" "".join(map(str,row)) for row in out)
+out_str
+```
+
+Rule: Let L be the first non-zero colour block that starts in the left half of the grid and R be the first non-zero colour block that starts further to the right, separated from L by at least one column of zeros. Let d be the horizontal distance between the first column of L and the first column of R. Identify the colour c that appears inside L but not inside R (in the training tasks this colour forms a single-pixel diagonal inside L). Copy every occurrence of colour c horizontally by exactly d cells to the right (i.e., to column j+d if the original is at column j) provided the destination lies inside the grid; overwrite whatever colour is there. The rest of the grid remains unchanged.","input_grid = [
+[8,8,8,8,8,0,2,2,2,2,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,7,7,7,8,0,2,0,0,0,2],
+[8,8,8,8,8,0,2,2,2,2,2]
+]
+h=len(input_grid); w=len(input_grid[0])
+# replicate 7 shift 6
+out=[row[:] for row in input_grid]
+shift=6
+for r in range(h):
+    for c in range(w):
+        if input_grid[r][c]==7:
+            target=c+shift
+            if target<w:
+                out[r][target]=7
+out
+
+out_str=""\n"".join("" "".join(map(str,row)) for row in out)
+out_str",1,"The Evaluated Rule introduces conditions regarding the positioning of color blocks and their separation by zeros, which are not present in the Ground Truth Rule. The Ground Truth Rule simply states that a specific line color from the left object should be copied to the right object, without any conditions on the arrangement of blocks or distances. Therefore, the Evaluated Rule does not accurately reflect the transformation described in the Ground Truth Rule.","Let L be the first non-zero colour block that starts in the left half of the grid and R be the first non-zero colour block that starts further to the right, separated from L by at least one column of zeros. Let d be the horizontal distance between the first column of L and the first column of R. Identify the colour c that appears inside L but not inside R (in the training tasks this colour forms a single-pixel diagonal inside L). Copy every occurrence of colour c horizontally by exactly d cells to the right (i.e., to column j+d if the original is at column j) provided the destination lies inside the grid; overwrite whatever colour is there. The rest of the grid remains unchanged.",1,Correct - Unintended,2,0
+2025-07-17T20:37:18,Copy,Copy8,1,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 8 8 7 7 7 0 8
+0 0 8 8 8 8 8 0 0 7 0 8
+0 0 8 8 8 8 8 0 0 7 0 8
+0 0 8 8 8 8 8 0 0 7 0 8
+0 0 8 8 8 8 8 7 7 7 0 8
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 8 8 0 0 0 0 8
+0 0 8 8 8 8 8 0 0 0 0 8
+0 0 8 8 8 8 8 0 0 0 0 8
+0 0 8 8 8 8 8 0 0 0 0 8
+0 0 8 8 8 8 8 0 0 0 0 8
+0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing tile patterns**
+
+I'm working on determining tile indices: it looks like we have a series of zeros and twos across 17 columns. I see a pattern where twos are located at positions 3, 4, 12, and 13, suggesting a tile width of 9. The leftmost segment from 0-8 contains shapes, which seem to repeat in subsequent tiles based on the background pattern. I’m considering how horizontal periods of color squares can help replicate the shape in other tiles. Let’s refine that process!
+
+**Examining column patterns**
+
+I'm analyzing the column data and considering which ones are completely blank. It looks like some columns, such as column 0, are entirely zeros, which I’m treating as separators. I'm noticing patterns across different rows, particularly in row 3 and how their indexes aren’t entirely blank. I’m thinking the easiest method might be to replicate shapes from left to right, using the zero columns to determine segments. I'll parse the grid and identify these segments effectively!
+
+**Identifying column segments**
+
+I'm analyzing Example2 and identifying separators based on the column data. It appears that column 0 is the first separator, followed by column 6 and then column 12. The segments with content are between columns 1-5 and 7-11. 
+
+For Example1, I see columns 0, 8, and 16 are all zeros, creating segments from 1-7 and 9-15. I’m refining the offset calculations for duplicating shapes and focused on ensuring I replicate shapes correctly from the segments identified. I’ll get started on coding that!
+
+```python
+grid_test = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,7,7,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,7,7,7,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0]
+]
+H=len(grid_test); W=len(grid_test[0])
+zero_cols=[c for c in range(W) if all(grid_test[r][c]==0 for r in range(H))]
+zero_cols
+```
+
+**Evaluating replication offsets**
+
+I'm considering replicating patterns to the left across blank columns, but there’s an issue with overlapping zeros that may cause insufficient width. I need to compute the duplication offset, where an example shows an offset of 9, equating to the gap between all-zero columns. The zero columns are at indices 0, 8, and 16. Between segments, I noticed that the gap actually measures 8, not 9, so I might need to adjust my duplication offset calculations accordingly. There’s definitely more to unpack here!
+
+**Analyzing tile widths**
+
+I'm figuring out that the starting index of the second tile is 9, which ties back to the original offset of 3 leading to duplicates at index 12. This consistent separation suggests a tile width of 9. The width includes the initial two zeros, and I need to recalibrate that understanding, confirming the tile width. I also notice that the second example has a tile width of 6 and defines patterns by treating the grid as horizontally tiled. I’ll clarify the pattern replication across tiles based on the periodicity in the first row!
+
+**Exploring duplication logic**
+
+In row 1, I see an 8,7 pattern on the left, but no duplicates, so I’m thinking about how to replicate it. I need to compute the repeating period for row 1, which may not work with a p of 10 due to undefined values. So, if row 1 is shorter, I question whether duplication would place shapes into the second tile. It appears the width should allow for full tiles, but it’s partly truncated. I’ll derive the tile width based on the gaps in the pattern, noting any repeats, and then confirm this logic with the examples to craft the algorithm effectively.
+
+```python
+def transform(grid):
+    H=len(grid);W=len(grid[0])
+    # find separator blank columns where all zero
+    blank=[c for c in range(W) if all(grid[r][c]==0 for r in range(H))]
+    if len(blank)<2:
+        return grid
+    # assume first gap between blank columns non-consecutive defines tile width
+    # compute minimal positive difference between blanks >1?
+    diffs=[blank[i+1]-blank[i] for i in range(len(blank)-1) if blank[i+1]-blank[i]>1]
+    if not diffs:
+        # consecutive blanks only; tile width maybe blank[0]+1?
+        return grid
+    tile_width=diffs[0]
+    new=[row[:] for row in grid]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]!=0:
+                color=grid[r][c]
+                shift=c+tile_width
+                while shift<W:
+                    new[r][shift]=color
+                    shift+=tile_width
+    return new
+out=transform(grid_test)
+out
+```
+
+```python
+for row in out:
+    print(row)
+```
+
+Rule: Locate the distance between the first two columns that are entirely 0; call this distance the horizontal period P.  For every non-zero cell, add an identical cell P columns to its right (do this repeatedly while the target column is inside the grid).","grid_test = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,7,7,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,0,0,7,0,0],
+[0,0,8,8,8,8,8,7,7,7,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,8,8,8,8,8,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0]
+]
+H=len(grid_test); W=len(grid_test[0])
+zero_cols=[c for c in range(W) if all(grid_test[r][c]==0 for r in range(H))]
+zero_cols
+
+def transform(grid):
+    H=len(grid);W=len(grid[0])
+    # find separator blank columns where all zero
+    blank=[c for c in range(W) if all(grid[r][c]==0 for r in range(H))]
+    if len(blank)<2:
+        return grid
+    # assume first gap between blank columns non-consecutive defines tile width
+    # compute minimal positive difference between blanks >1?
+    diffs=[blank[i+1]-blank[i] for i in range(len(blank)-1) if blank[i+1]-blank[i]>1]
+    if not diffs:
+        # consecutive blanks only; tile width maybe blank[0]+1?
+        return grid
+    tile_width=diffs[0]
+    new=[row[:] for row in grid]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]!=0:
+                color=grid[r][c]
+                shift=c+tile_width
+                while shift<W:
+                    new[r][shift]=color
+                    shift+=tile_width
+    return new
+out=transform(grid_test)
+out
+
+for row in out:
+    print(row)",0,"The Evaluated Rule focuses on creating a horizontal pattern based on the distance between columns of zeros, which does not align with the Ground Truth Rule's requirement of copying an attachment from one object to another while keeping the original intact. The core transformation functionality is not similar.","Locate the distance between the first two columns that are entirely 0; call this distance the horizontal period P.  For every non-zero cell, add an identical cell P columns to its right (do this repeatedly while the target column is inside the grid).",1,Incorrect,2,0
+2025-07-17T20:36:04,Copy,Copy8,2,low,0,mismatch,1,"0 6 5 5 0 5 5 0 0 0 5 5 0 5 5 6 0
+0 6 5 0 5 0 5 0 0 0 5 0 5 0 5 6 0
+0 6 5 5 0 5 5 0 0 0 5 5 0 5 5 6 0
+0 6 5 0 0 0 5 0 0 0 5 0 0 0 5 6 0
+0 6 5 0 0 0 5 5 0 5 5 0 0 0 5 5 0
+5 6 5 0 0 0 5 0 5 0 5 0 0 0 5 6 5
+5 6 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+0 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing grid patterns**
+
+I need to figure out the rule by examining examples. For a 10x17 grid, the output should have the same dimensions. The input shows a pattern where the left side seems rotated, and the output mirrors certain aspects on the right. Notably, in the input, there’s a triangle shape of 2's at columns 3-5 across rows 0-2. In the output, 2's appear in a similar pattern at column 12, possibly reflecting horizontally with a consistent offset of +9 columns.
+
+**Examining duplication rules**
+
+I’m trying to establish a rule for duplicating patterns in the grid. It seems like I need to duplicate the non-zero pattern from the top-left corner to the right, aligning with the areas of zeros until reaching the border. However, I noticed that there are already 1s present in some output rows, particularly row 3, so duplication isn’t necessary there. The key might be to fill in the missing symmetric counterparts to create horizontal symmetry. For instance, while 1s are mirrored, 2s need duplication to achieve symmetry. In Example 2, the 3s need similar treatment. Let's clarify that further!
+
+**Formulating mirroring rules**
+
+I'm determining a mirroring rule around the vertical centerline of the grid. For a grid width of 13, the center is column 6, where the mirroring of non-zero cells occurs. For example, in row 7, 3s are correctly added at the mirrored positions. Additionally, for row 9, the 3 at column 3 gets mirrored to column 9. The general rule seems to be reflecting the grid horizontally to create symmetry while maintaining the original colors where they overlap. I’ll apply this rule consistently across different examples to test it out.
+
+```python
+inp = [
+[0,6,5,5,0,0,0,0,0,0,5,5,0,0,0,0,0],
+[0,6,5,0,5,0,0,0,0,0,5,0,5,0,0,0,0],
+[0,6,5,0,0,5,0,0,0,0,5,0,0,5,0,0,0],
+[0,6,5,0,0,0,5,0,0,0,5,0,0,0,5,0,0],
+[0,6,5,0,0,0,0,5,0,0,5,0,0,0,0,5,0],
+[0,6,5,0,0,0,0,0,5,0,5,0,0,0,0,0,5],
+[0,6,5,5,5,5,5,5,5,0,5,5,5,5,5,5,5],
+[0,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+h=len(inp)
+w=len(inp[0])
+out=[row[:] for row in inp]
+for r in range(h):
+    for c in range(w):
+        val=inp[r][c]
+        if val!=0:
+            mirror=w-1-c
+            if out[r][mirror]==0:
+                out[r][mirror]=val
+print(out)
+
+```
+
+**Double-checking overlaps**
+
+I need to confirm the central overlaps. My plan is to set a target of zero, but only if that's the case; otherwise, I'll leave the existing values as they are. Keeping to this consistency is essential. I also want to format a grid that’s 10x17 in size to improve readability, making sure the string lines are clear and easy to understand for whoever is working with it. It seems straightforward, but I want to ensure accuracy!
+
+```python
+for row in out:
+    print(' '.join(map(str,row)))
+
+```
+
+```python
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:400]
+
+```
+
+Rule: Mirror every non-zero cell horizontally across the vertical mid-line of the grid; if the mirrored position is 0, copy the colour there, otherwise leave it unchanged.","inp = [
+[0,6,5,5,0,0,0,0,0,0,5,5,0,0,0,0,0],
+[0,6,5,0,5,0,0,0,0,0,5,0,5,0,0,0,0],
+[0,6,5,0,0,5,0,0,0,0,5,0,0,5,0,0,0],
+[0,6,5,0,0,0,5,0,0,0,5,0,0,0,5,0,0],
+[0,6,5,0,0,0,0,5,0,0,5,0,0,0,0,5,0],
+[0,6,5,0,0,0,0,0,5,0,5,0,0,0,0,0,5],
+[0,6,5,5,5,5,5,5,5,0,5,5,5,5,5,5,5],
+[0,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+h=len(inp)
+w=len(inp[0])
+out=[row[:] for row in inp]
+for r in range(h):
+    for c in range(w):
+        val=inp[r][c]
+        if val!=0:
+            mirror=w-1-c
+            if out[r][mirror]==0:
+                out[r][mirror]=val
+print(out)
+
+for row in out:
+    print(' '.join(map(str,row)))
+
+grid_str='\n'.join(' '.join(map(str,row)) for row in out)
+grid_str[:400]",1,"The Evaluated Rule describes a transformation that involves mirroring non-zero cells horizontally, which is fundamentally different from the Ground Truth Rule that focuses on copying an attachment from one object to another without altering the original object. The key transformation functionalities are not aligned.","Mirror every non-zero cell horizontally across the vertical mid-line of the grid; if the mirrored position is 0, copy the colour there, otherwise leave it unchanged.",1,Correct - Unintended,2,0
+2025-07-17T20:38:58,Copy,Copy8,3,low,1,,1,"0 3 3 3 3 3 0 3 3 3 3 3 0
+0 3 3 3 3 3 0 3 3 3 3 3 0
+0 3 3 3 3 3 0 3 3 3 3 3 0
+0 3 3 3 3 3 0 3 3 3 3 3 0
+0 3 3 3 3 3 0 3 3 3 3 3 0
+0 0 0 3 0 0 0 0 0 3 0 0 0
+0 0 0 3 0 0 0 0 0 3 0 0 0
+0 0 0 3 0 0 0 0 0 3 0 0 0
+0 3 3 3 3 3 0 3 3 3 3 3 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing pixel replication**
+
+I'm considering how to replicate colored pixels from one side of a block area to the other. It looks like any colored pixels on the left side without counterparts on the right should be mirrored horizontally across a central gap. I want to compute the offset between two repeating segments based on the pattern's color. For example, if the left segment has a color in columns 1-5 and the right segment corresponds to columns 7-11, I’d copy any differing pixels to the right using that offset. But I wonder how to handle unexpected colors appearing in both halves.
+
+**Examining the test grid**
+
+I'm analyzing the test grid, which has a width of 13 and height of 12. The first row shows a length of 13. There’s a significant block of 3's on the left side from rows 0-4 and a bottom row of 8. The only color present seems to be 3, except for zeros. 
+
+Rows 0-4 have 3's in columns 1-5 and 7-11. Noticing two blocks of 3's separated by a zero in column 6. Rows 5-7 each contain a single 3 at column 3. In row 8, there’s a left block of 3's in columns 1-5, so I’ll need to replicate these to the right side, using an offset. It’s important to differentiate between the existing 3's on the right and the new ones that need to be copied.
+
+**Building the output grid**
+
+In the test, color 3 creates rectangles along with some extra vertical and horizontal elements. There might be duplicates on the left side only, which means I need to copy those extra elements, but the right rectangle already has 3's. I can't add anything new there. 
+
+For rows 5, 6, and 7, I see 3's at column 3, so I'll replicate those to column 9. Row 8 has a left block of 3's in columns 1-5, which I'll replicate to columns 7-11, filling in the zeros to create a symmetrical grid. Now, I'll manually produce this grid with my calculations!
+
+```python
+input_rows = [
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,3,3,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+height=len(input_rows)
+width=len(input_rows[0])
+width
+```
+
+```python
+# Determine offset by locating two identical block columns of repeated pattern? We'll assume central zero column at 6
+offset=6
+output=[row[:] for row in input_rows]
+for r in range(height):
+    for c in range(width):
+        if input_rows[r][c]!=0:
+            target=c+offset
+            if target<width and input_rows[r][target]==0:
+                output[r][target]=input_rows[r][c]
+# print
+for row in output:
+    print(' '.join(map(str,row)))
+```
+
+**Developing a rule description**
+
+I see that there's a duplication of certain anchor shapes in the input data. I want to craft a rule description that clarifies the approach. I’ll start with the concept of two identical anchor shapes of a specific color, then look for the horizontal offset between them. For every differently colored pixel in the left half, I need to add a shifted copy to the right, but only if that space is empty. Next, I realize that additional duplicates may exist outside the identified anchor region. So, I’ll ensure to adjust my processing method accordingly!
+
+**Refining the rule for grid copying**
+
+I’m thinking about a simpler rule for handling grid positions. If a cell on the left side has a non-zero value and the corresponding position with a fixed gap to the right is zero, I should copy that value over. I'll derive the fixed gap from the first non-zero row, determining the smallest positive offset that allows for a horizontal shift while keeping the patterns consistent. Then, I'll create a JSON representation that includes both the rule and the grid data in a minified format. Now, I need to build the grid string correctly!
+
+```python
+grid_str='\n'.join(' '.join(map(str,row)) for row in output)
+grid_str
+```
+
+Rule: Two identical anchor shapes of a single colour appear in the same rows, separated by a column gap. Let the horizontal offset between corresponding cells of the two anchor shapes be d. For every non-zero cell located anywhere in the grid, if the cell that lies d columns to its right is empty (0), copy the colour there. This makes the right-hand part of the grid match the left-hand part.","input_rows = [
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,3,3,3,3,3,0,3,3,3,3,3,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,3,3,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+height=len(input_rows)
+width=len(input_rows[0])
+width
+
+# Determine offset by locating two identical block columns of repeated pattern? We'll assume central zero column at 6
+offset=6
+output=[row[:] for row in input_rows]
+for r in range(height):
+    for c in range(width):
+        if input_rows[r][c]!=0:
+            target=c+offset
+            if target<width and input_rows[r][target]==0:
+                output[r][target]=input_rows[r][c]
+# print
+for row in output:
+    print(' '.join(map(str,row)))
+
+grid_str='\n'.join(' '.join(map(str,row)) for row in output)
+grid_str",1,"The Evaluated Rule introduces a specific condition regarding the horizontal offset and the presence of empty cells, which diverges from the Ground Truth Rule's focus on copying an attachment from the left object to the right object without any conditions on gaps or offsets. The core transformation functionality is not preserved.","Two identical anchor shapes of a single colour appear in the same rows, separated by a column gap. Let the horizontal offset between corresponding cells of the two anchor shapes be d. For every non-zero cell located anywhere in the grid, if the cell that lies d columns to its right is empty (0), copy the colour there. This makes the right-hand part of the grid match the left-hand part.",1,Correct - Intended,2,0
+2025-07-17T20:40:11,Copy,Copy9,1,low,1,,1,"0 9 9 0 0 0 0 0 0
+9 9 9 0 0 0 9 9 0
+0 9 0 0 0 9 9 9 0
+0 0 0 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+6 6 6 0 0 0 6 6 6
+0 6 6 0 0 0 0 6 6
+0 0 6 0 0 0 0 0 6","**Developing grid rules**
+
+I need to establish a rule for transforming an input grid of colored blocks into an output grid. Essentially, when I see colored clusters, it appears I should copy each cluster and fill in the surrounding cells to create a complete 3x3 square. For example, if there's a solid cluster in the top-left, it remains unchanged, but a single colored pixel should expand into a filled 3x3 square. I also wonder about how to handle larger clusters—maybe I can anchor them in a consistent way? Let's explore more examples with different colors.
+
+**Analyzing shapes in outputs**
+
+I’m examining the output's top-left area and noticing a plus shape that resembles a diamond, rather than a full 3x3 square. It seems the original input had just a single pixel at (1,3), which transformed into this cross shape. Color 2 also has a cluster forming a similar shape on the bottom-left. For Color 3, I see potential growth around a diamond pattern. 
+
+It looks like the rule involves identifying existing shapes—like filled squares or plus shapes—and replicating these around their corresponding single pixels. For each color, I’ll focus on their full shapes and individual pixels accordingly.
+
+**Identifying color patterns**
+
+For Color 3, I see a plus shape that should replicate where its single pixel is located. Moving onto Color 8, there seems to be a hollow square pattern, especially noticeable in the top-left grid area. It's a 3x3 ring with a center of zero. I also notice Color 6 forms a similar hollow square. The rule emerging here is to locate the larger template shapes and overlay them centered on any isolated pixels of the same color. 
+
+However, there's a contradiction when a pixel maps to an empty center in the template, so I need to reassess the central alignment for these patterns.
+
+**Analyzing pixel mapping**
+
+I’m looking at a single pixel located at (row 5, col 6) and realizing it serves as the center for the ring pattern, which spans rows 4-6 and columns 5-7. However, the ring’s center is supposed to be empty (0), so this leads to a contradiction since the pixel would disappear in the output.
+
+It appears I need to replace single pixels wisely: if the center of the template is filled, then that position remains colored; if it’s empty, it becomes zero. My algorithm should ensure that the template aligns correctly so its center matches the pixel's location. Next, I’ll identify the template shapes for colors 9 and 6.
+
+```python
+grid = [
+[0,0,0,0,0,0,0,0,0],
+[0,9,0,0,0,0,9,9,0],
+[0,0,0,0,0,9,9,9,0],
+[0,0,0,0,0,0,9,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[6,6,6,0,0,0,0,0,0],
+[0,6,6,0,0,0,0,6,0],
+[0,0,6,0,0,0,0,0,0],
+]
+
+```
+
+**Identifying color clusters**
+
+I’m focusing on finding connected components for each color. For color 9, I notice a cluster in the top right region that seems to be larger than one pixel. I need to pinpoint if there are any single pixels or smaller groups present too. It's interesting to think about how we can categorize and identify these components! Let's keep an eye on the sizes and distribution as I go along.
+
+```python
+from collections import defaultdict, deque, Counter
+h=len(grid); w=len(grid[0])
+def components(color):
+    vis=[[False]*w for _ in range(h)]
+    comps=[]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==color and not vis[r][c]:
+                q=[(r,c)]
+                vis[r][c]=True
+                comp=[]
+                while q:
+                    rr,cc=q.pop()
+                    comp.append((rr,cc))
+                    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                        nr,nc=rr+dr,cc+dc
+                        if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                            vis[nr][nc]=True
+                            q.append((nr,nc))
+                comps.append(comp)
+    return comps
+print(components(9))
+
+```
+
+**Verifying template dimensions**
+
+I'm checking the sizes of the templates, and it seems they all appear to be 3x3, which is an odd dimension. I want to verify the size for the plus shape and confirm that it's indeed 3x3. The same goes for the ring. I need to compute the bounding box of the template component, and I need to ensure it’s 3x3 as well. Lastly, I'm curious about the color template size; I should find the bounding box for that too.
+
+```python
+template9=components(9)[1]
+rs=[r for r,c in template9]
+cs=[c for r,c in template9]
+print(min(rs),max(rs),min(cs),max(cs))
+
+```
+
+**Computing grid patterns**
+
+I'm examining a grid defined by rows 1-3 and columns 5-7, which gives me a 3x3 bounding box. Using the center coordinates (2, 6), I can calculate relative positions for colored offsets. I need to ensure these offsets stay within grid boundaries, focusing on replication around this central point. For color 6, I see a pixel at (8, 7)—wait, is it part of a larger cluster? I need to compute that detail more precisely.
+
+```python
+comps6=components(6)
+print(comps6)
+
+```
+
+```python
+template6=comps6[0]
+rs=[r for r,c in template6]; cs=[c for r,c in template6]
+print(min(rs),max(rs),min(cs),max(cs))
+
+```
+
+**Analyzing shape patterns**
+
+I’m looking at a 3x3 grid with rows 7-9 and columns 0-2. The center is at (8,1). I’m wondering if these coordinates form a plus-shape cross. Right now, it looks more like a ring than a cross. The positions I’ve noted are (7,0; 7,1; 7,2; 8,2; 9,2; 8,1). It’s interesting to visualize the pattern better, but I need to double-check if this truly reflects what I expect for a plus shape.
+
+```python
+grid_sub=[[grid[r][c] for c in range(0,3)] for r in range(7,10)]
+grid_sub
+```
+
+```python
+template9grid=[[1 if (r,c) in template9 else 0 for c in range(5,8)] for r in range(1,4)]
+template9grid
+```
+
+```python
+import copy, math
+out=[row[:] for row in grid]
+def apply(color):
+    comps=components(color)
+    # find largest component (size >1) as template
+    comps_sorted=sorted(comps, key=lambda x: -len(x))
+    template=comps_sorted[0]
+    target=[c for c in comps if len(c)==1]
+    if not target:
+        return
+    target_cell=target[0][0]
+    # bounding box
+    rs=[r for r,c in template]; cs=[c for r,c in template]
+    rmin,rmax=min(rs),max(rs)
+    cmin,cmax=min(cs),max(cs)
+    center_r=(rmin+rmax)//2
+    center_c=(cmin+cmax)//2
+    colored_offsets=[(r-center_r,c-center_c) for r,c in template]
+    # apply at target center
+    tr,tc=target_cell
+    # first, optionally clear? We'll paint colored cells; For center, if not in colored offsets, we should set 0
+    # We'll handle by clearing target cell; then set colored
+    out[tr][tc]=0
+    for dr,dc in colored_offsets:
+        nr,trr=tr+dr, tc+dc
+
+```
+
+```python
+def apply_all(grid):
+    colors=set(cell for row in grid for cell in row if cell!=0)
+    out=[row[:] for row in grid]
+    def comps(color):
+        vis=[[False]*w for _ in range(h)]
+        comps=[]
+        for r in range(h):
+            for c in range(w):
+                if grid[r][c]==color and not vis[r][c]:
+                    stack=[(r,c)]
+                    vis[r][c]=True
+                    comp=[]
+                    while stack:
+                        rr,cc=stack.pop()
+                        comp.append((rr,cc))
+                        for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                            nr,nc=rr+dr,cc+dc
+                            if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                                vis[nr][nc]=True
+                                stack.append((nr,nc))
+                    comps.append(comp)
+        return comps
+    for color in colors:
+        comps_list=comps(color)
+        comps_list.sort(key=lambda x: len(x), reverse=True)
+        if len(comps_list)<2:
+            continue
+        template=comps_list[0]
+        target=[comp for comp in comps_list if len(comp)==1][0][0]
+        rs=[r for r,c in template]; cs=[c for r,c in template]
+        center_r=(min(rs)+max(rs))//2
+        center_c=(min(cs)+max(cs))//2
+        offsets=[(r-center_r,c-center_c) for r,c in template]
+        tr,tc=target
+        # clear target cell (will be overwritten if center colored else 0)
+        out[tr][tc]=0
+        for dr,dc in offsets:
+            nr,trc=tr+dr, tc+dc
+
+```
+
+```python
+def solve(grid):
+    h=len(grid); w=len(grid[0])
+    colors=set(cell for row in grid for cell in row if cell!=0)
+    out=[row[:] for row in grid]
+    def comps(color):
+        vis=[[False]*w for _ in range(h)]
+        comps=[]
+        for r in range(h):
+            for c in range(w):
+                if grid[r][c]==color and not vis[r][c]:
+                    stack=[(r,c)]
+                    vis[r][c]=True
+                    comp=[]
+                    while stack:
+                        rr,cc=stack.pop()
+                        comp.append((rr,cc))
+                        for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                            nr,nc=rr+dr,cc+dc
+                            if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                                vis[nr][nc]=True
+                                stack.append((nr,nc))
+                    comps.append(comp)
+        return comps
+    for color in colors:
+        comps_list=comps(color)
+        comps_list.sort(key=lambda x: len(x), reverse=True)
+        if len(comps_list)<2:
+            continue
+        template=comps_list[0]
+        # find singleton comp
+        target_comp=[c for c in comps_list if len(c)==1]
+        if not target_comp:
+            continue
+        (tr,tc)=target_comp[0][0]
+        rs=[r for r,c in template]; cs=[c for r,c in template]
+        center_r=(min(rs)+max(rs))//2
+        center_c=(min(cs)+max(cs))//2
+        offsets=[(r-center_r, c-center_c) for r,c in template]
+        # clear target
+        out[tr][tc]=0
+        for dr,dc in offsets:
+            nr=tr+dr; nc=tc+dc
+            if 0<=nr<h and 0<=nc<w:
+                out[nr][nc]=color
+    return out
+result=solve(grid)
+result
+```
+
+```python
+for row in result:
+    print(row)
+```
+
+**Generating JSON for grid transformation**
+
+I need to ensure that the target center at (8,7) is represented correctly as a colored center. So, I'll show the entire grid output as well. The final grid will predict how it looks.
+
+Next, I’ll craft a JSON string with a clear rule: ""Copy the larger 3x3 pattern of each color and paste it centered on every isolated single pixel of that color."" This will involve returning the grid as rows of numbers, formatted appropriately. Let's work on producing that string.
+
+```python
+grid_str=""\n"".join("" "".join(str(x) for x in row) for row in result)
+grid_str
+```
+
+Rule: For each colour there is exactly one multi-cell 3×3 pattern and one lone pixel. Use the multi-cell block as a template: take its 3×3 bounding box and regard its centre cell as the anchor. Delete the lone pixel and paste the template so that its centre falls on the lone pixel, keeping every template cell that lies inside the grid. Repeat independently for every colour.","grid = [
+[0,0,0,0,0,0,0,0,0],
+[0,9,0,0,0,0,9,9,0],
+[0,0,0,0,0,9,9,9,0],
+[0,0,0,0,0,0,9,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[6,6,6,0,0,0,0,0,0],
+[0,6,6,0,0,0,0,6,0],
+[0,0,6,0,0,0,0,0,0],
+]
+
+from collections import defaultdict, deque, Counter
+h=len(grid); w=len(grid[0])
+def components(color):
+    vis=[[False]*w for _ in range(h)]
+    comps=[]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==color and not vis[r][c]:
+                q=[(r,c)]
+                vis[r][c]=True
+                comp=[]
+                while q:
+                    rr,cc=q.pop()
+                    comp.append((rr,cc))
+                    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                        nr,nc=rr+dr,cc+dc
+                        if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                            vis[nr][nc]=True
+                            q.append((nr,nc))
+                comps.append(comp)
+    return comps
+print(components(9))
+
+template9=components(9)[1]
+rs=[r for r,c in template9]
+cs=[c for r,c in template9]
+print(min(rs),max(rs),min(cs),max(cs))
+
+comps6=components(6)
+print(comps6)
+
+template6=comps6[0]
+rs=[r for r,c in template6]; cs=[c for r,c in template6]
+print(min(rs),max(rs),min(cs),max(cs))
+
+grid_sub=[[grid[r][c] for c in range(0,3)] for r in range(7,10)]
+grid_sub
+
+template9grid=[[1 if (r,c) in template9 else 0 for c in range(5,8)] for r in range(1,4)]
+template9grid
+
+import copy, math
+out=[row[:] for row in grid]
+def apply(color):
+    comps=components(color)
+    # find largest component (size >1) as template
+    comps_sorted=sorted(comps, key=lambda x: -len(x))
+    template=comps_sorted[0]
+    target=[c for c in comps if len(c)==1]
+    if not target:
+        return
+    target_cell=target[0][0]
+    # bounding box
+    rs=[r for r,c in template]; cs=[c for r,c in template]
+    rmin,rmax=min(rs),max(rs)
+    cmin,cmax=min(cs),max(cs)
+    center_r=(rmin+rmax)//2
+    center_c=(cmin+cmax)//2
+    colored_offsets=[(r-center_r,c-center_c) for r,c in template]
+    # apply at target center
+    tr,tc=target_cell
+    # first, optionally clear? We'll paint colored cells; For center, if not in colored offsets, we should set 0
+    # We'll handle by clearing target cell; then set colored
+    out[tr][tc]=0
+    for dr,dc in colored_offsets:
+        nr,trr=tr+dr, tc+dc
+
+def apply_all(grid):
+    colors=set(cell for row in grid for cell in row if cell!=0)
+    out=[row[:] for row in grid]
+    def comps(color):
+        vis=[[False]*w for _ in range(h)]
+        comps=[]
+        for r in range(h):
+            for c in range(w):
+                if grid[r][c]==color and not vis[r][c]:
+                    stack=[(r,c)]
+                    vis[r][c]=True
+                    comp=[]
+                    while stack:
+                        rr,cc=stack.pop()
+                        comp.append((rr,cc))
+                        for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                            nr,nc=rr+dr,cc+dc
+                            if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                                vis[nr][nc]=True
+                                stack.append((nr,nc))
+                    comps.append(comp)
+        return comps
+    for color in colors:
+        comps_list=comps(color)
+        comps_list.sort(key=lambda x: len(x), reverse=True)
+        if len(comps_list)<2:
+            continue
+        template=comps_list[0]
+        target=[comp for comp in comps_list if len(comp)==1][0][0]
+        rs=[r for r,c in template]; cs=[c for r,c in template]
+        center_r=(min(rs)+max(rs))//2
+        center_c=(min(cs)+max(cs))//2
+        offsets=[(r-center_r,c-center_c) for r,c in template]
+        tr,tc=target
+        # clear target cell (will be overwritten if center colored else 0)
+        out[tr][tc]=0
+        for dr,dc in offsets:
+            nr,trc=tr+dr, tc+dc
+
+def solve(grid):
+    h=len(grid); w=len(grid[0])
+    colors=set(cell for row in grid for cell in row if cell!=0)
+    out=[row[:] for row in grid]
+    def comps(color):
+        vis=[[False]*w for _ in range(h)]
+        comps=[]
+        for r in range(h):
+            for c in range(w):
+                if grid[r][c]==color and not vis[r][c]:
+                    stack=[(r,c)]
+                    vis[r][c]=True
+                    comp=[]
+                    while stack:
+                        rr,cc=stack.pop()
+                        comp.append((rr,cc))
+                        for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                            nr,nc=rr+dr,cc+dc
+                            if 0<=nr<h and 0<=nc<w and grid[nr][nc]==color and not vis[nr][nc]:
+                                vis[nr][nc]=True
+                                stack.append((nr,nc))
+                    comps.append(comp)
+        return comps
+    for color in colors:
+        comps_list=comps(color)
+        comps_list.sort(key=lambda x: len(x), reverse=True)
+        if len(comps_list)<2:
+            continue
+        template=comps_list[0]
+        # find singleton comp
+        target_comp=[c for c in comps_list if len(c)==1]
+        if not target_comp:
+            continue
+        (tr,tc)=target_comp[0][0]
+        rs=[r for r,c in template]; cs=[c for r,c in template]
+        center_r=(min(rs)+max(rs))//2
+        center_c=(min(cs)+max(cs))//2
+        offsets=[(r-center_r, c-center_c) for r,c in template]
+        # clear target
+        out[tr][tc]=0
+        for dr,dc in offsets:
+            nr=tr+dr; nc=tc+dc
+            if 0<=nr<h and 0<=nc<w:
+                out[nr][nc]=color
+    return out
+result=solve(grid)
+result
+
+for row in result:
+    print(row)
+
+grid_str=""\n"".join("" "".join(str(x) for x in row) for row in result)
+grid_str",1,"The Evaluated Rule specifies that there is exactly one multi-cell 3×3 pattern and one lone pixel for each color, which is a significant restriction not present in the Ground Truth Rule. The Ground Truth Rule allows for any larger object of the same color to be copied, not just a single predefined 3×3 pattern. Therefore, the Evaluated Rule does not capture the full scope of the transformation described in the Ground Truth Rule.","For each colour there is exactly one multi-cell 3×3 pattern and one lone pixel. Use the multi-cell block as a template: take its 3×3 bounding box and regard its centre cell as the anchor. Delete the lone pixel and paste the template so that its centre falls on the lone pixel, keeping every template cell that lies inside the grid. Repeat independently for every colour.",1,Correct - Intended,2,0
+2025-07-17T20:42:26,Copy,Copy9,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0
+0 3 3 3 0 0 4 4 4 0
+0 3 0 3 0 0 4 0 4 0
+0 3 3 3 0 0 4 4 4 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 3 3 3 0 4 4 4
+0 0 0 3 0 3 0 4 0 4
+0 0 0 3 3 3 0 4 4 4
+0 0 0 0 0 0 0 0 0 0","**Analyzing patterns and coordinates**
+
+I'm looking at a T-shaped motif where the center is at (5,1). It forms a cross pattern with surrounding values of 2. I need to replicate this pattern while identifying singleton values, like those at (1,3). The output grid reflects this new arrangement, positioning 2s correctly around the center. Now, regarding color3, I notice a cluster of coordinates on the right. I’ll explore if this forms a similar cross shape when rotated.
+
+**Examining grid patterns**
+
+I’m considering the coordinates for a potential pattern centered at (5,7), which resembles a plus shape. I need to clarify the grid size—looks like it may actually be 9 columns by 12 rows. For color3, I've identified a cluster with specific coordinates and noted some symmetry in their arrangement. It seems the cluster forms an X shape rather than a standard cross. I should apply this observation to evaluate the color2 cluster and how various shapes replicate across defined patterns.
+
+**Analyzing hollow patterns**
+
+I’m identifying a hollow cross pattern on the grid with clusters of 8s, creating a square ring with an empty center. There's also a similar pattern with 6s at the bottom, which also forms a hollow square. It seems the color8 cluster at the top-left can be replicated onto its single occurrences in the grid, while the color6 cluster mirrors around another lone 6. For each color, I see a large template with smaller single occurrences, and I need to ensure these templates are correctly integrated where they occur.
+
+**Reviewing input patterns**
+
+I need to clarify that the input for row 9 actually contains ""0 0 0 0 0 6 6 6 0 0 0,"" which belongs to Example3—not Example2. So, I should reevaluate my understanding of the patterns. It seems I'm correctly identifying a rule: for each color, I find a 3x3 template pattern and then replicate it around any occurrences of that color that aren’t already part of a pattern. I’ll need to analyze Example2 more rigorously to ensure everything aligns.
+
+```python
+grid_input2 = [
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,2,0,0,0,0,3,0,3],
+[2,2,2,0,0,0,0,3,0],
+[0,2,0,0,0,0,3,0,3],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0]
+]
+grid_output2 = [
+[0,0,0,2,0,0,0,0,0],
+[0,0,2,2,2,0,0,0,0],
+[0,0,0,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,2,0,0,0,0,3,0,3],
+[2,2,2,0,0,0,0,3,0],
+[0,2,0,0,0,0,3,0,3],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,0,3,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,3,0,3,0,0],
+[0,0,0,0,0,0,0,0,0]
+]
+
+# differences
+diff = []
+for r in range(len(grid_input2)):
+    for c in range(9):
+        if grid_input2[r][c]!=grid_output2[r][c]:
+            diff.append((r,c,grid_input2[r][c],grid_output2[r][c]))
+len(diff)
+
+```
+
+```python
+diff
+```
+
+```python
+grid = [[0]*10 for _ in range(10)]
+input_lines = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,0,0,4,4,4,0],
+[0,3,0,3,0,0,4,0,4,0],
+[0,3,3,3,0,0,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,0,0,0,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+grid = [row[:] for row in input_lines]
+
+# template positions for hollow square relative to center
+rel = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+
+# add for singleton centers
+# find singleton 3 at (7,4)
+centers = [(7,4,3),(7,8,4)]
+for (r,c,color) in centers:
+    for dr,dc in rel:
+        rr,cc = r+dr, c+dc
+        if 0<=rr<10 and 0<=cc<10:
+            grid[rr][cc]=color
+    # also ensure center remains color
+    grid[r][c]=color
+
+grid
+```
+
+**Reevaluating pattern filling**
+
+I've realized that my previous square pattern attempt is flawed. I mistakenly filled in the inner row of 3s, where I shouldn’t have included the center cell or its row and column for a hollow square. The hollow square should have full top and bottom rows, but only the edges of the middle row. Confusingly, I mistakenly included the center (0,0), which doesn't belong in the hollow structure. I need to reevaluate the output grid and correct it!
+
+**Reassessing row configurations**
+
+I’m examining row 6, which should have ""3 3 3"" for the top of the hollow square pattern, and the center cell is at (7,4). I previously set the center (row 7, column 4) to 3, but for a hollow square, it should actually remain as 0. 
+
+It’s clear that the template for the hollow square requires the center cell to be empty. In the original clusters, the center cell was 0, so I need to adjust it back. I’ll stick to the rules for replicating patterns correctly!
+
+**Analyzing template replication**
+
+I’m figuring out the color at the center pixel for the clusters. In Example 3, the hollow square template should have a center of 0, but I found an 8 at (5,6). As I check the provided rows, I see that for the corresponding row, col 5 is indeed 8, indicating it’s colored. 
+
+So, while the original hollow template has center 0, the replication keeps the center colored if it was originally filled. Thus, it seems the template isn't strictly hollow since it retains this value. I'll ensure that my earlier approach of keeping color in the center remains correct!
+
+```python
+grid2 = [row[:] for row in input_lines]
+rel_hollow = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+centers = [(7,4,3),(7,8,4)]
+for r,c,col in centers:
+    # first set center to 0
+    grid2[r][c]=0
+    for dr,dc in rel_hollow:
+        rr,cc = r+dr, c+dc
+        if 0<=rr<10 and 0<=cc<10:
+            grid2[rr][cc]=col
+grid2
+```
+
+```python
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in grid2)
+grid_str
+```
+
+Rule: For each non-zero colour do: (1) locate its unique 3×3 sample pattern (the only place where that colour occupies at least 5 cells inside a 3×3 window); (2) every other single pixel of that colour is the centre of a new copy; replace the whole 3×3 window centred there with the sample pattern (overwriting even the centre if the sample has 0 there). Repeat for all colours.","grid_input2 = [
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,2,0,0,0,0,3,0,3],
+[2,2,2,0,0,0,0,3,0],
+[0,2,0,0,0,0,3,0,3],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0]
+]
+grid_output2 = [
+[0,0,0,2,0,0,0,0,0],
+[0,0,2,2,2,0,0,0,0],
+[0,0,0,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,2,0,0,0,0,3,0,3],
+[2,2,2,0,0,0,0,3,0],
+[0,2,0,0,0,0,3,0,3],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,0,3,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,3,0,3,0,0],
+[0,0,0,0,0,0,0,0,0]
+]
+
+# differences
+diff = []
+for r in range(len(grid_input2)):
+    for c in range(9):
+        if grid_input2[r][c]!=grid_output2[r][c]:
+            diff.append((r,c,grid_input2[r][c],grid_output2[r][c]))
+len(diff)
+
+diff
+
+grid = [[0]*10 for _ in range(10)]
+input_lines = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,0,0,4,4,4,0],
+[0,3,0,3,0,0,4,0,4,0],
+[0,3,3,3,0,0,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,0,0,0,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+grid = [row[:] for row in input_lines]
+
+# template positions for hollow square relative to center
+rel = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+
+# add for singleton centers
+# find singleton 3 at (7,4)
+centers = [(7,4,3),(7,8,4)]
+for (r,c,color) in centers:
+    for dr,dc in rel:
+        rr,cc = r+dr, c+dc
+        if 0<=rr<10 and 0<=cc<10:
+            grid[rr][cc]=color
+    # also ensure center remains color
+    grid[r][c]=color
+
+grid
+
+grid2 = [row[:] for row in input_lines]
+rel_hollow = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+centers = [(7,4,3),(7,8,4)]
+for r,c,col in centers:
+    # first set center to 0
+    grid2[r][c]=0
+    for dr,dc in rel_hollow:
+        rr,cc = r+dr, c+dc
+        if 0<=rr<10 and 0<=cc<10:
+            grid2[rr][cc]=col
+grid2
+
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in grid2)
+grid_str",1,"The Evaluated Rule introduces a specific method of identifying a unique 3x3 sample pattern for each color, which is not mentioned in the Ground Truth Rule. The Ground Truth Rule simply states to copy the larger object of the same color centered on isolated pixels, without the need for a unique sample pattern or the specific 3x3 window requirement. This additional complexity in the Evaluated Rule diverges from the straightforward transformation described in the Ground Truth Rule.",For each non-zero colour do: (1) locate its unique 3×3 sample pattern (the only place where that colour occupies at least 5 cells inside a 3×3 window); (2) every other single pixel of that colour is the centre of a new copy; replace the whole 3×3 window centred there with the sample pattern (overwriting even the centre if the sample has 0 there). Repeat for all colours.,1,Correct - Intended,2,0
+2025-07-17T20:43:10,Copy,Copy9,3,low,1,,1,"0 0 2 0 0 0 0 0 0 0
+0 0 2 0 0 0 0 0 0 0
+2 2 2 2 2 0 0 0 0 0
+0 0 2 0 0 0 0 0 0 0
+0 0 2 0 0 0 0 0 0 0
+0 0 0 0 5 5 5 5 5 5
+0 0 2 0 0 5 0 0 5 0
+0 0 2 0 5 0 5 5 0 5
+2 2 2 2 2 0 0 0 0 0
+0 0 2 0 0 0 0 0 0 0
+0 0 2 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","**Examining grid rules**
+
+I’m working on detecting a rule based on a given example. So, the first input has a 3x3 block of 1s in the top-left corner. Then I notice a single 1 located at row 5, column 6. I think we need to replicate the 3x3 block's pattern based on the position of this single 1. I want to clarify if the grid is actually 8x9, and then I should list all the coordinates to make sure everything fits together correctly.
+
+**Analyzing input patterns**
+
+I’m looking at the input lines and see a grid where the first few lines show mostly zeros, with a block of 1s formed around a single 1 at (5,6). The output shows a new 3x3 block of 1s starting at row 4, offset by (-1,-1) which centers around the original single 1. This indicates a pattern of 3x3 squares. 
+
+I then notice in a second example, a single 2 forms a plus shape around its position, suggesting we might want to replicate behaviors based on these center points in larger grids. That’s intriguing!
+
+**Defining expansion rules**
+
+I’m inspecting the coordinates of new 2s relative to the center at (1,3) where the original single is located. The output shows added 2s forming a plus shape around the center. I notice that there’s a rule forming where solitary colored pixels expand into shapes based on existing clusters. 
+
+In the second example, I'm finding multiple plus shapes in the grid. I realize that for every color, there's a prototype shape (a cluster) and a single pixel (the marker). So when I identify these, I can copy the prototype shape centered on the marker in the output while maintaining the original configurations.
+
+**Exploring cluster connectivity**
+
+I’m assessing the clusters and singles in the grid, determining which cluster is the largest and noting the locations of singles. The largest cluster is at (5,7), with a size of four, while there are several singles around. It seems I might have miscounted the singles—perhaps there are multiple placements for copying the prototype shape based on the existing markers.
+
+I realize that for color 3, there’s a plus shape centered around (5,7) and a single marker at (9,5). But I need to clarify if some singles are connected to the main cluster and how that affects replication. It’s a bit perplexing, but I plan to analyze the grid further!
+
+```python
+from collections import defaultdict, deque, Counter
+```
+
+```python
+cells = [(5,7),(5,8),(5,9),(6,5),(6,8),(7,7),(7,9)]
+dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+comp={}
+def find(u):
+    while comp[u]!=u:
+        comp[u]=comp[comp[u]]
+        u=comp[u]
+    return u
+for c in cells:
+    comp[c]=c
+for a in cells:
+    for d in dirs:
+        b=(a[0]+d[0],a[1]+d[1])
+        if b in comp:
+            # union
+            ra=find(a); rb=find(b)
+            if ra!=rb:
+                comp[rb]=ra
+# compute groups
+groups=defaultdict(list)
+for a in cells:
+    groups[find(a)].append(a)
+groups
+```
+
+**Calculating marker position**
+
+I'm working through the layout of my components, focusing on how a marker relates to a cluster of singles. I wonder if the marker is positioned ""left and up"" from the cluster, but examples show inconsistencies. The cluster center might be at (5,1) while the marker is at (1,3), which doesn't match up. 
+
+I could examine the distance from each single to the cluster’s bounding box using Manhattan distance to identify the farthest single as the marker. Let’s get started on that calculation!
+
+```python
+proto=[(5,7),(5,8),(5,9),(6,8)]
+singles=[(6,5),(7,7),(7,9)]
+import math, itertools
+def dist(single):
+    return min(abs(single[0]-p[0])+abs(single[1]-p[1]) for p in proto)
+for s in singles:
+    print(s, dist(s))
+
+```
+
+**Analyzing grid output behavior**
+
+I’m thinking about a specific string in a grid and how the values shift. The center value at position (5,6) changes based on the surrounding values. When the new pattern is applied, it looks like the original pixel (which was 8) gets replaced by 0 because that’s the new center value. It seems we’re overwriting parts of the grid with this new pattern. So, I guess I need to ensure that my pattern includes zeros and shapes to replicate accurately.
+
+**Defining pattern replication**
+
+I’m considering how to capture a pattern as a minimal bounding box. The ring pattern has zeros included, which causes certain cells to turn to 0 when replicated. It seems crucial to incorporate both color values and zeros within the bounding box of the shape. For instance, an example bounding box can contain colored values like in a 3x3 area, but if there are zeros, they should also be considered. I need to ensure the pattern retains this structure when overlaid on the grid.
+
+**Evaluating pattern replication rules**
+
+I’m considering how to replicate a pattern at single pixels without conflicts. It seems we can apply the pattern at specific coordinates, but we need to make sure it doesn't overlap outside the grid. Now, the pattern’s bounding dimensions should ideally be odd. I notice that if a cluster has even dimensions, like 2 rows, that could be problematic. So perhaps I should expand the bounding to include an additional row to ensure it fits correctly while preserving design integrity. That way, I can calculate bounding regions while considering the presence of markers that might overlap.
+
+```python
+def clusters(cells, diag=False):
+    dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+    if diag:
+        dirs += [(1,1),(1,-1),(-1,1),(-1,-1)]
+    comp={}
+    for c in cells:
+        comp[c]=c
+    def find(u):
+        while comp[u]!=u:
+            comp[u]=comp[comp[u]]
+            u=comp[u]
+        return u
+    for a in cells:
+        for d in dirs:
+            b=(a[0]+d[0],a[1]+d[1])
+            if b in comp:
+                ra=find(a); rb=find(b)
+                if ra!=rb:
+                    comp[rb]=ra
+    groups=defaultdict(list)
+    for a in cells:
+        groups[find(a)].append(a)
+    return list(groups.values())
+print(clusters(cells,diag=True))
+
+```
+
+```python
+# construct grid 12x10
+grid=[[0,0,2,0,0,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[2,2,2,2,2,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,5,5,5],
+[0,0,0,0,0,5,0,0,5,0],
+[0,0,0,0,0,0,0,5,0,5],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]]
+# pattern for 2 cluster
+cluster2=[(0,2),(1,2),(2,0),(2,1),(2,2),(2,3),(2,4),(3,2),(4,2)]
+# bounding rows0-4, cols0-4 size5
+pattern2=[[0]*5 for _ in range(5)]
+for r,c in cluster2:
+    pattern2[r][c]=2
+# replicate at marker (8,2)
+mr,mc=8,2
+top=mr-2; left=mc-2
+for i in range(5):
+    for j in range(5):
+        grid[top+i][left+j]=pattern2[i][j]
+# pattern for 5 cluster bounding rows5-7, cols7-9
+pattern5=[[0]*3 for _ in range(3)]
+for (r,c) in [(5,7),(5,8),(5,9),(6,8),(7,7),(7,9)]:
+    pattern5[r-5][c-7]=5
+# replicate at marker (6,5)
+mr,mc=6,5
+top=mr-1; left=mc-1
+for i in range(3):
+    for j in range(3):
+        grid[top+i][left+j]=pattern5[i][j]
+grid
+```
+
+```python
+for row in grid:
+    print(row)
+```
+
+```python
+rows_strings=["" "".join(map(str,row)) for row in grid]
+grid_str=""\n"".join(rows_strings)
+grid_str
+```
+
+Rule: For each colour there are exactly two objects: a multi-cell prototype and a single isolated pixel. Treat pixels connected through 8-neighbourhood as belonging to the same object. Take the minimal bounding box of the prototype (including its internal zeros); copy that whole pattern and paste it so that its centre lands on the single pixel, overwriting whatever is underneath. Do this for every colour and keep the original objects.","from collections import defaultdict, deque, Counter
+
+cells = [(5,7),(5,8),(5,9),(6,5),(6,8),(7,7),(7,9)]
+dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+comp={}
+def find(u):
+    while comp[u]!=u:
+        comp[u]=comp[comp[u]]
+        u=comp[u]
+    return u
+for c in cells:
+    comp[c]=c
+for a in cells:
+    for d in dirs:
+        b=(a[0]+d[0],a[1]+d[1])
+        if b in comp:
+            # union
+            ra=find(a); rb=find(b)
+            if ra!=rb:
+                comp[rb]=ra
+# compute groups
+groups=defaultdict(list)
+for a in cells:
+    groups[find(a)].append(a)
+groups
+
+proto=[(5,7),(5,8),(5,9),(6,8)]
+singles=[(6,5),(7,7),(7,9)]
+import math, itertools
+def dist(single):
+    return min(abs(single[0]-p[0])+abs(single[1]-p[1]) for p in proto)
+for s in singles:
+    print(s, dist(s))
+
+def clusters(cells, diag=False):
+    dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+    if diag:
+        dirs += [(1,1),(1,-1),(-1,1),(-1,-1)]
+    comp={}
+    for c in cells:
+        comp[c]=c
+    def find(u):
+        while comp[u]!=u:
+            comp[u]=comp[comp[u]]
+            u=comp[u]
+        return u
+    for a in cells:
+        for d in dirs:
+            b=(a[0]+d[0],a[1]+d[1])
+            if b in comp:
+                ra=find(a); rb=find(b)
+                if ra!=rb:
+                    comp[rb]=ra
+    groups=defaultdict(list)
+    for a in cells:
+        groups[find(a)].append(a)
+    return list(groups.values())
+print(clusters(cells,diag=True))
+
+# construct grid 12x10
+grid=[[0,0,2,0,0,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[2,2,2,2,2,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,5,5,5],
+[0,0,0,0,0,5,0,0,5,0],
+[0,0,0,0,0,0,0,5,0,5],
+[0,0,2,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]]
+# pattern for 2 cluster
+cluster2=[(0,2),(1,2),(2,0),(2,1),(2,2),(2,3),(2,4),(3,2),(4,2)]
+# bounding rows0-4, cols0-4 size5
+pattern2=[[0]*5 for _ in range(5)]
+for r,c in cluster2:
+    pattern2[r][c]=2
+# replicate at marker (8,2)
+mr,mc=8,2
+top=mr-2; left=mc-2
+for i in range(5):
+    for j in range(5):
+        grid[top+i][left+j]=pattern2[i][j]
+# pattern for 5 cluster bounding rows5-7, cols7-9
+pattern5=[[0]*3 for _ in range(3)]
+for (r,c) in [(5,7),(5,8),(5,9),(6,8),(7,7),(7,9)]:
+    pattern5[r-5][c-7]=5
+# replicate at marker (6,5)
+mr,mc=6,5
+top=mr-1; left=mc-1
+for i in range(3):
+    for j in range(3):
+        grid[top+i][left+j]=pattern5[i][j]
+grid
+
+for row in grid:
+    print(row)
+
+rows_strings=["" "".join(map(str,row)) for row in grid]
+grid_str=""\n"".join(rows_strings)
+grid_str",1,"The Evaluated Rule captures the essence of the Ground Truth Rule by copying the larger object of the same color and centering it on the isolated pixel. Although it introduces additional specifications regarding the bounding box and the treatment of connected pixels, these do not alter the fundamental transformation of placing a larger object centered on an isolated pixel.","For each colour there are exactly two objects: a multi-cell prototype and a single isolated pixel. Treat pixels connected through 8-neighbourhood as belonging to the same object. Take the minimal bounding box of the prototype (including its internal zeros); copy that whole pattern and paste it so that its centre lands on the single pixel, overwriting whatever is underneath. Do this for every colour and keep the original objects.",1,Correct - Intended,2,0

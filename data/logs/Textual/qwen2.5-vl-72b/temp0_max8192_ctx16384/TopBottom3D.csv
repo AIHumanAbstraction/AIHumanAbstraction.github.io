@@ -1,0 +1,192 @@
+"timestamp","concept","puzzle","test_idx","is_correct","err","tools_used","answer","summary","Rule_correct","rule_evaluation_reasoning","Rule","validated","Rule_correct_label","validation_level","starred","programming_calls"
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D1","1","0","mismatch","0","0 0 0 0 0 0 0 0
+0 0 0 5 0 0 0 0
+0 8 8 8 8 8 0 0
+0 8 8 8 8 8 0 0
+0 0 0 5 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0","The rule appears to be that for each row where there is a non-zero value in the middle column (4th column), all non-zero values in that row are changed to the value of the middle column.","0","","For each row, if the 4th column has a non-zero value, change all non-zero values in that row to the value of the 4th column.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D1","2","0","mismatch","0","0 0 2 0 0 0 2 0 0 0
+0 0 2 0 0 0 2 0 0 0
+0 0 2 0 0 0 2 0 0 0
+0 8 8 8 8 8 8 8 8 0
+0 8 8 8 8 8 8 8 8 0
+0 8 8 8 8 8 8 8 8 0
+0 8 8 8 8 8 8 8 8 0
+0 8 8 8 8 8 8 8 8 0
+0 8 8 8 8 8 8 8 8 0
+0 0 2 0 0 0 2 0 0 0","The rule appears to be that for each non-zero number in the input grid, if it is surrounded by the same number on all sides (including diagonals), then it changes to the smallest number surrounding it. If there are multiple numbers surrounding it, it changes to the smallest of those.","0","","For each non-zero cell, change its value to the smallest value among its 8 neighbors if all neighbors are the same as the cell's value.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D1","3","0","mismatch","0","0 4 4 4 0 0 0 0 0 0
+3 3 3 3 3 0 0 0 0 0
+3 3 3 3 3 0 0 0 0 0
+3 3 3 3 3 0 0 0 0 0
+3 3 3 3 3 0 0 0 0 0
+0 4 4 4 0 0 4 4 4 0
+0 0 0 0 0 3 3 3 3 3
+0 0 0 0 0 3 3 3 3 3
+0 0 0 0 0 3 3 3 3 3
+0 0 0 0 0 3 3 3 3 3","The rule appears to be that for each group of numbers in the input grid, if there are multiple rows where the same number appears consecutively in the same columns, then those numbers are replaced by the smallest number in that group for all those rows.","0","","For each group of consecutive identical numbers in the same columns across multiple rows, replace them with the smallest number in that group.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D10","1","0","mismatch","0","0 0 0 0 0 0 5 5 5 5 5 5 0 0 0 0 0
+0 7 7 7 7 7 5 3 3 3 3 5 7 7 7 7 0
+0 7 0 7 0 7 5 3 3 3 3 5 0 7 0 7 0
+0 7 0 7 0 7 5 3 3 3 3 5 0 7 0 7 0
+0 7 0 7 0 7 5 5 5 5 5 5 0 7 0 7 0
+0 7 0 7 0 7 0 7 0 7 0 7 0 7 0 7 0
+0 7 0 7 0 7 0 7 0 7 0 7 0 7 0 7 0
+0 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be replacing all '3's in the input grid with the value of their immediate neighbors if those neighbors are not '3'. If a '3' is surrounded by multiple different values, it takes the value of the first non-'3' neighbor encountered moving left, up, right, then down.","0","","Replace each '3' with the value of its first non-'3' neighbor in the order: left, up, right, down.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D10","2","0","mismatch","0","00000009999009999009999909999909999909999909999909999000000","The transformation rule appears to be replacing all non-zero values in the input grid with the maximum value present in their respective row.","0","","Replace each non-zero element with the maximum value of its row.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D10","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 4 4 4 0 0
+0 0 4 3 3 3 3 3 3 3 3 3 4 0 0
+0 0 4 3 4 4 4 4 4 4 4 3 4 0 0
+0 0 4 3 4 3 3 3 4 3 3 3 4 0 0
+0 0 4 3 4 4 4 4 4 4 4 3 4 0 0
+0 0 4 3 3 3 3 3 3 3 3 3 4 0 0
+0 0 4 4 4 4 4 4 4 4 4 4 4 0 0
+0 0 4 0 0 0 0 0 0 0 0 0 4 0 0
+0 0 4 4 4 4 4 4 4 4 4 4 4 0 0
+0 0 4 0 0 0 0 0 0 0 0 0 4 0 0
+0 0 4 4 4 4 4 4 4 4 4 4 4 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that for each cell in the input grid, if it is surrounded by cells of the same value (including diagonals), then it remains unchanged. Otherwise, it takes on the value of the most frequent neighbor. If there is a tie, the original value is kept.","0","","For each cell, if all neighbors (including diagonals) have the same value as the cell, keep the cell's value. Otherwise, change the cell's value to the most frequent value among its neighbors. In case of a tie, retain the original value.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D2","1","1","","0","0 0 0 0 0 0 1
+0 0 0 0 0 0 1
+5 5 5 5 5 5 1
+0 0 0 0 0 0 1
+0 0 0 0 0 0 1
+5 5 5 5 5 5 1
+0 0 0 0 0 0 1","The rule appears to be that if a number in the input grid is repeated consecutively in a row, it remains unchanged in the output grid. Otherwise, it is replaced with 0.","1","","If a number is repeated consecutively in a row, it remains; otherwise, it becomes 0.","0","Correct","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D2","2","0","mismatch","0","0 0 0 0 0 0 0 0 0
+0 0 3 3 0 0 0 0 0
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+0 0 3 3 0 0 0 0 0
+0 0 3 3 0 0 0 0 0
+0 0 3 3 0 0 0 0 0
+0 0 3 3 0 0 0 0 0
+0 0 0 0 0 0 0 0 0","The transformation rule appears to be that if a number is repeated consecutively in a row and there are zeros on both sides of these numbers, then the zeros immediately adjacent to these numbers are changed to zeros as well, effectively 'absorbing' them into the sequence.","0","","If a number n is repeated consecutively in a row and is surrounded by zeros, change the immediate zeros next to this sequence to zeros.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D2","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+5 5 5 6 5 5 5 5 5 5
+0 0 0 0 0 0 0 0 0 0
+5 5 5 6 5 5 5 5 5 5
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that if a number 'n' is surrounded by zeros in all four cardinal directions (up, down, left, right), it is changed to 0 in the output grid. Otherwise, the number remains unchanged.","0","","If a number 'n' is surrounded by zeros in all four cardinal directions, change it to 0; otherwise, keep it as is.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D3","1","0","mismatch","0","0 0 0 0 0 0 0 0
+0 0 0 5 0 0 0 0
+0 8 8 5 8 8 0 0
+0 8 8 5 8 8 0 0
+0 0 0 5 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if it is surrounded by at least one other cell with the same value, then all such connected cells are replaced with the smallest non-zero value among them in the output grid.","0","","Replace all connected non-zero values with the smallest non-zero value among them.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D3","2","0","mismatch","0","0 0 0 0 0 0 0
+0 5 5 5 0 0 0
+0 5 5 5 0 0 0
+7 5 5 5 7 7 7
+0 5 5 5 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0","The rule appears to be that for each non-zero number in the input grid, it is replaced by the smallest non-zero number in its row and column. If there are multiple such numbers, the smallest one is chosen.","0","","Replace each non-zero number with the smallest non-zero number in its row and column.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D3","3","0","mismatch","0","9 0 0 0 0 0 0 0 0 0
+0 9 0 0 0 0 0 0 0 0
+0 5 5 5 5 5 5 0 0 0
+0 5 5 5 5 5 5 0 0 0
+0 5 5 5 5 5 5 0 0 0
+0 5 5 5 5 5 5 0 0 0
+0 0 0 0 0 0 9 0 0 0
+0 0 0 0 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 0 0 0 0 9","The rule appears to be that for each non-zero number in the input grid, it is replaced by the smallest non-zero number in its row and column. If there are multiple such numbers, the smallest one is chosen.","0","","Replace each non-zero number with the smallest non-zero number in its row and column.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D4","1","0","mismatch","0","0000000000000000888800008899000088990000888800000000000000000000","The transformation rule appears to be shifting all non-zero values in each row to the left as far as possible without changing their order within the row.","0","","Shift all non-zero numbers in each row to the left as far as possible.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D4","2","0","mismatch","0","00000000000000000000000000000000000000000777777770070000007007000066660077776666600000666660000000000","The transformation rule appears to be that for each group of numbers in the input grid, if there is a smaller number within the same row and column range, it replaces the larger numbers in that group. This is observed in all examples where smaller numbers within the same block overwrite larger numbers.","0","","For each group of identical numbers, if a smaller number exists within the same row and column range, replace the larger numbers with the smaller number.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D4","3","0","mismatch","0","0000000000004000000000400000000040000000005455555500040000000004000000000000000000000000000","The transformation rule appears to be that for each group of numbers in the input grid, if there is a smaller number within the same row and column range, it replaces the larger numbers in that group. This is observed in all examples where smaller numbers within the same block overwrite larger ones.","0","","For each group of identical numbers, if a smaller number exists within the same row and column range, replace the larger numbers with the smaller one.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D5","1","0","parse:non-integer token in row 1","0","[[8,8,8],[8,8,6],[6,6,6]]","The rule appears to be selecting the largest number from each 3x3 subgrid of the input and forming a new grid where each cell is the maximum value found in its corresponding 3x3 subgrid.","0","","For each 3x3 subgrid in the input, take the maximum value and form a new grid with these values.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D5","2","0","parse:non-integer token in row 1","0","[[3,3,3,0],[3,4,4,0],[3,3,3,0],[0,0,0,0]]","The rule appears to be selecting the largest number from each 3x3 subgrid of the input and placing it in the corresponding position in the output grid.","0","","For each 3x3 subgrid in the input, take the maximum value and place it in the corresponding position in the output grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D5","3","0","parse:non-integer token in row 1","0","[[6,6,6],[6,6,6],[0,3,0]]","The rule appears to be selecting the largest number from each 3x3 subgrid of the input and placing it in the corresponding position in the output grid.","0","","For each 3x3 subgrid in the input, find the maximum value and place it in the corresponding position in the output grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D6","1","0","mismatch","0","8 8 8 8","The rule appears to be finding the most frequent non-zero number in each column of the input grid and using it to fill the entire output grid. In case of a tie, the smallest number among the tied numbers is chosen.","0","","For each column, find the most frequent non-zero number. If there's a tie, choose the smallest number. Use this number to fill the entire output grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D6","2","0","parse:non-integer token in row 1","0","[[3,3,4,5,4,4],[3,3,4,5,4,4],[3,3,4,5,4,4]","The rule appears to be finding the most frequent non-zero number in each column of the input grid and using it to fill the corresponding column in the output grid.","0","","For each column in the input grid, determine the most frequent non-zero number and fill the entire column in the output grid with this number.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D6","3","0","mismatch","0","5 5 2 5 0 0","The rule appears to be finding the most frequent non-zero number in each column of the input grid and using it to fill the entire output grid. In case of a tie, the smallest number among the tied numbers is chosen.","0","","For each column, identify the most frequent non-zero number. If there's a tie, choose the smallest number. Use this number to fill the entire output grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D7","1","0","mismatch","0","0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+5 5 5 5 9 5 5 9
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+5 5 5 5 5 5 5 5
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+0 9 0 0 9 0 0 9
+5 9 5 5 9 5 5 5","The transformation rule appears to be replacing all occurrences of '1' in the input grid with '5'. The rest of the numbers remain unchanged.","0","","Replace all '1's with '5's in the input grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D7","2","0","mismatch","0","0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+4 4 4 4 6 4 4 4
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+4 6 4 4 4 4 4 4
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6
+0 6 0 0 6 0 0 6","The transformation rule appears to be that for each row in the input grid, if there is a '6' present in the row, then all '1's in that row are changed to '6's. If there is no '6' in the row, the row remains unchanged.","0","","If a row contains a '6', change all '1's in that row to '6's.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D7","3","0","mismatch","0","4 0 0 0 4 0 4 0
+2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0
+4 2 2 2 2 2 2 2
+4 0 0 0 4 0 4 0
+4 0 0 0 4 0 4 0","The transformation rule appears to be replacing all '1's in the input grid with '2's and keeping all other numbers unchanged.","0","","Replace all '1's with '2's","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D8","1","0","mismatch","0","0 9 0 0 0 0
+0 9 0 0 0 0
+0 9 0 0 0 0
+3 3 3 3 9 3
+0 9 0 0 0 0
+0 9 0 0 0 0","The transformation rule appears to be that the central row of the input grid changes such that the last element becomes the same as the first non-zero element in that row, and the first element becomes the same as the last non-zero element in that row.","0","","Change the central row so that its first element matches the last non-zero element of the row, and its last element matches the first non-zero element of the row.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D8","2","0","mismatch","0","0 4 0 0 0 0
+8 8 8 8 8 8
+0 4 0 0 0 0
+0 4 0 0 0 0
+7 4 7 7 7 7
+0 4 0 0 0 0","The rule appears to be that for each row containing a sequence of identical numbers (excluding zeros), if there is a different number in the same column in another row, the first occurrence of this different number in the sequence is replaced by the number from the other row.","0","","For each row with a sequence of identical non-zero numbers, replace the first occurrence of a different number in the same column from another row within the sequence.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D8","3","0","mismatch","0","0 5 0 0 0 0
+3 5 0 0 0 0
+0 3 0 0 0 0
+0 5 5 0 0 0
+0 5 0 5 0 0
+0 5 0 0 5 0","The rule appears to be that for each row containing a sequence of identical numbers (excluding zeros), if there is a single different number in that row, it gets replaced by the number from the sequence. This transformation only affects rows with such sequences.","0","","For each row, if there is a sequence of identical non-zero numbers and a single different number, replace the different number with the number from the sequence.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D9","1","0","mismatch","0","0000000000000000000000000000000111111111111100111111111111100111111111111100111111555111100111111555111100000005550000000000000000000000000000000000000","The transformation rule appears to be replacing all non-zero numbers in the input grid with the highest number present in the grid. In each example, the highest number replaces all other non-zero numbers.","0","","Replace all non-zero numbers with the highest number in the grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D9","2","0","mismatch","0","0 0 0 0 0 0 0
+3 3 3 3 0 0 0
+3 3 3 3 3 3 3
+3 3 3 3 3 3 3
+3 3 3 3 3 3 3
+0 0 3 3 3 3 3
+0 0 3 3 3 3 3
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0","The transformation rule appears to be replacing all non-zero numbers in the input grid with the highest number present in the grid. In each example, the highest number replaces all other non-zero numbers.","0","","Replace all non-zero numbers with the highest number in the grid.","0","Incorrect","0","0",""
+"2025-09-09T21:59:20","TopBottom3D","TopBottom3D9","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 0 0 0 0 0 0 0
+5 5 5 5 5 5 0 0 0 0 0 0
+5 5 5 5 5 5 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be replacing all non-zero numbers in the input grid with the highest number present in the grid. In each example, the highest number replaces all other non-zero numbers.","0","","Replace all non-zero numbers with the highest number in the grid.","0","Incorrect","0","0",""

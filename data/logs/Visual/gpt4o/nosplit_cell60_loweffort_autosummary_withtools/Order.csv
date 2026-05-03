@@ -1,0 +1,934 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule,validated
+2025-08-01T19:54:31,Order,Order1,1,low,0,parse:non-integer token in row 1,1,TBD,"The transformation rule appears to involve rearranging the colored blocks in a specific order, likely based on a consistent pattern such as rotating or flipping.
+
+Rule: Rearrange colored blocks in grid according to a specific pattern preserving order.","from PIL import Image
+
+# Load the images
+img_train = Image.open('/mnt/data/file-Mt5Wh21U2F8FD2QE5WFEy7-train.png')
+img_test = Image.open('/mnt/data/file-Trt1nfjsajAQy59RRFKoUN-test_1.png')
+
+# Display the images to analyze them
+img_train.show()
+img_test.show()
+
+# Prepare to analyze pixel data
+img_train_data = img_train.load()
+img_test_data = img_test.load()
+
+img_train.size, img_test.size
+
+# Define colors mapping based on the first image
+color_map = {
+    (0, 0, 0): 0,       # Black
+    (0, 0, 255): 1,     # Blue
+    (255, 0, 0): 2,     # Red
+    (0, 255, 0): 3,     # Green
+    (255, 255, 0): 4,   # Yellow
+    (128, 128, 128): 5, # Gray
+    (255, 0, 255): 6,   # Magenta
+    (255, 165, 0): 7,   # Orange
+    (0, 255, 255): 8,   # Cyan
+    (165, 42, 42): 9    # Brown
+}
+
+# Extract the color indices from the train image
+def extract_grid_indices(img_data, img_size, cols, rows):
+    width, height = img_size
+    w_unit, h_unit = width // cols, height // rows
+    
+    grid = []
+    for r in range(rows):
+        row = []
+        for c in range(cols):
+            pixel = img_data[c * w_unit + w_unit // 2, r * h_unit + h_unit // 2]
+            row.append(color_map.get(pixel[:3], -1))  # Use -1 for colors not in color_map
+        grid.append(row)
+    return grid
+
+# Extract the grids from the training image
+grid_train_left_top = extract_grid_indices(img_train_data, img_train.size, 10, 8)
+grid_train_left_bottom = extract_grid_indices(img_train_data, img_train.size, 10, 8)
+
+grid_train_right_top = extract_grid_indices(img_train_data, img_train.size, 10, 8)
+grid_train_right_bottom = extract_grid_indices(img_train_data, img_train.size, 10, 8)
+
+(grid_train_left_top, grid_train_left_bottom, grid_train_right_top, grid_train_right_bottom)",Rearrange colored blocks in grid according to a specific pattern preserving order.,0
+2025-08-01T19:53:57,Order,Order1,2,low,0,mismatch,0,"5 0 0 0 0 0 0 0 0 0
+0 5 0 0 0 0 0 0 0 0
+5 0 5 0 0 0 0 0 0 0
+0 5 0 5 0 0 0 0 0 0
+0 0 5 0 5 0 0 0 0 0
+0 0 0 5 0 5 0 0 0 0
+0 0 0 0 5 0 5 0 0 0
+0 0 0 0 0 5 0 5 0 0
+0 0 0 0 0 0 5 0 5 0
+0 0 0 0 0 0 0 5 0 5","By analyzing the given images, the transformation rule can be identified. In the first grid pair, the right grid is a rearrangement of the left grid such that the colored squares are moved along the top row one column to the left. This movement is cyclic, meaning the leftmost column's color wraps around to the rightmost column. Applying this rule to the test grid image would involve shifting each row's non-black colors one column to the left, wrapping the color from the first column to the last.
+
+Rule: Cyclic left shift of each row's non-black colors.",,Cyclic left shift of each row's non-black colors.,0
+2025-08-01T19:53:12,Order,Order1,3,low,0,mismatch,0,3 3 3 3 3 1 0 0 0 0 0 0 3 0 0 0 0 1 0 0 0 0 0 0 0 0 0 2 2 2 2 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 2 6,"The task is to identify the transformation applied to the left grids to get the right grids in the first pair of images and then apply the same transformation to the grid in the second image. Observing the transformations: 1) Each colored segment in the left grid moves one position to the right in the corresponding right grid. This shift is consistent across the different colored blocks. Applying this shift rule to the second image involves moving each colored block one column to the right.
+
+Rule: Move each colored block one position to the right in the grid.",,Move each colored block one position to the right in the grid.,0
+2025-08-01T19:52:35,Order,Order10,1,low,0,mismatch,0,"5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+5 5 5 4 4 4 4 5 5 4 4 4 4 5 5 5
+5 5 4 3 3 3 3 4 4 3 3 3 3 4 5 5
+5 5 4 3 2 2 2 3 3 2 2 2 2 3 4 5
+5 5 4 3 2 1 1 2 2 1 1 1 2 3 4 5
+5 5 4 3 2 1 1 2 2 1 1 1 2 3 4 5
+5 5 4 3 2 2 2 3 3 2 2 2 2 3 4 5
+5 5 4 3 3 3 3 4 4 3 3 3 3 4 5 5
+5 5 5 4 4 4 4 5 5 4 4 4 4 5 5 5
+5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5","The transformation involves changing the color of each region in the grid by matching with a rotated sequence of colors. The sequence changes from gray-green-red to yellow-blue-magenta-cyan. Transform the colors in the second image accordingly using this new pattern.
+
+Rule: Each color in the original grid is replaced by the corresponding color from the new sequence defined by the rotations: gray->yellow, green->blue, red->magenta, outer black remains unchanged.",,"Each color in the original grid is replaced by the corresponding color from the new sequence defined by the rotations: gray->yellow, green->blue, red->magenta, outer black remains unchanged.",0
+2025-08-01T19:55:01,Order,Order10,2,low,0,mismatch,1,8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8,"The transformation involves recoloring specific nested squares from the original grid into a new color pattern. The central colors (gray, green, red) are mapped to new colors (light blue, magenta, blue) respectively.
+
+Rule: Replace gray with light blue, green with magenta, red with blue according to a pattern transformation.","from PIL import Image
+
+# Load the images
+image_train_path = '/mnt/data/file-D5o1A7PnPn7ULvkqPHvbpm-train.png'
+image_test_path = '/mnt/data/file-BKzMJJ46cQ7Y1bftA4KTye-test_2.png'
+
+image_train = Image.open(image_train_path)
+image_test = Image.open(image_test_path)
+
+image_train.show(), image_test.show()
+
+import numpy as np
+
+def image_to_grid(image):
+    # Convert image to numpy array
+    data = np.array(image)
+    # Identify unique colors in the image
+    unique_colors = np.unique(data.reshape(-1, data.shape[2]), axis=0)
+    # Create a mapping from color to index
+    color_to_index = {tuple(color): idx for idx, color in enumerate(unique_colors)}
+    # Convert the image to a grid of indices
+    grid = np.array([[color_to_index[tuple(pixel)] for pixel in row] for row in data])
+    return grid, color_to_index, unique_colors
+
+# Convert both images to grids
+grid_train, color_to_index_train, unique_colors_train = image_to_grid(image_train)
+grid_test, color_to_index_test, unique_colors_test = image_to_grid(image_test)
+
+grid_train, color_to_index_train, unique_colors_train, grid_test.shape
+
+# Let's define the color mapping from first image to second image
+def determine_color_mapping(grid_train):
+    center_mappings = {
+        4: 3, # Gray -> Light Blue
+        3: 6, # Green -> Magenta
+        2: 1, # Red -> Blue
+    }
+    return center_mappings
+
+# Determine the rule from the first image
+color_mapping = determine_color_mapping(grid_train)
+
+# Apply the transformation
+def apply_transformation(grid, color_mapping):
+    transformed_grid = np.vectorize(color_mapping.get)(grid, grid)
+    return transformed_grid
+
+# Apply the transformation rule to the test grid
+transformed_grid_test = apply_transformation(grid_test, color_mapping)
+
+# Format transformed grid for output
+def format_grid(grid):
+    # Convert numpy array to string with space-separated numbers
+    return '\n'.join(' '.join(map(str, row)) for row in grid)
+
+formatted_grid = format_grid(transformed_grid_test)
+formatted_grid[:200]  # Display the first part of the grid for clarity","Replace gray with light blue, green with magenta, red with blue according to a pattern transformation.",0
+2025-08-01T19:54:58,Order,Order10,3,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 5 5 5 5 5 0 0 0 0
+0 0 5 1 1 1 1 1 5 0 0 0
+0 5 1 2 2 2 2 2 1 5 0 0
+0 5 1 2 3 3 3 2 1 5 0 0
+0 5 1 2 3 4 3 2 1 5 0 0
+0 5 1 2 3 3 3 2 1 5 0 0
+0 5 1 2 2 2 2 2 1 5 0 0
+0 0 5 1 1 1 1 1 5 0 0 0
+0 0 0 5 5 5 5 5 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","In the first image, each transformation involves changing the colors according to a fixed sequence, maintaining the centrality of the squares and following a nested pattern. The transformation rule seems to move colors outward one layer, changing the colors cyclically except for the outermost and innermost layers, which become black and a repeat of the subsequent layer, respectively.
+
+Rule: Shift each layer of colors outward while maintaining the color sequence and symmetry, with the outermost layer being black, and the innermost layer copying the second innermost original.","from PIL import Image
+
+# Open the first image to analyze the rule
+train_image = Image.open(""/mnt/data/file-R5SLmwwwRtMm7EvFLewaik-train.png"")
+train_image.show()
+
+# Open the second image to apply the rule
+test_image = Image.open(""/mnt/data/file-3fRiffqqD2j1KPtCsns4zz-test_3.png"")
+test_image.show()","Shift each layer of colors outward while maintaining the color sequence and symmetry, with the outermost layer being black, and the innermost layer copying the second innermost original.",0
+2025-08-01T19:53:05,Order,Order2,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+3 0 0 0 0 0 0 0 0 0 0 0
+3 3 0 0 0 0 0 0 0 0 0 0
+0 3 3 0 0 0 0 0 0 0 0 0
+0 3 3 0 0 0 0 0 0 0 0 0
+0 0 3 3 0 0 0 0 0 0 0 0
+0 0 3 3 0 0 0 0 0 0 0 0
+0 0 3 3 3 0 0 0 0 0 0 0
+0 0 0 3 3 3 0 0 0 0 0 0
+3 0 0 0 3 3 3 3 3 0 0 0
+0 3 0 0 0 3 3 3 3 3 3 0","The transformation rule appears to shift colored squares diagonally to the right and down, filling along the diagonal until the edge of the grid is reached.
+
+Rule: Shift each colored square diagonally down to the right, filling the diagonal until the grid's edge.",,"Shift each colored square diagonally down to the right, filling the diagonal until the grid's edge.",0
+2025-08-01T19:54:03,Order,Order2,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","In the first image, for both grids, the transformation involves filling the bottom-right quadrant with the same color as the non-black cells on the left side. The position of the color remains the same relative to the bottom-right quadrant. Applying this logic to the grid in the second image, any blue cell in the upper-left should be reflected to the bottom-right.
+
+Rule: Reflect colored cells from each quadrant to the bottom-right quadrant, maintaining relative position.",,"Reflect colored cells from each quadrant to the bottom-right quadrant, maintaining relative position.",0
+2025-08-01T19:53:42,Order,Order2,3,low,0,mismatch,1,"0 0 0 5 0 0 0 0 0 0 0 0 
+0 0 0 5 5 0 0 0 0 0 0 0 
+0 0 0 5 5 5 0 0 0 0 0 0 
+0 5 5 5 5 5 0 0 0 0 0 0 
+0 5 5 5 5 5 5 0 0 0 0 0 
+0 5 5 5 5 5 5 5 0 0 0 0 
+0 0 0 0 0 5 5 5 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0","The transformation takes vertical and horizontal lines of a specific color and converts them into filled shapes by extending the color diagonally downward and rightward to form a triangular shape. In the first transformation, yellow forms two triangles, and magenta in the second does the same. The transformation consists of taking vertical and horizontal lines of a color and turning them into diagonal shapes.
+
+Rule: Convert vertical and horizontal lines of a color into diagonal triangular shapes with the same base color.","from PIL import Image
+
+# Load images
+train_image_path = '/mnt/data/file-VXTkWzWRZDU2PMXPX5xwbq-train.png'
+test_image_path = '/mnt/data/file-3o2iDXi99LAYifjHe8f2CT-test_3.png'
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+train_image.show()
+test_image.show()",Convert vertical and horizontal lines of a color into diagonal triangular shapes with the same base color.,0
+2025-08-01T19:54:13,Order,Order3,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+6 1 1 1 1 1 1 1 1 6
+1 1 1 1 6 1 1 1 1 1
+6 1 1 6 0 6 1 1 1 6
+0 6 6 6 0 0 6 6 6 0","The left grids on the first image are transformed to the right grids via a rule of vertical reflection. Each column in the left grid is mirrored to form the right grid, maintaining color positions and pairing them vertically.
+
+Rule: Vertical reflection of each column in the grid.",,Vertical reflection of each column in the grid.,0
+2025-08-01T19:54:05,Order,Order3,2,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0],[9,7,9,9,9,9,9],[9,7,9,7,9,7,9],[9,7,9,9,9,9,9],[9,7,9,7,9,7,9]]","The transformation appears to involve swapping certain rows and columns while preserving others. The yellow shifted rows or specific blocks correlate with positions that are moved or repeated differently.
+
+Rule: Swap specific rows or columns based on color pattern, while rows with consistent color remain unchanged.","from PIL import Image
+
+# Load the images
+train_image_path = ""/mnt/data/file-Wy8n27fM5Z2fFWSYjLcsL3-train.png""
+test_image_path = ""/mnt/data/file-LVwJUet5BcND4r2u1VMn34-test_2.png""
+
+# Open the images
+train_img = Image.open(train_image_path)
+test_img = Image.open(test_image_path)
+
+(train_img.size, test_img.size)
+
+# Crop out the relevant training grids
+# First image: left 2 grids (each half of the width and full height)
+train_grid_1 = train_img.crop((0, 0, 787, 372))
+train_grid_2 = train_img.crop((0, 372, 787, 744))
+train_transformed_1 = train_img.crop((787, 0, 1574, 372))
+train_transformed_2 = train_img.crop((787, 372, 1574, 744))
+
+# Convert grids to lists of color indices
+color_to_index = {
+    (0, 0, 0): 0,
+    (0, 0, 255): 1,
+    (255, 0, 0): 2,
+    (0, 255, 0): 3,
+    (255, 255, 0): 4,
+    (128, 128, 128): 5,
+    (255, 0, 255): 6,
+    (255, 165, 0): 7,
+    (0, 255, 255): 8,
+    (165, 42, 42): 9
+}
+
+def image_to_grid(image, color_to_index):
+    # Reduce to a 7x5 grid by averaging colors across clusters of blocks
+    width, height = image.size
+    block_width = width // 7
+    block_height = height // 5
+    
+    grid = []
+    for y in range(5):
+        row = []
+        for x in range(7):
+            # Crop block and calculate average color
+            block = image.crop((x * block_width, y * block_height, (x + 1) * block_width, (y + 1) * block_height))
+            pixels = list(block.getdata())
+            avg_color = tuple(sum(col) // len(col) for col in zip(*pixels))
+            # Get color index
+            row.append(color_to_index[min(color_to_index.keys(), key=lambda c: sum((cb - ca) ** 2 for ca, cb in zip(c, avg_color)))])
+        grid.append(row)
+    return grid
+
+train_grid_1_data = image_to_grid(train_grid_1, color_to_index)
+train_grid_2_data = image_to_grid(train_grid_2, color_to_index)
+train_transformed_1_data = image_to_grid(train_transformed_1, color_to_index)
+train_transformed_2_data = image_to_grid(train_transformed_2, color_to_index)
+
+train_grid_1_data, train_grid_2_data, train_transformed_1_data, train_transformed_2_data","Swap specific rows or columns based on color pattern, while rows with consistent color remain unchanged.",0
+2025-08-01T19:53:04,Order,Order3,3,low,0,mismatch,0,0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 1 0 0 0 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 0 0 0 1 1 0 1 1 1 1 0,"In the first image, the right grids are vertically flipped versions of the left grids without changing the color positions. Applying this rule to the second image involves vertically flipping the grid while retaining the color positions.
+
+Rule: Vertically flip the grid.",,Vertically flip the grid.,0
+2025-08-01T19:53:09,Order,Order4,1,low,0,parse:non-integer token in row 1,1,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0...,"I observed the color distribution in the left and right parts of the first image. It appears the transformation involves reordering the colored sections while maintaining their color and dimension properties. This is consistent in both grid pairs in the first image. I will apply this transformation rule to the grid in the second image.
+
+Rule: Reorder the columns of colors while preserving their initial structure and dimension.","from PIL import Image
+import numpy as np
+
+# Load the images
+img_1_path = '/mnt/data/file-UwDtvhG89phsbyT7JrngUE-train.png'
+img_2_path = '/mnt/data/file-Hnm7LNvbJhgK8UKtJ9DCxk-test_1.png'
+
+img_1 = Image.open(img_1_path)
+img_2 = Image.open(img_2_path)
+
+# Convert images to numpy arrays
+img_1_array = np.array(img_1)
+img_2_array = np.array(img_2)
+
+img_1_array.shape, img_2_array.shape
+
+# Function to extract the grid based on unique colors
+def extract_grid(img_array):
+    # Reshape to (H*W, 3) for unique color extraction
+    pixels = img_array.reshape(-1, img_array.shape[-1])
+    # Find unique colors, preserving order
+    unique_colors, indices = np.unique(pixels, return_index=True, axis=0)
+    unique_colors = unique_colors[np.argsort(indices)]
+    # Create a color to index mapping
+    color_to_index = {tuple(color): i for i, color in enumerate(unique_colors)}
+    # Map the pixels to their respective indices
+    grid = np.array([color_to_index[tuple(p)] for p in pixels]).reshape(img_array.shape[:2])
+    return grid, color_to_index, unique_colors
+
+# Extract grids
+grid_1, color_to_index_1, unique_colors_1 = extract_grid(img_1_array)
+grid_2, color_to_index_2, unique_colors_2 = extract_grid(img_2_array)
+
+grid_1.shape, grid_2.shape, len(color_to_index_1), len(color_to_index_2)
+
+# Split the first image into the left and right parts
+# Based on observed dimensions, roughly split it into halves vertically
+left_grid_1 = grid_1[:, :grid_1.shape[1]//2]
+right_grid_1 = grid_1[:, grid_1.shape[1]//2:]
+
+# Further analyze the grid pattern changes between left and right halves for rule extraction
+
+# Visual inspection to determine rule: Count distinct colors in a small region to verify assumptions
+left_unique, left_counts = np.unique(left_grid_1, return_counts=True)
+right_unique, right_counts = np.unique(right_grid_1, return_counts=True)
+
+left_unique, left_counts, right_unique, right_counts",Reorder the columns of colors while preserving their initial structure and dimension.,0
+2025-08-01T19:54:00,Order,Order4,2,low,0,mismatch,1,0 3 3 3 3 3 0 0 0 0 4 0 1 1 1 0 7 7 2 2 2 0 8 8 8 5 5 5 0 9 9 9 9,"I have extracted the grids and identified colors using indices. Analyzing the transformation, it appears that the color columns switch their positions based on a pattern. For the transformation, the first two columns seem to swap their position with the last two.
+
+Rule: Swap the first two color columns with the last two columns in the grid.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_img = Image.open(""/mnt/data/file-MagLLDRoHX9F98ksduBo1r-train.png"")
+test_img = Image.open(""/mnt/data/file-BwN5Pif1KQewNrzNyJsFQQ-test_2.png"")
+
+# Convert images to numpy arrays
+train_pixels = np.array(train_img)
+test_pixels = np.array(test_img)
+
+train_pixels.shape, test_pixels.shape
+
+def extract_grids(image_pixels, grid_size):
+    h, w, _ = image_pixels.shape
+    grids = []
+    # Split the image horizontally based on the specified grid size
+    for start_col in range(0, w, grid_size):
+        grid = image_pixels[:, start_col:start_col + grid_size]
+        grids.append(grid)
+    return grids
+
+# Extract the grids from the training image (assuming each grid is 907 pixels wide)
+train_grids = extract_grids(train_pixels, 907)
+# Extract the grids from the test image
+test_grids = extract_grids(test_pixels, 461)
+
+len(train_grids), len(test_grids)
+
+def compress_grid_colors(grid, base_colors):
+    compressed_grid = np.zeros(grid.shape[:2], dtype=int)
+    # Compare each pixel in the grid to the base colors and assign an index
+    for idx, color in enumerate(base_colors):
+        match = np.all(grid == color, axis=-1)
+        compressed_grid[match] = idx
+    return compressed_grid
+
+# Define the base colors
+base_colors = [
+    np.array([0, 0, 0]),      # black
+    np.array([0, 0, 255]),    # blue
+    np.array([255, 0, 0]),    # red
+    np.array([0, 255, 0]),    # green
+    np.array([255, 255, 0]),  # yellow
+    np.array([128, 128, 128]),# gray
+    np.array([255, 0, 255]),  # magenta
+    np.array([255, 165, 0]),  # orange
+    np.array([0, 255, 255]),  # cyan
+    np.array([165, 42, 42])   # brown
+]
+
+# Compress the grid colors into indices
+train_grid1_left = compress_grid_colors(train_grids[0][:, :grid_size//2], base_colors)
+train_grid1_right = compress_grid_colors(train_grids[0][:, grid_size//2:], base_colors)
+
+train_grid2_left = compress_grid_colors(train_grids[1][:, :grid_size//2], base_colors)
+train_grid2_right = compress_grid_colors(train_grids[1][:, grid_size//2:], base_colors)
+
+train_grid1_left, train_grid1_right, train_grid2_left, train_grid2_right
+
+# Correcting the grid size
+grid_size_train = 907
+
+# Re-compress the grid colors into indices
+train_grid1_left = compress_grid_colors(train_grids[0][:, :grid_size_train//2], base_colors)
+train_grid1_right = compress_grid_colors(train_grids[0][:, grid_size_train//2:], base_colors)
+
+train_grid2_left = compress_grid_colors(train_grids[1][:, :grid_size_train//2], base_colors)
+train_grid2_right = compress_grid_colors(train_grids[1][:, grid_size_train//2:], base_colors)
+
+train_grid1_left, train_grid1_right, train_grid2_left, train_grid2_right",Swap the first two color columns with the last two columns in the grid.,0
+2025-08-01T19:52:50,Order,Order4,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 4 0 0
+0 1 1 0 0 0 0 4 4 0 0
+2 1 1 3 3 0 0 0 0 5 5
+2 1 1 3 3 0 0 0 0 5 5
+2 2 2 3 3 0 0 0 0 5 5","The left and right grids on the first image show that each colored pair of columns from the left grid is transformed to another pair of columns on the right, with colors possibly swapped or moved horizontally. I will analyze the color arrangement to find the pattern and apply it to the grid in the second image.
+
+Rule: Swap the columns of each pair of colored columns in the grid.",,Swap the columns of each pair of colored columns in the grid.,0
+2025-08-01T19:52:54,Order,Order5,1,low,0,mismatch,0,"3 0 0 0 0 0 0
+0 0 0 0 3 0 0
+3 0 0 0 3 0 0
+0 0 0 3 0 0 0
+0 0 3 0 0 0 0
+3 0 0 0 0 0 0
+0 0 0 0 0 0 0","By comparing the grids, the transformation involves rotating the yellow squares 45 degrees clockwise around the center in their respective sections. The black and green squares remain unchanged. Applying this to the new grid involves rotating the yellow squares similarly, leaving other colors as they are.
+
+Rule: Rotate yellow squares 45 degrees clockwise.",,Rotate yellow squares 45 degrees clockwise.,0
+2025-08-01T19:53:18,Order,Order5,2,low,0,mismatch,1,9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 1 1 1 1 1 1 1 1 1 1 9 1 1 1 1 1 1 1 1 1 9 1 0 0 0 0 0 0 0 1 1 9 1 0 4 0 4 0 4 0 1 1 9 1 0 0 0 0 0 0 0 1 1 9 1 0 0 4 0 4 0 0 1 1 9 1 0 0 0 0 0 0 0 1 1 9 1 1 1 1 1 1 1 1 1 9 9 1 1 1 1 1 1 1 1 1 9 9 9 9 9 9 9 9 9 9 9 9,"The transformation between grids is a diagonal flip. In both cases, yellow squares are shifted diagonally, while green edges and black fill remain unchanged.
+
+Rule: Shift each yellow square diagonally while keeping green edges and black fill intact.","from PIL import Image
+import numpy as np
+
+# Load images
+train_img_path = '/mnt/data/file-B7h6s56VFfVE8TdAEbb4Ra-train.png'
+test_img_path = '/mnt/data/file-TrxRzQ6Bt8moQb4Pxo3xiV-test_2.png'
+
+train_img = Image.open(train_img_path)
+test_img = Image.open(test_img_path)
+
+# Convert images to numpy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+train_array.shape, test_array.shape
+
+# Divide train image into left and right grids (each image is split into two grids side by side)
+train_left_1 = train_array[0:372, 0:1267]
+train_right_1 = train_array[0:372, 1267:2534]
+train_left_2 = train_array[372:744, 0:1267]
+train_right_2 = train_array[372:744, 1267:2534]
+
+# Identify unique colors in one of the grids for mapping
+unique_colors = np.unique(train_left_1.reshape(-1, 3), axis=0)
+unique_colors
+
+# Define color mapping
+color_to_index = {
+    (0, 0, 0): 0,          # black
+    (0, 197, 67): 1,       # green
+    (204, 204, 204): 5,    # gray
+    (255, 215, 49): 4,     # yellow
+    (255, 255, 255): 9     # white (assuming it's a placeholder for transparency or grid lines)
+}
+
+# Create function to convert grid to index grid
+def image_to_index_grid(image, color_to_index):
+    index_grid = np.zeros((image.shape[0] // 12, image.shape[1] // 12), dtype=int)
+    for i in range(index_grid.shape[0]):
+        for j in range(index_grid.shape[1]):
+            color = tuple(image[i * 12, j * 12])
+            index_grid[i, j] = color_to_index.get(color, 9)  # Default to placeholder for unexpected colors
+    return index_grid
+
+# Convert images to index grids
+train_left_1_index_grid = image_to_index_grid(train_left_1, color_to_index)
+train_right_1_index_grid = image_to_index_grid(train_right_1, color_to_index)
+
+train_left_1_index_grid, train_right_1_index_grid",Shift each yellow square diagonally while keeping green edges and black fill intact.,0
+2025-08-01T19:52:37,Order,Order5,3,low,0,mismatch,1,"2 2 2 2 2 2
+3 3 3 0 3 3
+0 1 3 0 1 0
+2 2 1 0 2 2
+0 2 3 0 3 0
+0 2 1 0 1 0
+3 3 3 0 3 3
+2 2 0 0 0 2
+2 2 2 2 2 2","The first image consists of 2 pairs of 6x6 grids with 3 colors: black, green, and yellow. The second image is a single 9x6 grid. Observing the transformation from left to right in both pairs: black surrounds isolated yellow cells, and isolated greens are added to columns where black forms lines around yellow clusters. Applying this transformation to the second image's grid results in adding green to the surrounding columns of yellow groups and preserving existing columns for isolated yellows.
+
+Rule: Surround isolated yellow cells with black, keep green where black lines form around yellow clusters.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_image_path = '/mnt/data/file-7dd3BLL8kaBhMG9oD2JMyJ-train.png'
+test_image_path = '/mnt/data/file-HTE8N2uHXqmsGinAKAqs8t-test_3.png'
+
+# Open the images
+train_img = Image.open(train_image_path)
+test_img = Image.open(test_image_path)
+
+# Convert the images to numpy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+train_array.shape, test_array.shape","Surround isolated yellow cells with black, keep green where black lines form around yellow clusters.",0
+2025-08-01T19:54:15,Order,Order6,1,low,0,mismatch,1,"4 -1 -1 -1 -1 -1 -1 -1
+3 3 3 3 3 3 3 3
+7 -1 -1 -1 -1 -1 -1 -1
+6 6 6 6 6 6 6 6","Identified that the transformation rule primarily shifts all existing non-black blocks upwards, reordering without introducing new colors or shapes.
+
+Rule: Shift all detected non-black blocks upwards in sequence while maintaining color cohesiveness.","from PIL import Image
+
+# Load the images
+train_image_path = '/mnt/data/file-QQ1sQv8Q5Uen6tNB2umeMH-train.png'
+test_image_path = '/mnt/data/file-4inezfDTof9iP8eHXQGRNo-test_1.png'
+
+train_image = Image.open(train_image_path)
+test_image = Image.open(test_image_path)
+
+train_image.show(), test_image.show()
+
+import numpy as np
+
+def image_to_grid(image):
+    # Convert image to a grid of color indices
+    image = image.convert('RGB')
+    colors = [
+        (0, 0, 0),     # Black
+        (0, 0, 255),   # Blue
+        (255, 0, 0),   # Red
+        (0, 255, 0),   # Green
+        (255, 255, 0), # Yellow
+        (128, 128, 128), # Gray
+        (255, 0, 255), # Magenta
+        (255, 165, 0), # Orange
+        (0, 255, 255), # Cyan
+        (165, 42, 42)  # Brown
+    ]
+
+    color_to_index = {color: index for index, color in enumerate(colors)}
+    grid = np.array(image)
+    indexed_grid = np.zeros((grid.shape[0], grid.shape[1]), dtype=int)
+
+    for row in range(grid.shape[0]):
+        for col in range(grid.shape[1]):
+            rgb = tuple(grid[row, col])
+            indexed_grid[row, col] = color_to_index.get(rgb, -1)  # -1 for colors not in the list
+
+    return indexed_grid
+
+# Convert train image to grid
+train_grid = image_to_grid(train_image)
+
+# Assume the train image transformation is side-by-side with original and transformed grids
+# Splitting the train grid into left and right halves
+width = train_grid.shape[1]
+half_width = width // 2
+
+original_left_grid = train_grid[:, :half_width]
+transformed_right_grid = train_grid[:, half_width:]
+
+original_left_grid, transformed_right_grid
+
+# Define a function to manually correct the color to index mapping based on observed colors from the images
+def manual_color_to_grid(image, color_to_index):
+    # Convert image to a grid of color indices manually
+    image = image.convert('RGB')
+    grid = np.array(image)
+    indexed_grid = np.zeros((grid.shape[0], grid.shape[1]), dtype=int)
+
+    for row in range(grid.shape[0]):
+        for col in range(grid.shape[1]):
+            rgb = tuple(grid[row, col])
+            if rgb in color_to_index:
+                indexed_grid[row, col] = color_to_index[rgb]
+            else:
+                indexed_grid[row, col] = -1
+
+    return indexed_grid
+
+# Manually observed and corrected colors from the image
+manual_colors = {
+    (0, 0, 0): 0,      # Black
+    (0, 0, 255): 1,    # Blue
+    (255, 0, 0): 2,    # Red
+    (0, 255, 0): 3,    # Green
+    (255, 255, 0): 4,  # Yellow
+    (127, 127, 127): 5, # Gray
+    (255, 0, 255): 6,  # Magenta
+    (255, 165, 0): 7,  # Orange
+    (0, 255, 255): 8,  # Cyan
+    (165, 42, 42): 9   # Brown
+}
+
+# Convert train image to grid using the manual color mapping
+train_grid_manual = manual_color_to_grid(train_image, manual_colors)
+
+# Splitting the train grid into left and right halves
+original_left_grid_manual = train_grid_manual[:, :half_width]
+transformed_right_grid_manual = train_grid_manual[:, half_width:]
+
+original_left_grid_manual, transformed_right_grid_manual
+
+# Try to visually inspect a part of the grid to manually see if the mapping to color indices is consistent
+
+def inspect_grid_section(grid, start_row, start_col, num_rows, num_cols):
+    return grid[start_row:start_row + num_rows, start_col:start_col + num_cols]
+
+inspect_original = inspect_grid_section(train_grid_manual, 0, 0, 10, 10)
+inspect_transformed = inspect_grid_section(train_grid_manual, 0, half_width, 10, 10)
+
+inspect_original, inspect_transformed
+
+# Convert test image to grid using the manual color mapping
+test_grid_manual = manual_color_to_grid(test_image, manual_colors)
+
+def apply_transformation(original_grid):
+    # Assuming the transformation is shifting all visible blocks upwards
+    # Manually determined to shift based on visible blocks in the example
+    transformed_grid = np.full_like(original_grid, -1)
+
+    # Identify non-black and non-empty rows and apply shift
+    non_empty_rows = np.any(original_grid != 0, axis=1)
+    non_empty_grid = original_grid[non_empty_rows]
+    
+    # Apply shift (here, it looks like all non-black blocks are just stacked upwards)
+    for i in range(non_empty_grid.shape[0]):
+        transformed_grid[i] = non_empty_grid[i]
+    
+    return transformed_grid
+
+# Apply transformation to test grid
+final_test_grid = apply_transformation(test_grid_manual)
+
+# Prepare output grid in the described format
+output_grid = ""\n"".join(["" "".join(map(str, row)) for row in final_test_grid if -1 not in row])
+
+# Form JSON output
+result = {
+    ""reasoning"": ""Identified that the transformation rule primarily shifts all existing non-black blocks upwards, ""
+                 ""reordering without introducing new colors or shapes."",
+    ""rule"": ""Shift all detected non-black blocks upwards in sequence while maintaining color cohesiveness."",
+    ""grid"": output_grid
+}
+
+result",Shift all detected non-black blocks upwards in sequence while maintaining color cohesiveness.,0
+2025-08-01T19:52:42,Order,Order6,2,low,0,mismatch,1,6 6 6 6 6 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 6 6 6 6 4 3 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 7 3 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 7 5 5 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 9 9 9 9 1 1 1 1 0 0 0 0 0 0,"The transformation appears to be shifting colors based on observed position changes. The top distinct colored block of each column in the left grid is moved to the last occurrence in the row where another color is encountered in the right grid.
+
+Rule: Shift the top distinct color blocks horizontally in the row until they meet another color. All colors are pushed as far to the right as possible keeping their vertical alignment intact when encountering any other color from the left.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_image_path = '/mnt/data/file-CbuJCnLCgBAPRYuCjsfkxp-train.png'
+test_image_path = '/mnt/data/file-N7CWJTTPiqSbw4AsAc6kru-test_2.png'
+
+train_img = Image.open(train_image_path)
+test_img = Image.open(test_image_path)
+
+train_img_array = np.array(train_img)
+test_img_array = np.array(test_img)
+
+train_img_array.shape, test_img_array.shape",Shift the top distinct color blocks horizontally in the row until they meet another color. All colors are pushed as far to the right as possible keeping their vertical alignment intact when encountering any other color from the left.,0
+2025-08-01T19:52:28,Order,Order6,3,low,0,mismatch,0,"3 3 3 3 3 3 3 3 3 3
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1 1 0 0 0 0
+0 0 1 0 0 0 0 1 0 0
+0 0 1 1 0 0 1 1 0 0
+0 1 1 1 1 1 1 1 1 0
+0 5 0 5 0 5 0 5 0 0","From the first image, the transformation involves vertically shifting each colored section upward, ensuring all colors remain in the same sequence but remove empty rows below. The second grid on the left follows this rule to form the grid on the right.
+
+Rule: Shift all colored sections upward, maintaining sequence, and remove empty rows below.",,"Shift all colored sections upward, maintaining sequence, and remove empty rows below.",0
+2025-08-01T19:53:34,Order,Order7,1,low,0,mismatch,0,"0 0 0 0 3 3 3 3 3 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 3 3 3 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 3 3
+0 0 0 0 3 3 3 3 3 0","The transformation involves reflecting the grids horizontally and vertically, while retaining the original colored squares. Observing both sets of transformed grids supports this, as colors are conserved, appearing symmetrically opposite their original positions.
+
+Rule: Reflect the grid both horizontally and vertically.",,Reflect the grid both horizontally and vertically.,0
+2025-08-01T19:53:44,Order,Order7,2,low,0,mismatch,0,"0 0 2 2 0 0
+0 0 2 2 0 0
+2 2 0 0 2 2
+2 2 0 0 2 2
+0 0 2 2 0 0
+0 0 2 2 0 0","The left grids transform into the right grids based on reflection across the vertical center line. After reflecting, the colors in the left half and right half are swapped. I will apply this transformation to the grid in the second image.
+
+Rule: Reflect the grid across the vertical center line, swapping colors between the left and right sides.",,"Reflect the grid across the vertical center line, swapping colors between the left and right sides.",0
+2025-08-01T20:02:37,Order,Order7,3,low,0,parse:rows have unequal length,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4","The rule from the provided images seems to involve transposing the grid. Observing the left and right images, each original grid on the left appears transposed on the right.
+
+Rule: Transpose each grid.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_img_path = '/mnt/data/file-Nxk6mQsAs7StiCk2kDxBgZ-train.png'
+test_img_path = '/mnt/data/file-BzzTqR2oKK3YVTMqKU4kFF-test_3.png'
+
+train_img = Image.open(train_img_path)
+test_img = Image.open(test_img_path)
+
+# Convert images to numpy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+train_array.shape, test_array.shape
+
+# Function to identify unique colors in an image
+def unique_colors(image_array):
+    # Reshape to a 2D array of colors
+    colors = image_array.reshape(-1, image_array.shape[2])
+    # Get unique colors
+    unique = np.unique(colors, axis=0)
+    return unique
+
+# Identify unique colors in the training images
+train_unique_colors = unique_colors(train_array)
+train_unique_colors
+
+# Mapping colors to indices
+color_map = {
+    (0, 0, 0): 0,        # Black
+    (160, 160, 160): 1,  # Gray
+    (204, 204, 204): 1,  # Also Gray in context
+    (255, 215, 49): 4,   # Yellow
+    (255, 255, 255): 0   # Also Black in context (no impact on result as per patterns)
+}
+
+# Function to transform an image based on the identified rule
+def transform_grid(grid):
+    height, width = grid.shape[:2]
+    transformed = np.zeros((height, width), dtype=int)
+
+    for y in range(height):
+        for x in range(width):
+            color = tuple(grid[y, x])
+            if color == (255, 215, 49):  # Yellow
+                transformed[(x, y)] = 4  # Transpose
+
+    return transformed
+
+# Separate grids from the image
+def get_grids(image_array, start_x, grid_width, grid_height, spacing, rows, cols):
+    grids = []
+
+    for r in range(rows):
+        for c in range(cols):
+            x = start_x + c * (grid_width + spacing)
+            y = r * (grid_height + spacing)
+            grid = image_array[y:y + grid_height, x:x + grid_width]
+            grids.append(grid)
+
+    return grids
+
+# Dimensions from the example
+start_x_train, grid_width_train, grid_height_train, spacing_train = 0, 120, 112, 10
+rows_train, cols_train = 2, 3
+
+# Extract grids from the training image
+train_grids = get_grids(train_array, start_x_train, grid_width_train, grid_height_train, spacing_train, rows_train, cols_train)
+
+# Transform the first grid of the second row as it's the relevant test
+transformed_test_grid = transform_grid(train_grids[-1])
+
+# Convert the transformed grid to string format
+grid_string = ""\n"".join("" "".join(map(str, row)) for row in transformed_test_grid)
+
+# Output the result
+grid_string
+
+# Adjust the transformation logic by correctly handling the transpose and grid bounds
+def transform_grid(grid):
+    height, width = grid.shape[:2]
+    transformed = np.zeros((width, height), dtype=int)
+
+    for y in range(height):
+        for x in range(width):
+            color = tuple(grid[y, x])
+            if color == (255, 215, 49):  # Yellow
+                transformed[x, y] = 4  # Transpose
+
+    return transformed
+
+# Transform the first grid of the second row
+transformed_test_grid = transform_grid(train_grids[-1])
+
+# Convert the transformed grid to string format
+grid_string = ""\n"".join("" "".join(map(str, row)) for row in transformed_test_grid)
+
+# Output the result
+grid_string
+
+# Re-attempt with corrected test grid
+transformed_test_grid = transform_grid(test_array)
+
+# Convert the transformed test grid to string format
+grid_string_test = ""\n"".join("" "".join(map(str, row)) for row in transformed_test_grid)
+
+# Output the result for the test image
+grid_string_test",Transpose each grid.,0
+2025-08-01T19:52:48,Order,Order8,1,low,0,mismatch,1,0 1 4 3 2,"The transformation rule observed in the training image involves creating a single row with the distinct colors found in the columns of the grid, displayed from top to bottom. The order of colors in the output corresponds to the vertical appearance of the colors in the grid. For the test image, we extract unique colors and apply the same vertical-to-horizontal transformation rule.
+
+Rule: Extract the unique colors from the columns of the grid, and arrange them from left to right based on their top-to-bottom presence.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_img = Image.open('/mnt/data/file-9vdpb9gtL9TSKWctK5w1Q4-train.png')
+test_img = Image.open('/mnt/data/file-FfiJHc3w75oTtHcp3t5iJK-test_1.png')
+
+# Convert images to NumPy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+train_array.shape, test_array.shape
+
+# Function to extract color patterns from the grid
+def extract_color_patterns(array):
+    # Defining positions of colored areas
+    patterns = []
+    if array.shape[0] == 1524:
+        # Training image
+        left_pattern_1 = array[101:401, 61:145]
+        left_pattern_2 = array[700:1400, 61:145]
+    else:
+        # Test image
+        left_pattern_1 = array[101:401, 61:145]
+    
+    # Extract distinct colors from patterns
+    pattern_1_colors = np.unique(left_pattern_1.reshape(-1, left_pattern_1.shape[2]), axis=0)
+    pattern_2_colors = np.unique(left_pattern_2.reshape(-1, left_pattern_2.shape[2]), axis=0) if 'left_pattern_2' in locals() else None
+    
+    if pattern_2_colors is not None:
+        patterns.append((pattern_1_colors, pattern_2_colors))
+    else:
+        patterns.append((pattern_1_colors, None))
+    
+    return patterns
+
+# Extract color patterns from training image
+train_patterns = extract_color_patterns(train_array)
+
+# Extract color patterns from test image
+test_patterns = extract_color_patterns(test_array)
+
+train_patterns, test_patterns","Extract the unique colors from the columns of the grid, and arrange them from left to right based on their top-to-bottom presence.",0
+2025-08-01T19:52:24,Order,Order8,2,low,0,mismatch,0,6 5 4 2 3,"In the first pair of images, each vertical stack of colors is transformed into a horizontal sequence by combining rows into horizontal segments. For the second image, applying the rule involves transforming the colored vertical sections into a row of colors aligned horizontally, maintaining their order from top to bottom.
+
+Rule: Transform vertical color segments into a horizontal sequence.",,Transform vertical color segments into a horizontal sequence.,0
+2025-08-01T19:53:22,Order,Order8,3,low,0,mismatch,0,4 3 5 4 3 6,"First, the left-side grid in each image is transformed to the right-side grid. The rule appears to involve reading the vertical stack of colors and arranging them horizontally from top to bottom. The colors are listed without black, preserving their order. The grid from the second image is similarly transformed by creating a horizontal list of the vertical stack of colored squares, ignoring the black squares.
+
+Rule: Convert the vertical sequence of non-black colors from the left-side grid into a horizontal sequence on the right-side grid in the same order.",,Convert the vertical sequence of non-black colors from the left-side grid into a horizontal sequence on the right-side grid in the same order.,0
+2025-08-01T19:53:55,Order,Order9,1,low,0,mismatch,0,"0 0 0
+0 0 0
+0 0 0
+2 2 2
+2 2 2
+2 2 2
+2 2 2
+0 0 0
+0 0 0
+0 0 0
+2 2 2
+0 0 0
+0 0 0
+0 0 0
+2 2 2","The transformation rule seems to involve copying alternating green rows to the right and leaving black rows unchanged. Each row from the left grid is directly mapped to the right with this pattern: the green rows are copied, while any additional black rows remain as they were. The input grid has a similar pattern, with alternating black and green rows. I will apply the same rule to transform it.
+
+Rule: Copy green rows to the corresponding position; leave black rows unchanged.",,Copy green rows to the corresponding position; leave black rows unchanged.,0
+2025-08-01T19:53:32,Order,Order9,2,low,0,mismatch,0,"0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+1 1 1 1 1 1
+1 1 1 1 1 1
+2 2 2 2 2 2
+2 2 2 2 2 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+1 1 1 1 1 1
+1 1 1 1 1 1
+2 2 2 2 2 2
+2 2 2 2 2 2
+0 0 0 0 0 0","The left grids are transformed to the right grids by adding an additional row of black squares at the end of each existing black section. This shifts the pattern into a thicker black line for each black strip.
+
+Rule: For each black section in the grid, add an additional row of black squares to make each line 2 rows thick, thus extending each black strip downward by 1 row.",,"For each black section in the grid, add an additional row of black squares to make each line 2 rows thick, thus extending each black strip downward by 1 row.",0
+2025-08-01T19:54:46,Order,Order9,3,low,0,mismatch,1,"3 3 3 3 3 3
+3 3 3 3 3 3
+3 3 3 3 3 3
+0 0 0 3 3 3
+0 0 0 3 3 3
+3 3 3 3 3 3
+0 0 0 0 0 0
+0 0 0 0 0 0
+3 3 3 3 3 3
+3 3 3 3 3 3
+0 0 0 0 0 0
+0 0 0 0 0 0
+3 3 3 3 3 3
+3 3 3 3 3 3","Analyzing the provided images reveals that in the train image, the left grids are transformed into the right grids by either shifting or repeating certain rows. In both cases, the black color (0) patterns are filled within a green (3) background. By comparing transformations, I determined that the black row pattern in each left grid defines the transformation needed for each corresponding right grid. The rule is to take the black rows in the left grid and repeat them within the green background similar to tesselation, forming larger blocks of black, following the repetition pattern in their respective left grids. Applying this to the test image reveals the same rule, creating repeating blocks of black rows within the green background.
+
+Rule: Gather black patterns and repeat them inside green background following original orientation and multiple iterations of pattern inspired repetition.","from PIL import Image
+import numpy as np
+
+# Load the images
+train_image_path = '/mnt/data/file-CJ3gKdL8svKxqNwwmRf2YY-train.png'
+test_image_path = '/mnt/data/file-MyWuP2S3SUDpi9dNocwZuU-test_3.png'
+
+train_img = Image.open(train_image_path)
+test_img = Image.open(test_image_path)
+
+# Convert images to numpy arrays
+train_array = np.array(train_img)
+test_array = np.array(test_img)
+
+# Check the dimensions and some pixel values to understand the patterns
+train_array.shape, train_array[:10, :10], test_array.shape, test_array[:10, :10]",Gather black patterns and repeat them inside green background following original orientation and multiple iterations of pattern inspired repetition.,0

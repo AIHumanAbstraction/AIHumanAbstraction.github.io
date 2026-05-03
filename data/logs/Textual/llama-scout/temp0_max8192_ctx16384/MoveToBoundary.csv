@@ -1,0 +1,266 @@
+"timestamp","concept","puzzle","test_idx","is_correct","err","tools_used","answer","summary","Rule_correct","rule_evaluation_reasoning","Rule","validated","Rule_correct_label","validation_level","starred","programming_calls"
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary1","1","0","mismatch","0","0 0 0 0 2 0
+0 0 0 0 2 0
+0 0 0 1 2 0
+1 1 1 0 2 0
+0 0 0 0 2 0
+0 0 0 0 2 0","The transformation rule appears to be a simple shift or propagation of 1s downwards, while leaving 0s and 2s unchanged. In each example, the 1s in the input grid move down by one cell in the output grid, stopping when they reach a cell that is already occupied by another 1 or when they reach the bottom of the grid. The 2s remain stationary.","0","","Propagate 1s downwards","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary1","2","0","mismatch","0","0 0 0 0 0 0 0 2 0
+0 0 0 1 1 1 0 2 0
+0 0 0 1 1 0 0 2 0
+0 0 0 1 0 0 0 2 0
+0 0 0 1 1 0 0 2 0
+0 0 0 1 1 1 0 2 0
+0 0 0 1 1 0 0 2 0
+0 0 0 1 0 0 0 2 0
+0 0 0 1 1 0 0 2 0","The transformation rule appears to involve moving 1s down. In each example, the 1s in the input grid move down one cell in the output grid, while the positions of 0s and 2s remain unchanged.","0","","Move 1s down","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary1","3","0","mismatch","0","0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0 0
+1 0 1 0 1 0 1 0 1
+0 0 0 1 0 0 0 1 0
+0 0 0 0 0 0 0 0 0
+2 2 2 2 2 2 2 2 2","The transformation rule appears to involve moving 1s down and aggregating or leaving 2s unchanged. In the given examples, 1s in the input grid move down one cell in the output grid, while 2s remain stationary and unchanged. The movement of 1s seems to be the primary change, with 0s being unaffected. This rule is consistently applied across all provided examples.","0","","Move 1s down one cell, leave 2s unchanged, and keep 0s as 0s.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary10","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 7 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 7 0 7 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 7 0 0 0 7 0 0 0 0 0 0 0 0 0
+0 0 0 3 0 3 0 0 0 7 0 7 0 0 0 0 0 0
+0 0 3 0 0 0 3 0 0 0 7 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve a rotation and possible repositioning of the non-zero elements in the grid. By examining the provided examples, it seems that the non-zero elements are rotated 90 degrees clockwise. Additionally, in some cases, the positions of the non-zero elements are swapped or adjusted. The rule seems to preserve the values of the non-zero elements but changes their positions according to the rotation and possible swapping.","0","","Rotate non-zero elements 90 degrees clockwise","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary10","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+5 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+5 4 5 0 0 0 0 0 0 5 4 4 4 4 0 0 0 0
+5 5 5 0 0 0 0 0 0 5 4 4 4 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 5 4 4 4 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 5 5 5 5 5 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a rotation and possible transposition of the input grid. Observing the provided examples, it seems that the non-zero values in the input grid are being rotated 90 degrees clockwise and possibly transposed. The output grid shows that the positions of the non-zero values have changed accordingly. For instance, in Example 1, the input values of 2 and 1 are rotated and transposed to their new positions in the output grid. A similar pattern is observed in Example 2. Based on this analysis, the transformation rule seems to involve a 90-degree clockwise rotation.","0","","Rotate non-zero values 90 degrees clockwise","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary10","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 3 3 3 0 0 0 0 0 0 0 9 9 9 9
+0 0 0 0 0 0 0 0 0 0 0 3 4 3 0 0 0 0 0 0 0 0 0 0 9
+0 0 0 0 0 0 0 0 0 0 0 4 3 3 0 0 0 0 0 0 0 0 0 0 9
+0 0 0 0 0 0 0 0 0 0 0 3 3 3 0 0 0 0 0 0 0 9 0 0 9
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 9 9 9
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a rotation and possible transposition of the input grid. Upon closer inspection, it seems that the rule involves rotating the input grid by 90 degrees clockwise.","0","","Rotate 90 degrees clockwise","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary2","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 7 0 0 0 0 0 0 0 0
+0 7 0 0 7 7 7 0 0 0
+0 7 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving 7s to the top and left. In the examples, 7s seem to move up and left until they hit a boundary or another 7. The movement seems to be constrained to only moving up or left, not down or right.","0","","Move 7s up and left until they hit a boundary or another 7.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary2","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7
+0 0 0 0 0 0 0 0 0 7
+0 0 0 0 0 7 0 0 0 7
+0 0 0 0 0 7 0 0 0 7
+0 0 0 0 0 7 0 0 0 7
+0 0 0 0 0 7 0 0 0 7","The transformation rule appears to involve moving 7s to the right and filling in gaps. In the examples, 7s seem to move rightward in rows and also seem to consolidate or fill in when possible. For any given row, if a 7 appears, it seems to either stay in place or move rightward, and if a gap of 7s appears in a column, it fills in.","0","","For each row, move 7s to the right. For each column, if there is a 7 above, fill in 7s below.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary2","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 7 0 0 0 0 0 0 0 0
+0 7 0 0 0 7 0 0 0 0
+0 7 0 0 0 7 0 0 0 0
+0 7 0 0 0 7 0 0 7 7","The transformation rule appears to involve moving 7s to the top and left. In the examples, 7s seem to move up and left until they hit a boundary or another 7. The output grids show that 7s are shifted up and left but do not move down or right. The rule seems to prioritize moving 7s up and left until they are blocked by another 7 or the grid boundary.","0","","Move 7s up and left until they hit a boundary or another 7.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary3","1","1","","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 2 2 2
+0 0 0 0 0 0 0 2 0 2
+0 0 0 0 0 0 0 2 2 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a rightward shift of the input grid's non-zero values. In the examples provided, the non-zero values in the input grid are shifted one position to the right in the output grid. This rule is consistently applied in both examples.","1","","Rightward shift of non-zero values","0","Correct","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary3","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 2 2
+0 0 0 0 0 0 0 0 2 0
+0 0 0 0 0 0 0 0 2 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a 2-step right shift and 1-step down shift for non-zero values in the input grid.","0","","For each non-zero cell in the input grid, move its value 2 steps to the right and 1 step down if possible.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary3","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 2
+0 0 0 0 0 0 0 0 2 0
+0 0 0 0 0 0 0 0 2 0
+0 0 0 0 0 0 0 0 2 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a right shift of the input grid values. In the examples provided, non-zero values in the input grid are shifted to the right in the output grid, while zero values remain unchanged. This is observed in both Example 1 and Example 2, where the positions of non-zero values change from the input to the output grid.","0","","Right shift non-zero values","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary4","1","0","parse:non-integer token in row 1","0","[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [6, 6, 0, 0, 0, 0, 6, 0, 0, 0], [6, 0, 0, 0, 0, 0, 6, 0, 0, 0], [0, 0, 0, 0, 0, 0, 6, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 6, 0, 0, 0, 0, 0, 0, 0]]","The transformation rule appears to involve moving or propagating non-zero values (specifically, the number 6) in the input grid to new positions in the output grid. By examining the provided examples, it seems that the 6's move in a way that they spread out or get relocated to form a new pattern. In Example 1, 6's from the input grid are relocated to the top part of the output grid, forming a new configuration. In Example 2, 6's are moved to the top-left part of the output grid. The movement seems to be related to the original positions of 6's but does not follow a simple arithmetic or direct one-to-one mapping. It seems that 6's move up and possibly get consolidated or spread in the upper parts of the grid.","0","","Non-zero values (6's) move up and consolidate or spread out in the upper part of the grid.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary4","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 6 0 0 0 0 0
+0 0 0 0 6 0 0 0 0 0
+0 0 0 0 6 0 0 0 0 0
+0 0 6 6 6 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving or propagating non-zero values (specifically, 6) from the input grid to the output grid in a manner that fills in connected regions or lines. In the given examples, 6s seem to move up and fill in gaps in a 'line' or 'region' of 6s. For any given 6 in the input grid, it seems that the output grid will have 6s in a pattern that could be interpreted as a 'connected component' or 'line' propagation, often filling in a line or area that the 6s are part of.","0","","Propagate 6s up to fill connected regions or lines.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary4","3","0","parse:non-integer token in row 1","0","[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [6, 6, 6, 6, 6, 6, 6, 6, 6, 6], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","The transformation rule appears to involve moving or propagating non-zero values (in this case, 6) in the input grid to specific positions in the output grid. By examining the provided examples, it seems that the 6 values move to the top-left part of the grid and form lines or shapes. The movement seems to be constrained to the top part of the grid and forms connected or separate lines.","0","","Non-zero values (6) move to the top-left, forming lines or shapes, prioritizing the top part of the grid.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary5","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving the non-zero values one column to the right while maintaining their vertical alignment. In cases where the non-zero values reach the edge of the grid, they seem to stay at the edge and expand outward if they form a continuous block.","0","","Move non-zero values one column to the right","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary5","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 2 2 2 2 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving the non-zero values one column to the right, effectively shifting them horizontally. In the given examples, the 5s in Example 1 and the 7s in Example 2 move one column to the right. The same pattern is applied to the test input grid.","0","","Shift non-zero values one column to the right","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary5","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 8 0 0 0 0 0 0 0
+0 0 8 8 8 8 0 0 0 0
+0 0 8 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 8 0 0
+0 0 0 0 8 8 8 8 0 0
+0 0 0 0 0 0 0 8 0 0","The transformation rule appears to involve shifting non-zero values down by one cell in the output grid, while maintaining their horizontal position. In cases where the non-zero value is already at the bottom of the input grid, it simply remains in the same position. The rule also seems to apply to 'columns' of non-zero values, maintaining their connectivity.","0","","Shift non-zero values down by one cell","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary6","1","0","parse:non-integer token in row 1","0","[[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]","The transformation rule appears to involve moving a '1' from the input grid to the output grid in a specific way. In the examples, the '1' seems to move from its original position in the input grid to a position in the output grid that corresponds to its column. If the '1' is in the first column, it moves to the first column of the output grid; if it's in the second column, it moves to the second column of the output grid, and so on. The row, however, seems to reset to the top of the output grid.","0","","The '1' moves from its input position (row, column) to the output position (0, column) in the output grid.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary6","2","0","mismatch","0","0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The transformation rule appears to involve moving a single '1' or 'non-zero' value from the input grid to the output grid in a specific pattern. In each example, the '1' in the output grid corresponds to the position of a '1' or non-zero value in the input grid but shifted or moved according to a certain rule. Specifically, the '1' seems to move in a way that it appears in the first row of the output if it was in the last column of the input, and otherwise, it seems to move to the position that corresponds to its column in the input but in the first row of the output if it's not in the last row, or it stays in the same column if it's in the last row. However, a simpler and more consistent rule can be derived: the '1' moves to the top row if it was not already there, and if it was in the top row, it stays in place or moves according to its column position.","0","","The non-zero value (1) in the input grid moves to the corresponding column position in the first row of the output grid if it was not already in the first row. If the non-zero value was in the first row of the input grid, it remains in the same column position in the output grid.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary6","3","0","mismatch","0","0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 9","The transformation rule appears to involve moving a single '1' or non-zero value from the input grid to the output grid in a specific manner. In the examples, the '1' or non-zero value seems to move one cell to the right and down, but only if it's not already at the rightmost or bottommost edge, in which case it simply moves down or stays put. However, a simpler and more consistent rule can be observed: the non-zero value moves to the position right below it if there's a zero below, otherwise it moves to the rightmost position in the same row if possible, or effectively disappears if it can't move right.","0","","Move the first non-zero value in each column down one cell if possible, otherwise move it to the right.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary7","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 0 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 7 7 7 7 7 7 0 0 0 0","The transformation rule appears to be shifting non-zero values down by one cell in their respective columns, while zero values remain unchanged. In the given examples, the non-zero values in the input grid are shifted down by one row in the output grid, effectively moving them down if they are not in the bottom row. If they are in the bottom row, they remain there.","0","","Shift non-zero values down","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary7","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 3 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 3 0 0
+0 0 0 0 0 0 0 0 0 0 0 3 0 0 0
+0 0 0 0 0 0 0 0 0 0 3 0 0 0 0
+0 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+0 0 0 0 0 0 0 0 3 0 0 0 0 0 0","The transformation rule appears to involve moving or shifting certain values down in the grid. Specifically, for any given column, if there is a non-zero value in the input grid, it seems that this value is moved down to the lowest possible position in that column in the output grid, while maintaining its original horizontal position.","0","","Move non-zero values down","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary7","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 6 6
+0 0 0 0 0 0 0 0 0 0 0 6 6 6 6 6 6 6 6
+0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving or shifting certain values down in the grid. Specifically, for any given column, if there is a non-zero value in the input grid, it seems that this value is moved down to the lowest possible position in that column in the output grid, while maintaining its original horizontal position.","0","","Shift non-zero values down in each column","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary8","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 1 1 1 1 1 1 1 1 1 1 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving or shifting non-zero values in the input grid to specific positions in the output grid. By examining the provided examples, it seems that the non-zero values are moved to the nearest available position that is further away from the edges of the grid, effectively shifting them inwards.","0","","Shift non-zero values inwards, prioritizing movement towards the center of the grid while preserving their original row and column positions relative to each other.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary8","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 3 0 3 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving or shifting non-zero values down in the grid, while keeping zero values in their original positions. In Example 1, the 4s shift down, and in Example 2, the 2s and 8s shift down. The rule seems to apply to the first column that contains a non-zero value, shifting it down until it reaches the bottom of the grid or a zero value is encountered below it.","0","","Shift non-zero values down","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary8","3","0","mismatch","0","5 0 0 0 0 0 0 0 0 0 0 0 0
+5 0 0 0 0 0 0 0 0 0 0 0 0
+5 4 0 0 0 0 0 0 0 0 0 0 0
+5 0 0 0 0 0 0 0 0 0 0 0 0
+5 0 0 4 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve moving or shifting non-zero values down in the grid, while preserving their horizontal positions and the zero values.","0","","For each non-zero value in the input grid, move it down until it either reaches the bottom of the grid or a zero value is encountered below it.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary9","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 6 6 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve a rotation and possible repositioning of the non-zero values in the grid. In the examples provided, the non-zero values seem to 'move' or get 'rotated' 90 degrees clockwise and also seem to shift positions. For instance, in Example 1, the 2s and 1s switch places and get rotated. A similar pattern is observed in Example 2, where 3s and 4s change positions and get rotated. The rule seems to involve swapping certain values and rotating their positions.","0","","Rotate non-zero values 90 degrees clockwise and swap specific values.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary9","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0
+5 5 5 5 0 5 5 5 5 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0
+0 0 0 0 0 0 0 0 0 0 5 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be a rotation and possible transposition of the input grid. Observing the provided examples, it seems that the non-zero values in the input grid are being rotated 90 degrees clockwise and possibly transposed. The output grid shows that the positions of the non-zero values have changed accordingly. For instance, in Example 1, the input values of 2 and 1 are rotated and transposed to their new positions in the output grid. A similar pattern is observed in Example 2. Based on this analysis, the transformation rule seems to involve a 90-degree clockwise rotation.","0","","Rotate non-zero values 90 degrees clockwise.","0","Incorrect","0","0",""
+"2025-09-09T00:21:51","MoveToBoundary","MoveToBoundary9","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 3 0 3 0 3 0 3 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 3 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 7 7 7 7 7 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve a rotation and possible repositioning of non-zero values within the grid. In the examples provided, the non-zero values seem to 'move' or get 'rotated' 90 degrees clockwise and also seem to shift positions. For instance, in Example 1, the 2s and 1s swap places and get rotated. Similarly, in Example 2, the 3s and 4s change positions and get rotated. This rotation and repositioning seem consistent across examples.","0","","Rotate non-zero values 90 degrees clockwise and swap positions based on input grid patterns.","0","Incorrect","0","0",""

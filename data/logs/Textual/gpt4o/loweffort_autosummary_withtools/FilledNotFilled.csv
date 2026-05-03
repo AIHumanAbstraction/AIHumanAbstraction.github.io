@@ -1,0 +1,416 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule,validated
+2025-08-01T19:16:22,FilledNotFilled,FilledNotFilled1,1,low,0,mismatch,0,7,"The output is the digit that forms a diagonal line with its maximum occurrences in a grid pattern resembling an arrow, excluding border-aligned or non-centered patterns. Analyzing the provided examples: 1st Example: Diagonal of 6s from top-right to bottom-left forms the largest diagonal. 2nd Example: Diagonal of 4s from top-left to bottom-right. 3rd Example: Diagonal of 9s from the center. Applying this to the test input: Diagonal of 7s appears once, other digits like 5 appear in a non-arrow-like pattern. Therefore, the diagonal pattern formed from the center of the grid is composed of 7s.
+
+Rule: Identify the number forming the largest diagonal with an arrow or centered pattern.",,Identify the number forming the largest diagonal with an arrow or centered pattern.,0
+2025-08-01T19:16:25,FilledNotFilled,FilledNotFilled1,2,low,0,mismatch,0,1,"In each example, the output is determined by selecting the number on the diagonal of the largest square or rectangular block formed by repeating numbers, touching the borders of the input grid. The input blocks represent distinct regions, and the rule is to choose the top-most, left-most repeating number forming such a border block.
+
+Rule: Select the numerical value forming the diagonal of the largest repeating block touching the grid borders.",,Select the numerical value forming the diagonal of the largest repeating block touching the grid borders.,0
+2025-08-01T19:16:32,FilledNotFilled,FilledNotFilled1,3,low,1,,0,1,"In each example, the output number is the unconnected number with the highest value that does not form a path or connect with similar numbers, often located towards the bottom part of the grid. All numbers are considered in pairs or groups except one which is isolated from others or does not form a cluster. Therefore, the isolated highest-valued number, usually single or not part of larger clusters, becomes the output.
+
+Rule: Identify the highest value that does not form a group with others, choosing the least repeated one.",,"Identify the highest value that does not form a group with others, choosing the least repeated one.",0
+2025-08-01T19:16:31,FilledNotFilled,FilledNotFilled10,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0
+0 3 3 3 3 3 3 0
+0 3 4 0 0 4 3 0
+0 3 0 4 0 0 3 0
+0 3 4 0 0 4 3 0
+0 3 0 4 0 0 3 0
+0 3 4 0 0 4 3 0
+0 3 4 0 4 0 3 0
+0 3 0 4 0 4 3 0
+0 3 4 0 4 0 3 0
+0 3 0 4 0 4 3 0
+0 3 3 3 3 3 3 0
+0 0 0 0 0 0 0 0","The transformation involves replacing certain '0's with '4's where there seems to be an alternation pattern. The pattern involves looking for columns or rows following a '3' boundary and alternating the changing of '0's to '4's, skipping one cell each time, creating diagonal patterns inside defined areas.
+
+Rule: In the presence of a '3' boundary, create or extend diagonal patterns by replacing '0's with '4's such that it alternates in empty spaces defined by '3's.",,"In the presence of a '3' boundary, create or extend diagonal patterns by replacing '0's with '4's such that it alternates in empty spaces defined by '3's.",0
+2025-08-01T19:16:39,FilledNotFilled,FilledNotFilled10,2,low,0,parse:non-integer token in row 1,0,"[[0,3,3,3,3,3,3,3,3,3,3,3,0],[0,3,4,0,4,0,4,0,4,0,4,3,0],[0,3,0,4,0,4,0,4,0,4,0,3,0],[0,3,4,0,4,0,4,0,4,0,4,3,0]]","In the examples, the task is to transform the input grid by modifying some cells based on their neighbors. Specifically, in the given examples, wherever there are diagonal sequences from '4' cells, they need to be connected into continuous paths of '4's forming diagonal lines. This means filling the gaps between existing '4's along diagonals. This rule appears consistent across all provided grids.
+
+Rule: Connect isolated '4's along diagonals to form continuous sequences of '4's.",,Connect isolated '4's along diagonals to form continuous sequences of '4's.,0
+2025-08-01T19:16:59,FilledNotFilled,FilledNotFilled10,3,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0], [0, 3, 4, 4, 4, 4, 4, 4, 4, 3, 0], [0, 0, 3, 4, 4, 4, 4, 4, 4, 3, 0], [0, 0, 0, 3, 4, 4, 4, 4, 4, 3, 0], [0, 0, 0, 0, 3, 4, 4, 4, 4, 3, 0], [0, 0, 0, 3, 4, 4, 4, 4, 4, 3, 0], [0, 0, 3, 4, 4, 4, 4, 4, 4, 3, 0], [0, 3, 4, 4, 4, 4, 4, 4, 4, 3, 0], [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","Analyzed the patterns in the examples where the transitions between '3' and '0' are filled by '4', maintaining the sequence consistency observed.
+
+Rule: For every zero adjacent to a '3' that is itself adjacent to '4', convert the zero to '4'.","import numpy as np
+
+# Define the input grid for the test case
+input_grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0],
+    [0, 3, 4, 0, 4, 0, 4, 0, 4, 3, 0],
+    [0, 0, 3, 4, 0, 4, 0, 4, 0, 3, 0],
+    [0, 0, 0, 3, 4, 0, 4, 0, 4, 3, 0],
+    [0, 0, 0, 0, 3, 4, 0, 4, 0, 3, 0],
+    [0, 0, 0, 3, 4, 0, 4, 0, 4, 3, 0],
+    [0, 0, 3, 4, 0, 4, 0, 4, 0, 3, 0],
+    [0, 3, 4, 0, 4, 0, 4, 0, 4, 3, 0],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+], dtype=int)
+
+# Analyzing the transformation rule from the given examples:
+# After examining the given examples, one potential transformation rule can be:
+# For every non-zero element '3' that is adjacent to a zero, change the next '0' in the sequence to '4'
+# following the sequence.
+
+# Apply the rule to the test input grid
+output_grid = input_grid.copy()
+
+# Identify rows and columns for quick access
+rows, cols = output_grid.shape
+
+for i in range(1, rows - 1):
+    for j in range(1, cols - 1):
+        if input_grid[i][j] == 0 and input_grid[i][j - 1] == 4:
+            output_grid[i][j] = 4
+
+final_grid = output_grid.tolist()
+
+final_grid","For every zero adjacent to a '3' that is itself adjacent to '4', convert the zero to '4'.",0
+2025-08-01T19:16:51,FilledNotFilled,FilledNotFilled2,1,low,0,mismatch,0,"0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The output grids are smaller sections of the input grids, consisting only of zeros, suggesting the task is to identify those sections. Observing the examples, it appears the outputs are top-left sections of the input grids. The size varies, being a sub-grid of zeros. The rule seems to involve identifying such a top-left sub-region containing only zeros, cropping the grid. Testing the hypothesis, the rule is to map the first continuous top-left zero region of the same height as input grid. The test grid's top-left zero section is 6x3, matching the left initial columns completely filled with zeros at the start.
+
+Rule: Identify top-left zero matrix from input, crop it to form same column size as input, height matching contiguous zeros.",,"Identify top-left zero matrix from input, crop it to form same column size as input, height matching contiguous zeros.",0
+2025-08-01T19:16:12,FilledNotFilled,FilledNotFilled2,2,low,0,mismatch,0,00000000 00000000 00000000 00000000 00000000,"The output grids are blank grids with dimensions derived from non-zero blocks in the input. Examining examples shows that output height equals the number of distinct non-zero blocks in input and width equals the max width of zeroes in the rows containing non-zero blocks. Applying this: Example 1 has three rows of non-zero blocks, hence output 3x2. Example 2 has four, hence 4x4. Example 3 has five, hence 5x3. The test input has five rows of non-zero blocks and maximum adjacent zero width of 8, resulting in a 5x8 grid.
+
+Rule: Create an output grid of size XxY where X is the number of rows with non-zero blocks and Y is the max width of adjacent zeroes in those rows.",,Create an output grid of size XxY where X is the number of rows with non-zero blocks and Y is the max width of adjacent zeroes in those rows.,0
+2025-08-01T19:16:14,FilledNotFilled,FilledNotFilled2,3,low,0,mismatch,0,0 0 0 0 0 0 0 0,"The output grids appear to be picking square blocks of zeros from the input grid. Observing the examples, each output is entirely zeros and is extracted from a region where non-zero numbers form a recognizable shape or a cluster in the input grid. The size and position of the output grid seem defined such that any prominent group of non-zero numbers is excluded.
+
+Rule: For an NxM input grid, identify the block of zeros that avoids clusters of non-zero numbers entirely.",,"For an NxM input grid, identify the block of zeros that avoids clusters of non-zero numbers entirely.",0
+2025-08-01T19:16:26,FilledNotFilled,FilledNotFilled3,1,low,0,mismatch,0,3,"In each example, the number in the output corresponds to the different or unique number found amidst similar numbers in a group within the grid. Example 1 has '1' surrounded by '3's, Example 2 has no such unique number, hence '0 0'. Example 3 has '5' surrounded by '8's. Applying this rule to the test input, '3' is unique amidst '5's.
+
+Rule: Identify the unique number surrounded by identical numbers.",,Identify the unique number surrounded by identical numbers.,0
+2025-08-01T19:16:35,FilledNotFilled,FilledNotFilled3,2,low,0,mismatch,0,2,"The rule involves identifying a unique number within a pattern of other numbers, focusing on blocks of repeating numbers. Example 1 maps the number '1' surrounded by '3's, returning '1'. Example 2 does not have such a number, returning zeros. Example 3 centers on '5' among '8's. The rule involves finding a non-edge number not part of the surrounding repeating pattern.
+
+Rule: Identify numbers enclosed by distinct blocks and return them; if no such unique number exists, return zeros.",,"Identify numbers enclosed by distinct blocks and return them; if no such unique number exists, return zeros.",0
+2025-08-01T19:16:42,FilledNotFilled,FilledNotFilled3,3,low,0,mismatch,0,4,"Analyze each example to understand the relation between input patterns and outputs. The examples suggest identifying specific numbers surrounded by others in a grid and returning that specific number or pattern. Example 1 reveals the number '1' surrounded by '3's. Example 2 focuses on the remaining center grid, mainly zeros after excluding the layers. Example 3 identifies '5' surrounded by '8's. The rule seems to identify the unique number surrounded by different numbers.
+
+Rule: Identify any distinct number that is surrounded by a uniform number pattern and return that distinct number. If no unique central number, return the remaining inner grid after exclusion.",,"Identify any distinct number that is surrounded by a uniform number pattern and return that distinct number. If no unique central number, return the remaining inner grid after exclusion.",0
+2025-08-01T19:16:07,FilledNotFilled,FilledNotFilled4,1,low,0,mismatch,0,000000000000000444400000000444440000000044440000000044440000000044440000000044444000000044404400000000000000000000,"The transformation consistently completes regions with 4s by filling any gaps within the clusters of 4s in each row, using the topmost 4 in the cluster as a guide. Each row of the output fills to the right if there are 4s already present and fills any gaps within clusters.
+
+Rule: Complete horizontal gaps in clusters of 4s within each row, filling rightward starting from the leftmost 4 in the cluster.",,"Complete horizontal gaps in clusters of 4s within each row, filling rightward starting from the leftmost 4 in the cluster.",0
+2025-08-01T19:16:08,FilledNotFilled,FilledNotFilled4,2,low,0,mismatch,0,0000000044000000004444000000444444000004444400000444440000444444004444444444440044444444000444444440000000000000000000,"The transformation seems to fill in the '4' values to close the gaps, creating more complete shapes from the initial configurations. Observing the examples, '4' values are extended in rows and columns where adjacent '4's exist within the bounds of the shape.
+
+Rule: Extend contiguous '4's horizontally and vertically to close gaps between them in each row and column.",,Extend contiguous '4's horizontally and vertically to close gaps between them in each row and column.,0
+2025-08-01T19:16:19,FilledNotFilled,FilledNotFilled4,3,low,0,mismatch,0,"0 0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 4 4 4 4 4 4 0 0 0 4 4 4 4 0 0 0 0 0
+0 0 4 4 4 4 4 4 0 0 4 4 4 4 4 0 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 4 4 0 0 4 4 4 4 0 0
+0 0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 4 0 0
+0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 0 0","The pattern observed in the examples is that each row of the grid, if it contains any '4's, is filled with '4's from the first '4' in that row to the last '4'. This effectively removes any gaps in horizontal sequences of '4's within the same row.
+
+Rule: Fill horizontal gaps between '4's in each row.",,Fill horizontal gaps between '4's in each row.,0
+2025-08-01T19:16:21,FilledNotFilled,FilledNotFilled5,1,low,0,parse:non-integer token in row 1,0,"[[0,0,0,4,4,4,0,0,0],[0,0,4,4,4,4,4,0,0],[0,4,4,4,4,4,4,4,0],[4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4],[0,0,0,0,0,0,0,0,0]]","In both examples, the input grids contain a framed pattern of nonzero numbers (3s and 2s) surrounded by zeros. The output grid fills in any zeros within these framed patterns with the same nonzero number, resulting in a solid block of that number inside the frame. Applying the rule to the new grid involves identifying the framed pattern of 4s and filling in any zeros inside it with 4s.
+
+Rule: Fill the area surrounded by nonzero numbers with the same number.",,Fill the area surrounded by nonzero numbers with the same number.,0
+2025-08-01T19:16:48,FilledNotFilled,FilledNotFilled5,2,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0,0,0,0,0,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,6,6,6,6,6,6,6,6,6,0],[0,0,0,0,0,0,0,0,0,0,0]]","In both examples, cells containing non-zero values are transformed. In Example 1, all cells with '3' behind a border of '0' became '3' throughout their previous rows and columns. In Example 2, leading diagonal values remained and others were set to zero, resulting in a sparse pattern across a diagonal. This suggests a pattern-specific transformation targeting row/column fill or diagonal retention.
+
+Rule: For an input grid, if any non-zero number 'x' forms a rectangle or square, convert rows and columns within this boundary to 'x'. Otherwise, retain leading diagonal values and set the rest to zero.",,"For an input grid, if any non-zero number 'x' forms a rectangle or square, convert rows and columns within this boundary to 'x'. Otherwise, retain leading diagonal values and set the rest to zero.",0
+2025-08-01T19:16:39,FilledNotFilled,FilledNotFilled5,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 1 1 1 1 1 1 1 1 1 0 0
+0 1 1 1 1 1 1 1 1 1 0 0
+0 1 1 1 1 1 1 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 1 0 0
+0 0 0 1 1 1 1 1 1 1 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","The task is to identify a transformation rule that takes an input grid and produces an output grid based on patterns observed in given examples. Example 1 shows all inner 0s change to 3s. In Example 2, 2s become 0s unless surrounded by another 2, converting them to 0s only on edges. Thus, replace non-surrounded positive numbers with 0s.
+
+Rule: Replace non-surrounded positive numbers in a grid with 0s",,Replace non-surrounded positive numbers in a grid with 0s,0
+2025-08-01T19:17:04,FilledNotFilled,FilledNotFilled6,1,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,2,2,2,0,0,0,0,0],[0,2,2,2,2,2,2,0,0,0,0,0],[0,2,2,2,2,2,2,0,0,0,0,0],[0,2,2,2,2,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,7,7,7,7,0],[0,0,0,6,6,0,0,7,0,0,7,0],[0,0,0,6,6,0,0,7,0,0,7,0],[0,0,0,6,6,0,0,7,7,7,7,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]]","Identify patterns in transformations from input to output grids. In Example 1, specific blocks of numbers shrink, with cells around boundary elements reducing. Apply similar transformation. Shrink wide elements from the center to edges.
+
+Rule: Shrink boundary lines towards central axis for each distinct block of numbers greater than zero.",,Shrink boundary lines towards central axis for each distinct block of numbers greater than zero.,0
+2025-08-01T19:16:13,FilledNotFilled,FilledNotFilled6,2,low,0,mismatch,0,"0 0 0 0 8 8 0 0 0 0
+0 0 0 8 0 0 8 0 0 0
+0 0 8 0 0 0 0 8 0 0
+0 8 0 0 0 0 0 0 8 0
+8 8 8 8 8 8 8 8 8 8
+3 0 0 0 3 3 3 3 3 3
+3 3 3 3 0 0 0 3 3 3
+0 3 3 3 3 3 3 3 3 0
+0 0 3 3 3 3 3 3 0 0
+0 0 0 3 3 3 3 0 0 0","The transformation seems to focus on changing certain elements within specific structures. In the first example, the `4` block has some elements in the center turned into `4`, while the `5` block becomes a border with the inside values turned to `0`. The `3` block has central elements turned to `0` as well. Applying this intuition to the new grid, I will maintain the outer structure of any complete filled strip in a similar manner as the examples, turning certain elements inside filled rows or columns into `0`.
+
+Rule: For rows or columns filled with a non-zero number, retain the border elements while turning certain inner elements to 0 based on the pattern observed in the example.",,"For rows or columns filled with a non-zero number, retain the border elements while turning certain inner elements to 0 based on the pattern observed in the example.",0
+2025-08-01T19:16:50,FilledNotFilled,FilledNotFilled6,3,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","The transformation rule appears to involve keeping the outermost layer of repeating numbers in a block pattern and setting the interior numbers to zero. This causes isolated segments of the same number to be erased, leaving only the outer edges.
+
+Rule: Identify blocks of identical numbers and set the interior of those blocks to zero while leaving the outermost edges intact.","import numpy as np
+
+# Define the input grid from the example
+input_grid_example = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 4, 0, 0, 4, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 4, 0, 0, 4, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 3, 3, 3, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 3, 0, 3, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 3, 3, 3, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+# Define the output grid from the example
+output_grid_example = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 0, 0, 0, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 0, 0, 0, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 0, 0, 0, 5, 0],
+    [0, 4, 4, 4, 4, 0, 0, 0, 5, 5, 5, 5, 5, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 3, 3, 3, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0],
+    [0, 3, 3, 3, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0],
+    [0, 3, 3, 3, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+# Transformation could involve removing certain patterns from specific rows or columns.
+# Let's check differences first:
+difference = output_grid_example - input_grid_example
+
+# Define the test input grid
+test_input_grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+# Applying the rule might involve removing certain patterns as in the example
+def transform_grid(grid):
+    result = grid.copy()
+
+    # Define the rule based on the observed transformation
+    # Rule: Replace any block of same non-zero numbers within isolated segments
+    # This involves setting certain cells to zero based on patterns in specific positions
+    
+    # Vertical patterns observed in columns - selective erasure like:
+    # Erase full inner rectangle except borders in those bands
+    for i in range(grid.shape[0] - 1):  # Move row-wise
+        for j in range(grid.shape[1] - 1):  # Move column-wise
+            if grid[i, j] == grid[i, j + 1]:
+                result[i, j + 1] = 0
+            if grid[i, j] == grid[i + 1, j]:
+                result[i + 1, j] = 0
+                
+    return result
+
+# Predict the output grid for the test input
+predicted_output_grid = transform_grid(test_input_grid)
+predicted_output_grid",Identify blocks of identical numbers and set the interior of those blocks to zero while leaving the outermost edges intact.,0
+2025-08-01T19:16:21,FilledNotFilled,FilledNotFilled7,1,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,5,5,5,5,5,5,0,0,0,0,0],[0,0,0,0,5,5,5,5,5,5,0,0,0,0,0],[0,0,0,0,5,5,5,5,5,5,0,0,0,0,0],[0,0,0,0,5,5,5,5,5,5,0,0,0,0,0],[0,0,0,0,5,5,5,5,5,5,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]","In each example, the grid transformation takes a row segment filled with nonzero numbers and extends it vertically down to the next occurrence or boundary.
+
+Rule: For each row containing nonzero segments, extend that segment downward until either another nonzero segment is found or the grid ends.","import numpy as np
+
+# Define a function to apply the transformation rule to the input grid
+def apply_transformation(input_grid):
+    input_grid = np.array(input_grid)
+    output_grid = input_grid.copy()
+    
+    non_zero_rows, non_zero_cols = np.nonzero(input_grid)
+    if len(non_zero_rows) > 0:
+        start_row, end_row = min(non_zero_rows), max(non_zero_rows)
+        output_grid[start_row:end_row+1, :] = np.where(output_grid[start_row:end_row+1, :] == 0, input_grid[start_row, :], output_grid[start_row:end_row+1, :])
+        
+    return output_grid.tolist()
+
+# Test input grid
+test_input_grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+# Apply transformation to the test input grid
+transformed_grid = apply_transformation(test_input_grid)
+transformed_grid","For each row containing nonzero segments, extend that segment downward until either another nonzero segment is found or the grid ends.",0
+2025-08-01T19:16:26,FilledNotFilled,FilledNotFilled7,2,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,0,0,0,0,0,0],[0,0,4,4,4,4,4,0,0,0,0,0,0],[0,0,4,4,4,4,4,0,0,0,0,0,0],[0,0,4,4,4,4,4,0,0,0,0,0,0],[0,0,4,4,4,4,4,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]]","For each row with contiguous non-zero values, check adjacent rows. If adjacent rows have zeros in the same position, copy the non-zero values to them.
+
+Rule: Propagate non-zero segments vertically if adjacent rows have zeros in the same positions.","import numpy as np
+
+def transform_input_to_output(input_grid):
+    input_np = np.array(input_grid)
+    output_np = np.copy(input_np)
+    
+    rows, cols = input_np.shape
+    
+    # Identify the first and last positions of non-zero values in each row
+    non_zero_indices = [np.where(row != 0)[0] for row in input_np]
+    
+    # Iterate through rows to adjust accordingly
+    for i, indices in enumerate(non_zero_indices):
+        if len(indices) > 0:
+            first, last = indices[0], indices[-1]
+            if i > 0 and np.all(input_np[i-1, first:last+1] == 0):
+                output_np[i-1, first:last+1] = input_np[i, first:last+1]
+            if i < rows - 1 and np.all(input_np[i+1, first:last+1] == 0):
+                output_np[i+1, first:last+1] = input_np[i, first:last+1]
+    
+    return output_np
+
+# Input grid for the test case
+test_input_grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0],
+    [0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0],
+    [0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+# Transform the test input grid using the identified rule
+test_output_grid = transform_input_to_output(test_input_grid)
+
+test_output_grid_list = test_output_grid.tolist()
+test_output_grid_list",Propagate non-zero segments vertically if adjacent rows have zeros in the same positions.,0
+2025-08-01T19:16:18,FilledNotFilled,FilledNotFilled7,3,low,0,parse:non-integer token in row 1,0,"[[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9]]","The transformation rule involves altering a specific row in the grid based on the value of another row. The pattern is identified by shifting one row of non-zero values to another row. The rule seems to be moving a filled row of numbers to the row either immediately above or below, depending upon the input pattern.
+
+Rule: For a filled row in the input grid, move the non-zero values to an adjacent row (either above or below it).",,"For a filled row in the input grid, move the non-zero values to an adjacent row (either above or below it).",0
+2025-08-01T19:16:15,FilledNotFilled,FilledNotFilled8,1,low,0,mismatch,0,0005000000 0050000000 0500000000 5005000000 0050000000 0000005000 0000050000 0000500000 0005000000 0000000000,"The examples show a transformation where '6' or '3' are diagonally mirrored or reflected from one side to the other. In the test case, '5' starting from the top left are mirrored to the opposite diagonal crossing the 'diagonal' of filled numbers in a zigzag form.
+
+Rule: Mirror filled numbers diagonally in a zigzag pattern across the grid.",,Mirror filled numbers diagonally in a zigzag pattern across the grid.,0
+2025-08-01T19:17:07,FilledNotFilled,FilledNotFilled8,2,low,0,mismatch,0,"0 0 0 0 0 0 7 0 0 0 0
+0 0 0 0 0 7 0 0 0 0 0
+0 0 0 0 7 0 0 7 0 0 0
+0 0 0 7 0 0 7 0 0 0 0
+0 0 7 0 0 7 0 0 0 0 0
+0 0 0 0 7 0 0 0 0 0 0
+0 0 0 7 0 0 0 0 0 0 0
+0 0 7 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0","Across the input and output grids in the examples, the transformation involves taking the diagonal and expanding it symmetrically. For each non-zero value 'n' found on a diagonal, it is extended horizontally in the corresponding row and column such that the diagonal reflects a mirrored pattern on each side within the same row. The result then shows a symmetric checkered pattern originating from the line of n-values in the diagonal.
+
+Rule: Expand non-zero diagonal values horizontally in rows/columns symmetrically.",,Expand non-zero diagonal values horizontally in rows/columns symmetrically.,0
+2025-08-01T19:16:29,FilledNotFilled,FilledNotFilled8,3,low,0,mismatch,0,"0 0 3 3 3 0 3 3 3 0 0 0 0 0
+0 0 3 0 0 3 0 0 3 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 3 0 0 0 0 0 0 0 0 0 0 0 0
+0 3 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 3 0 0 0 0 0 0 0 0 0 0 0 0
+0 3 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The key transformation involves moving non-zero elements on the diagonal to form a pattern. In Example 1, the number 6 creates an hourglass pattern centered around the diagonal. In Example 2, the different number 3 creates diagonal connections. For the test input, a similar diagonal-centered transformation applies.
+
+Rule: Transform non-zero values along the diagonals, creating symmetric hourglass or diamond shapes based on the specific number.",,"Transform non-zero values along the diagonals, creating symmetric hourglass or diamond shapes based on the specific number.",0
+2025-08-01T19:16:47,FilledNotFilled,FilledNotFilled9,1,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0], [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0], [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0], [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0], [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","The rule appears to involve reflecting symmetric 1s and 2s around the center of the grid, filling the entire internal rectangle defined by the 1s with 2s, while maintaining original zeros and ones from the boundary.
+
+Rule: Replicate the pattern inwards from the outer borders defined by the 1s and fill the inside with 2s, keeping the edges as in the original grid.","import numpy as np
+
+# Define the rule-transformation function
+def apply_transformation(grid):
+    grid = np.array(grid)
+    # Find the columns to be mirrored
+    left_col_to_mirror = np.where(grid[:, 0:-1] == 1)[1].max()
+    right_col_to_mirror = np.where(grid[:, 0:-1] == 1)[1].min()
+    
+    # Mirror the columns
+    transformed_grid = grid.copy()
+    transformed_grid[:, 0:left_col_to_mirror+1] = grid[:, right_col_to_mirror:]
+    
+    return transformed_grid.tolist()
+
+# Define the test input grid
+input_grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
+    [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
+    [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
+    [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
+    [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+# Apply the transformation
+output_grid = apply_transformation(input_grid)
+output_grid","Replicate the pattern inwards from the outer borders defined by the 1s and fill the inside with 2s, keeping the edges as in the original grid.",0
+2025-08-01T19:16:09,FilledNotFilled,FilledNotFilled9,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 1 2 2 2 2 2 2 2 2 1 0
+0 1 2 2 2 2 2 2 2 2 1 0
+0 0 1 2 2 2 2 2 2 1 0 0
+0 0 0 1 2 2 2 2 1 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","By examining the examples, the transformation involves moving non-zero elements to fill the top non-zero rows and potentially expanding them horizontally within boundaries of existing non-zero elements. The fill pattern for elements seems to follow a level expansion from top to bottom.
+
+Rule: Shift all non-zero patterns upward to fill space, maintaining horizontal boundaries unless extending already expanded sections.",,"Shift all non-zero patterns upward to fill space, maintaining horizontal boundaries unless extending already expanded sections.",0
+2025-08-01T19:16:58,FilledNotFilled,FilledNotFilled9,3,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],[0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,1,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,0,0],[0,0,2,2,2,2,2,2,2,2,2,2,0,0,0],[0,0,2,2,2,2,2,2,2,2,2,2,0,0,0],[0,0,2,2,2,2,2,2,2,2,2,2,0,0,0],[0,0,0,2,2,2,2,2,2,2,2,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]","The transformation rule connects horizontally adjacent 1s into continuous sequences up to the maximum number found in the row, filling those positions with that maximum number.
+
+Rule: Connect horizontally adjacent 1s to form continuous lines, using the maximum value in the row.","import numpy as np
+
+# Define the input grid
+input_grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0],
+    [0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0],
+    [0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+# Establish a rule that applies to examples
+# Example pattern: Connect 1s horizontally in a continuous line fashion to highest number seen
+def apply_rule(grid):
+    output_grid = np.copy(grid)
+    for row in range(len(grid)):
+        max_val = max(grid[row])  # Find the max value in the row
+        row_indices = np.where(grid[row] == 1)[0]
+        if len(row_indices) > 1:
+            for i in range(row_indices[0], row_indices[-1] + 1):
+                output_grid[row, i] = max_val
+    
+    return output_grid
+
+# Apply the rule to the test input grid
+output_grid = apply_rule(input_grid)
+output_grid.tolist()","Connect horizontally adjacent 1s to form continuous lines, using the maximum value in the row.",0

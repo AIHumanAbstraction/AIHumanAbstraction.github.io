@@ -1,0 +1,285 @@
+"timestamp","concept","puzzle","test_idx","is_correct","err","tools_used","answer","summary","Rule_correct","rule_evaluation_reasoning","Rule","validated","Rule_correct_label","validation_level","starred","programming_calls"
+"2025-09-09T20:32:53","InsideOutside","InsideOutside1","1","0","parse:non-integer token in row 1","0","[0,0]","The output grid seems to be determined by the presence of specific numbers in the input grid. In all examples, if there is at least one '1' in the input grid, the output is [0,0,0]. If there is at least one '6' in the input grid, the output is [0,0]. If neither '1' nor '6' is present, the output is also [0,0]. The test input contains a '5' but no '1' or '6', so the output should be [0,0].","0","","If the input grid contains at least one '1', the output is [0,0,0]. If it contains at least one '6', the output is [0,0]. Otherwise, the output is [0,0].","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside1","2","0","mismatch","0","0
+0
+0","The output grid seems to be determined by the presence of specific numbers in the input grid. In all examples, the output is '0' for each row if there is at least one occurrence of the number '1' in the input grid. If there is no '1', the output is also '0'. This suggests that the presence of '1' does not affect the output.","0","","If there is at least one '1' in the input grid, the output is '0' for each row. Otherwise, the output is '0' for each row.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside1","3","0","parse:non-integer token in row 1","0","[""1""]","The rule appears to be counting the number of unique non-zero numbers in the input grid and returning that count as a single number in the output grid.","0","","Count the number of unique non-zero numbers in the input grid.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside10","1","0","mismatch","0","0 0 0 0 0 6 0 0 0 0 0 6
+0 7 7 7 7 7 7 7 0 0 6 0
+0 7 7 7 7 7 7 7 0 6 0 0
+0 7 7 0 0 0 7 7 0 0 0 0
+0 7 7 6 6 6 6 6 6 6 6 0
+0 7 7 0 0 0 7 7 0 0 0 0
+0 7 7 0 0 0 7 7 0 0 0 0
+0 7 7 0 6 0 7 7 0 0 0 0
+0 7 7 6 0 0 7 7 0 0 0 0
+0 7 6 7 7 7 7 7 0 0 0 0
+0 6 7 7 7 7 7 7 0 0 0 0
+6 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that for each cell in the input grid, if it contains a value 'x' and there is a neighboring cell (up, down, left, right) with a different non-zero value 'y', then the cell is changed to 'y'. If no such neighbor exists, the cell remains unchanged.","0","","For each cell with value 'x', if a neighboring cell has a different non-zero value 'y', change the cell to 'y'. Otherwise, keep the cell as 'x'.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside10","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 0 0 0 0 0 9 0
+0 8 8 8 8 8 8 8 0 0 9 0
+0 8 0 0 9 9 9 9 8 0 9 0
+0 8 8 0 0 0 0 0 8 8 0 0
+0 0 8 8 0 9 9 9 0 8 0 0
+0 0 8 8 0 0 0 0 0 0 8 0
+0 0 8 0 9 9 9 9 9 0 8 0
+0 0 8 8 0 0 0 0 0 8 8 0
+0 0 0 8 8 8 8 8 8 8 9 0
+0 0 0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 0 0 0 0 0 9 0","The transformation rule appears to be that for each cell in the input grid, if it has a value greater than 0 and there is at least one adjacent cell (up, down, left, right) with a different non-zero value, then the cell's value is changed to the minimum of its own value and the values of its adjacent cells. If no such adjacent cells exist, the cell remains unchanged.","0","","For each cell with a value > 0, change its value to the minimum of its own value and the values of its adjacent cells if those cells have different non-zero values.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside10","3","0","mismatch","0","0 0 0 0 0 2 0 0 0 0 0 0 0
+0 0 0 0 0 2 0 0 0 0 0 0 0
+0 0 1 1 1 2 1 1 1 1 1 0 0
+0 0 1 0 0 0 0 0 0 0 1 0 0
+0 0 1 0 0 0 0 0 0 0 1 0 0
+0 0 1 0 0 0 0 0 0 0 1 0 0
+2 2 2 0 0 0 0 0 0 0 2 2 2
+0 0 1 0 0 0 0 0 0 0 1 0 0
+0 0 1 0 0 0 0 0 0 0 1 0 0
+0 0 1 1 1 1 2 1 1 1 1 0 0
+0 0 0 0 0 0 2 0 0 0 0 0 0
+0 0 0 0 0 0 2 0 0 0 0 0 0","The rule appears to be that for each cell in the input grid, if it has a value of 3, it changes to 2 if there is a 2 directly above it; otherwise, it remains unchanged. For other values, they remain the same unless influenced by the specific condition involving 3s and 2s.","0","","If a cell contains 3 and there is a 2 directly above it, change the 3 to 2. All other cells remain unchanged.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside2","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if there is another non-zero value directly to its right, the value on the right is moved left and the original value is removed. If there is no value to the right, the value remains in place.","0","","For each non-zero value, if there's a non-zero value immediately to its right, move the right value left and remove the original value.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside2","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 4 0
+0 0 0 0 0 0 0 0 0 2","The rule appears to be that for each non-zero value in the input grid, if there is another non-zero value directly to its right, the value on the right is moved one position to the left and the original value is removed. If there is no non-zero value to the right, the value remains in place.","0","","For each non-zero value, if there's a non-zero value immediately to its right, move the right value one position left and remove the original value.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside2","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+4 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if there is another non-zero value directly to its right (in the same row), then the value on the right is moved one position to the left. If there is no such value, the original value remains in place.","0","","For each non-zero value, if there's a non-zero value immediately to its right, move the right value one position to the left and set the original position to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside3","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 2 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 2 0 0 0 2 0 0 0
+0 0 0 0 0 0 0 0 0 0
+2 0 2 0 2 0 2 0 2 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the highest value in each row and column is retained, while all other values are set to 0. This means if there are multiple non-zero values in a row or column, only the largest one remains.","0","","Retain only the maximum value in each row and column, setting all others to 0.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside3","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 2 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the highest value in each row and column is retained, while all other values are set to 0. This means if there are multiple non-zero values in a row or column, only the largest one remains.","0","","Retain only the highest value in each row and column, setting all other values to 0.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside3","3","0","mismatch","0","0 4 0 0 0 0 0 0 0 4
+0 0 0 0 0 0 0 0 0 0
+0 2 0 0 0 0 0 2 0 2
+0 0 0 0 0 0 0 0 0 0
+0 2 0 0 0 0 0 0 0 2
+0 0 0 0 0 0 0 0 0 0
+0 2 0 2 0 2 0 2 0 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the highest value in each row is kept, and all other values are set to 0. If there are multiple highest values in a row, they are all kept.","0","","Keep only the highest value in each row, setting all other values to 0.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside4","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 8 8 8 8 8 8 8 0 0
+0 0 8 0 0 0 0 0 0 6 0 8 0 0
+0 0 8 0 4 4 4 4 4 0 0 8 0 0
+0 0 8 0 4 0 0 0 4 0 0 8 0 0
+0 0 8 0 4 0 0 0 4 0 0 8 0 0
+0 0 8 0 4 0 0 0 4 0 0 8 0 0
+0 0 8 0 4 4 4 4 4 0 0 8 0 0
+0 0 8 0 0 0 0 0 0 0 0 8 0 0
+0 0 8 8 8 8 8 8 8 8 8 8 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be removing the outermost layer of '1's from the input grid if they form a complete border around a region. In all examples, the inner structure remains unchanged while the outer '1's are removed if they completely enclose a region.","0","","Remove the outermost layer of '1's if they form a complete border around a region.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside4","2","1","","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 5 5 5 5 5 5 0 0 0 0
+0 0 0 0 5 3 3 3 3 5 0 0 0 0
+0 0 0 0 5 3 0 0 3 5 0 0 0 0
+0 0 0 0 5 3 0 6 3 5 0 0 0 0
+0 0 0 0 5 3 3 3 3 5 0 0 0 0
+0 0 0 0 5 5 5 5 5 5 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be removing the outermost layer of '1's from the input grid if they form a complete border around a region. In all examples, the inner structure remains unchanged while the outer '1's are removed if they completely enclose a region.","1","","Remove the outermost layer of '1's if they form a complete border around a region.","0","Correct","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside4","3","0","mismatch","0","0 0 0 0 0 0 9 9 9 9 0 0 0 0
+0 0 0 9 9 9 9 0 9 9 9 0 0 0
+0 9 9 9 0 0 0 0 0 0 9 0 0 0
+0 9 9 0 0 0 0 0 0 0 9 0 0 0
+0 9 9 0 4 4 4 4 4 0 9 0 0 0
+0 9 9 0 4 0 0 0 4 0 9 9 0 0
+0 9 0 0 4 0 0 0 4 0 9 9 0 0
+0 9 0 0 4 4 0 0 4 0 0 9 0 0
+0 9 0 0 0 4 4 4 4 0 0 9 0 0
+0 9 0 0 6 0 0 4 4 0 0 9 0 0
+0 0 9 0 0 0 0 0 0 0 0 9 0 0
+0 0 0 9 9 9 0 0 0 0 9 0 0 0
+0 0 0 0 0 0 9 9 9 9 9 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be removing the outermost layer of '1's from the input grid if they form a complete border around a region. In all examples, the inner structure remains unchanged while the outer '1's are removed if they completely enclose a region.","0","","Remove the outermost layer of '1's if they form a complete border around a region.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside5","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 2 2 2 2 2 0 0 0 0 0 0
+0 0 0 0 2 0 0 0 2 0 0 0 0 0 0
+0 0 0 0 2 0 0 0 2 0 0 0 0 0 0
+0 0 0 0 2 2 2 2 2 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 4 4 4 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the smallest non-zero number in each connected component of non-zero numbers is retained, and all other numbers in that component are set to zero.","0","","Retain only the smallest non-zero value in each connected component of non-zero values; set all others to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside5","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 4 0 4 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 0 4 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 4 0 0 0 0 0 0 0 4 0 0 0 0 0 0
+0 0 4 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 4 0 0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 0 0 4 0 0 0 4 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 4 0 4 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that only the smallest non-zero number in each row and column is retained, while all other numbers are set to zero.","0","","Retain the smallest non-zero value in each row and column, setting all others to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside5","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0
+0 0 2 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0
+0 0 2 4 4 4 4 4 2 0 0 0 0 0 0 0 0 0
+0 0 2 4 0 0 0 4 2 0 0 0 0 0 0 0 0 0
+0 0 2 4 0 0 0 4 2 0 0 0 0 0 0 0 0 0
+0 0 2 4 0 0 0 4 2 0 0 0 0 0 0 0 0 0
+0 0 2 4 4 4 4 4 2 0 0 0 0 0 0 0 0 0
+0 0 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the smallest non-zero number in each connected component of non-zero numbers is retained, and all other numbers in that component are set to zero.","0","","Retain only the smallest non-zero value in each connected component of non-zero values; set all others to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside6","1","0","mismatch","0","0 0 0 0 0 8 0 0 0 0 0 8 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if it is surrounded by zeros in all eight directions (up, down, left, right, and diagonals), it remains in the output grid. Otherwise, it is replaced with a zero.","0","","Keep a cell's value if it is non-zero and all its neighbors are zero; otherwise, set it to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside6","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if it is surrounded by zeros in all eight directions (up, down, left, right, and diagonals), it remains in the output grid. Otherwise, it is replaced with a zero.","0","","Keep a cell's value if it is non-zero and all its neighbors are zero; otherwise, set it to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside6","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0
+0 0 0 0 0 9 9 9 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, if it is surrounded by zeros in all eight directions (up, down, left, right, and diagonals), it remains in the output grid. Otherwise, it is replaced with a zero.","0","","Keep a cell's value if it is non-zero and all its neighbors are zero; otherwise, set it to zero.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside7","1","0","mismatch","0","1 1 1 1 1 3 3 3 3 3","The rule seems to be extracting the numbers from the central row of the input grid and filtering out any zeros.","0","","Extract the central row of the input grid and remove all zeros.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside7","2","0","mismatch","0","33333","The rule seems to be extracting the numbers from the central column of the input grid and removing any zeros. The central column in each example contains the numbers that appear in the output.","0","","Extract numbers from the central column of the input grid and remove any zeros.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside7","3","0","mismatch","0","1 1 1 1 1 3 3","The rule seems to involve extracting the numbers from the central column of the input grid and then filtering out any zeros. The central column in each example contains the numbers that appear in the output.","0","","Extract the central column of the input grid and remove all zeros.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside8","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The rule appears to be that only the cells containing the number 3 in the first example and 8 in the second example are preserved in the output grid. All other numbers are replaced with 0.","0","","Preserve cells with the specific number (3 in Example 1, 8 in Example 2) and set all other cells to 0.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside8","2","0","no_json_found","0",":","The rule appears to be that only the cells containing the number 3 in the input grid are preserved in the output grid, while all other numbers are replaced with 0.","0","","","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside8","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 0 0 0 0 0 0 0 0 0 0 3
+3 0 0 0 0 0 0 0 0 0 0 0 3
+3 0 0 0 0 0 0 0 0 0 0 0 3
+3 0 0 0 0 0 0 0 0 0 0 0 3
+3 3 3 3 3 3 3 3 3 3 3 3 3
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be removing all numbers except for the number 3 and 8 from the input grid. The output grid only contains these two numbers in the same positions as they appear in the input grid.","0","","Keep only the numbers 3 and 8 in their original positions; remove all other numbers.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside9","1","0","mismatch","0","2 2 2 2 2 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+2 2 2 2 2 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The rule appears to be that only the rows containing the number 2 in the input grid are preserved in the output grid, while all other rows are replaced with zeros.","0","","Preserve rows containing at least one '2', replace all other rows with zeros.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside9","2","0","mismatch","0","2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0
+0 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0
+0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0
+0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 0
+0 0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be removing all '4's from the input grid and keeping all other numbers as they are.","0","","Remove all '4's from the grid.","0","Incorrect","0","0",""
+"2025-09-09T20:32:53","InsideOutside","InsideOutside9","3","0","mismatch","0","0 0 0 0 0 2 0 0 0 0
+0 0 2 0 0 0 0 2 0 0
+0 2 0 0 0 0 0 0 2 0
+0 0 2 0 2 0 0 2 0 0
+0 2 0 0 0 0 0 0 2 0
+0 0 2 2 0 0 0 2 0 0
+0 2 0 0 0 2 0 0 2 0
+0 0 2 0 0 0 0 2 0 0
+2 0 0 0 2 0 0 0 0 0
+0 0 0 0 0 0 0 2 0 0","The rule appears to be that all non-zero values in the input grid are replaced with the smallest non-zero value present in the entire grid.","0","","Replace all non-zero values with the smallest non-zero value in the grid.","0","Incorrect","0","0",""

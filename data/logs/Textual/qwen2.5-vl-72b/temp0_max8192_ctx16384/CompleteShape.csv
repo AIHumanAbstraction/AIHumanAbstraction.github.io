@@ -1,0 +1,201 @@
+"timestamp","concept","puzzle","test_idx","is_correct","err","tools_used","answer","summary","Rule_correct","rule_evaluation_reasoning","Rule","validated","Rule_correct_label","validation_level","starred","programming_calls"
+"2025-09-08T23:29:23","CompleteShape","CompleteShape1","1","0","no_json_found","0",",","The transformation rule appears to be a vertical flip of the input grid. This is evident from comparing the input and output grids in both examples where the rows are reversed.","0","","","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape1","2","0","mismatch","0","000000000000000000003333300000330033000033333000003333300000333330000033333000000000000000000000000","The transformation rule appears to be a vertical flip of the non-zero elements in the grid. The zero elements remain unchanged.","0","","Vertical flip of non-zero elements","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape1","3","0","mismatch","0","000000000000000000000002220000000002220022200000022200222000000222002220000000000000000000000000000000000000000","The transformation rule appears to be a vertical flip of the input grid. This means that the top row of the input becomes the bottom row of the output, the second row from the top becomes the second row from the bottom in the output, and so on.","0","","Vertical flip of the input grid","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape10","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0
+0 2 2 0 0 0 0 0 0 0 0 0
+0 2 2 2 0 0 0 0 0 0 0 0
+0 0 2 2 2 0 0 0 0 0 0 0
+0 0 2 2 2 2 0 0 0 0 0 0
+0 2 2 0 0 2 2 0 0 0 0 0
+0 2 2 0 0 2 2 0 0 0 0 0
+0 2 2 2 2 2 0 0 0 0 0 0
+0 2 2 2 2 0 0 0 0 0 0 0
+0 2 2 2 0 0 0 0 0 0 0 0
+0 2 2 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that if there is a non-zero value in the input grid, it remains unchanged in the output grid. Otherwise, the value becomes 0. This means the output grid will have the same non-zero values as the input grid but all other positions will be set to 0.","0","","Keep non-zero values from input grid and set all other values to 0","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape10","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 6 6 0 0
+0 0 0 0 0 0 0 0 0 0 6 6 6 0 0
+0 0 0 0 0 0 0 0 0 6 6 6 6 0 0
+0 0 0 0 0 0 0 0 6 6 6 6 6 0 0
+0 0 0 0 0 0 0 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 6 6 6 6 6 6 6 0 0
+0 0 0 0 0 6 6 6 6 6 6 6 6 0 0
+0 0 0 0 6 6 0 0 6 6 6 6 6 0 0
+0 0 0 0 6 6 0 0 6 6 6 6 6 0 0
+0 0 0 0 0 6 6 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 6 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 0 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 0 0 6 6 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 6 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 6 6 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 6 0 0","The transformation rule appears to be that if there is a row in the input grid where all elements are 0s except for a single non-zero value at the end of the sequence of non-zero values, then that row is duplicated in the output. Otherwise, the row remains unchanged.","0","","Duplicate rows where all elements are 0s except for a single non-zero value at the end of the sequence of non-zero values.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape10","3","0","mismatch","0","0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 4 4 4 4 4 4 4 0 0 0 4 0 0
+0 0 4 4 4 4 4 4 4 4 4 0 0 0
+0 0 0 4 4 4 4 4 4 4 4 0 0 0
+0 0 0 0 4 4 4 4 4 4 0 0 0 0
+0 0 0 0 0 4 4 4 0 0 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 0 0 0 4 0 0 0 0 0 0 0
+0 0 0 0 0 4 4 4 0 0 0 0 0 0
+0 0 0 0 4 4 4 4 4 0 0 0 0 0
+0 0 0 4 4 4 4 4 4 4 0 0 0 0
+0 0 4 4 4 4 4 4 4 4 4 0 0 0
+0 4 4 4 4 4 4 4 4 4 4 4 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that if there is a non-zero value in the input grid, it remains unchanged in the output grid. Otherwise, if the cell is zero and all its immediate neighbors (top, bottom, left, right) are also zero, it remains zero. If any neighbor is non-zero, the cell becomes non-zero.","0","","A cell in the output grid is non-zero if the corresponding cell in the input grid is non-zero or if any of its immediate neighbors in the input grid are non-zero.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape2","1","0","mismatch","0","0000000022222222000000002222222200000000222222228888888822222222","The transformation rule appears to be that for each row in the input grid, if there is a non-zero value present, all elements in that row are replaced by the first non-zero value encountered in that row.","0","","For each row, replace all elements with the first non-zero value in that row if such a value exists.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape2","2","0","mismatch","0","0 0 0 4 0 0
+0 0 0 0 0 0
+0 0 0 4 0 0
+9 9 9 9 9 9
+0 0 0 4 0 0
+0 0 0 0 0 0","The transformation rule appears to be that for each row in the input grid, if there is a non-zero value present, all non-zero values in that row are replaced with the maximum non-zero value from that row.","0","","Replace all non-zero values in each row with the maximum non-zero value of that row.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape2","3","0","parse:non-integer token in row 1","0","[[6,0,0,0,0,0,0,0,6,0],[0,0,0,0,0,0,0,0,0,0],[6,0,6,0,6,0,6,0,6,0],[0,0,0,0,0,0,0,0,0,0],[6,0,0,0,0,0,0,0,6,0],[0,0,0,0,0,0,0,0,0,0],[6,0,0,0,0,0,0,0,6,0],[0,0,0,0,0,0,0,0,0,0],[6,0,0,0,0,0,0,0,6,0],[0,0,0,0,0,0,0,0,0,0]]","The transformation rule appears to be that for each row in the input grid, if there is at least one non-zero value, all non-zero values in that row are replaced with the maximum non-zero value of that row.","0","","For each row, replace all non-zero values with the maximum non-zero value in that row.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape3","1","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 0 0 0 7 7 7 7 7 0","The transformation rule appears to be filling in all zeros within the smallest rectangle that contains all non-zero values in the input grid, while keeping the non-zero values unchanged.","0","","Fill all zeros within the smallest rectangle containing all non-zero values.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape3","2","0","no_json_found","0",":","The transformation rule appears to be that for each non-zero value in the input grid, it expands to fill all adjacent cells (horizontally and vertically) until it meets another non-zero value or the edge of the grid.","0","","","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape3","3","0","no_json_found","0",":","The transformation rule appears to be filling in all cells that are directly adjacent (horizontally, vertically, and diagonally) to at least one non-zero cell with the same value as the non-zero cell. This creates a filled region around each group of non-zero cells.","0","","","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape4","1","0","mismatch","0","000000000003000000030000000000000000000000000000000000000000000000000000000000000000000003000000030000000000","The rule appears to be that for each non-zero value in the input grid, it is replaced in the output grid at the same position and also mirrored horizontally and vertically around the center of the grid.","0","","For each non-zero element at (i,j), place the same value at (i,j), (i,9-j), (9-i,j), and (9-i,9-j).","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape4","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 2 2 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 2 2 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, it creates a block of the same value in the output grid. The block's size and position depend on the original value's location and its neighbors. If the non-zero values form a horizontal line, the output will have a vertical block at the ends of the line. If they form a vertical line, the output will have a horizontal block at the ends of the line.","0","","For each non-zero value, create a block of the same value in the output grid. If the non-zero values form a horizontal line, place a vertical block at the ends. If they form a vertical line, place a horizontal block at the ends.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape4","3","0","mismatch","0","0 0 0 0 0 0
+0 0 0 0 0 0
+0 5 5 5 0 0
+0 5 5 5 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The rule appears to be that for each non-zero value in the input grid, it creates a block of the same value in the output grid. The block's size and position depend on the original value's location. If the values are in a horizontal line, the output forms a vertical block at the same horizontal position. If the values are in a vertical line, the output forms a horizontal block at the same vertical position.","0","","For each non-zero value in the input grid, create a block of the same value in the output grid. If the values form a horizontal line, the output is a vertical block; if they form a vertical line, the output is a horizontal block.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape5","1","0","mismatch","0","3 0 0 0 0 0
+3 3 0 3 0 0
+0 0 0 3 3 0
+4 4 0 0 0 0
+0 4 0 0 3 3
+0 0 0 0 0 3","The rule appears to be that for each cell in the grid, if it has a non-zero value and there is a zero in one of its adjacent cells (up, down, left, right), then the zero gets replaced by the value of the non-zero cell. This transformation only affects zeros that are directly adjacent to non-zero values.","0","","For each non-zero cell, replace adjacent zeros with the value of the non-zero cell.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape5","2","0","mismatch","0","0 3 0 0 0 0 0 0 0 0
+3 3 0 3 0 0 0 3 0 0
+0 0 0 3 3 0 3 3 0 0
+0 0 0 0 0 0 0 0 0 0
+0 3 0 0 0 0 0 0 0 0
+3 3 0 3 0 0 0 0 0 0
+0 0 0 3 3 0 0 0 3 0
+0 0 0 0 0 0 0 0 3 3
+0 0 0 3 0 0 0 0 0 0
+0 0 3 3 0 0 0 0 0 0","The transformation rule appears to involve replacing zeros in the input grid with the nearest non-zero value from the same row or column, prioritizing the closest non-zero value. If there are multiple equally close non-zero values, the one appearing first in the row or column is chosen.","0","","Replace each zero with the nearest non-zero value from the same row or column, preferring the leftmost or topmost value in case of ties.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape5","3","0","mismatch","0","4 0 0 0 0 0 0 0 0 4
+4 4 0 0 0 0 0 0 4 4
+0 0 0 0 4 0 0 4 0 0
+4 0 0 4 4 0 4 4 0 0
+4 4 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 4 0 0
+4 0 0 4 4 0 0 4 4 0
+4 4 0 0 0 0 0 0 0 0
+0 0 0 4 0 0 0 0 0 0
+0 0 4 4 0 0 0 0 0 0","The transformation rule appears to be that for each cell in the grid, if it has a non-zero value and there is a zero adjacent to it (horizontally or vertically), the zero gets replaced by the value of the non-zero cell. This rule is applied to all cells simultaneously.","0","","For each non-zero cell, replace adjacent zeros with the value of the non-zero cell.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape6","1","0","mismatch","0","5 5 5 5 5 5
+0 0 5 5 5 5
+0 0 5 5 5 5
+0 0 0 0 0 0
+0 0 7 7 7 7
+0 0 7 7 7 7","The transformation rule appears to be that for each row, if there is a non-zero value in a column, all subsequent columns in that row will take on the last non-zero value encountered until another non-zero value is found.","0","","For each row, propagate the last non-zero value to the right until a new non-zero value is encountered.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape6","2","0","mismatch","0","0000000008880008888800088888000000220000222","The transformation rule appears to be that for each non-zero number in the input grid, it expands to fill all adjacent cells (up, down, left, right) that contain zeros until it meets another non-zero number or the edge of the grid.","0","","Expand each non-zero number to fill adjacent zero cells horizontally and vertically until meeting another non-zero number or grid boundary.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape6","3","0","mismatch","0","6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6
+6 6 6 6 6 6 6 6 6 6
+0 0 0 0 0 0 0 0 6 6
+0 0 0 0 0 0 0 0 6 6
+0 0 0 0 0 0 0 0 6 6
+0 0 0 0 0 0 0 0 6 6","The transformation rule appears to be that for each row, if there is a non-zero value in a column, all subsequent columns in that row will take on the value of the first non-zero value encountered moving from left to right.","0","","For each row, propagate the first non-zero value encountered from left to right to all subsequent columns in that row.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape7","1","0","mismatch","0","0 0 0 0 0 0
+0 6 6 6 6 6
+0 6 6 6 6 6
+0 6 6 6 6 6
+0 6 6 6 6 6
+0 0 0 0 0 0","The transformation rule appears to fill in all the cells within the boundary of non-zero values with the same value as the boundary.","0","","Fill all cells within the boundary of non-zero values with the same value as the boundary.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape7","2","0","mismatch","0","0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 7 7 7 7 7 7 7 7 0
+0 0 0 0 0 0 0 0 0 0","The transformation rule appears to fill in all cells within the smallest rectangle that contains all non-zero values with the same value as those non-zero cells.","0","","Fill the smallest rectangle containing all non-zero values with the value of the non-zero cells.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape7","3","0","mismatch","0","0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 1 1 1 1 1 0
+0 0 1 1 1 1 1 0
+0 0 1 1 1 1 1 0
+0 0 1 1 1 1 1 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0","The transformation rule appears to fill in all cells within the smallest rectangle that contains all non-zero values with the same value as the non-zero cells. In both examples, the non-zero values form a rectangle, and the output fills this rectangle completely.","0","","Fill the smallest rectangle containing all non-zero values with the same value.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape8","1","0","parse:non-integer token in row 1","0","[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,7,0,7,0,0,0,0,0,0],[0,0,7,0,0,0,0,0,0,0],[0,7,7,7,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,8,8,8,0,0,0],[0,0,0,0,8,8,8,0,0,0],[0,0,0,0,0,0,0,0,0,0]]","The rule appears to be that for each non-zero number in the input grid, it expands to fill all adjacent cells (up, down, left, right) until it meets another number or the edge of the grid. The expansion stops at the first encounter of a different number.","0","","Each non-zero number expands to fill all directly adjacent cells horizontally and vertically until it meets another number or the grid's edge.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape8","2","0","parse:non-integer token in row 1","0","[[0,0,0,0,0,0,0,0,5,5],[0,0,0,0,0,0,0,5,5,5],[0,0,3,3,0,0,0,0,5,5],[0,0,3,3,0,0,0,8,8,8],[0,0,3,3,0,0,0,8,8,8],[0,0,0,0,0,0,0,8,8,8],[0,9,9,9,0,0,0,0,0,0],[9,9,9,9,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]","The rule appears to be that for each non-zero number in the input grid, it expands to fill all adjacent cells (up, down, left, right) until it meets another number or the edge of the grid. The expansion stops at the first encounter of a different number.","0","","Each non-zero number expands to fill all directly adjacent cells horizontally and vertically until it meets another number or the grid's edge.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape8","3","0","mismatch","0","0 0 0 0 0 0 0 5 5 5
+0 0 0 0 0 0 5 5 5 5
+0 0 0 0 0 5 5 5 5 5
+0 0 0 0 0 5 5 5 5 5
+0 0 0 2 2 2 5 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5
+0 0 0 2 2 2 2 5 5 5","The rule appears to be that for each non-zero number in the input grid, it expands to fill all adjacent cells (up, down, left, right) with the same number until it meets another number or the edge of the grid.","0","","Expand each non-zero number to fill all directly adjacent cells horizontally and vertically until meeting another number or the grid's edge.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape9","1","0","mismatch","0","0 0 0 0 0 7 7 0 0 0 0 0
+0 0 0 0 7 7 7 7 0 0 0 0
+0 0 0 7 7 7 7 7 7 0 0 0
+0 0 7 7 7 7 7 7 0 7 0 0
+0 7 7 7 7 7 7 7 7 7 7 0
+7 7 7 7 7 7 7 7 7 7 7 7
+0 7 7 7 7 7 7 7 7 7 7 0
+0 0 7 7 7 7 7 7 7 7 0 0
+0 0 0 7 7 7 7 7 7 0 0 0
+0 0 0 0 7 7 7 7 0 0 0 0
+0 0 0 0 0 7 7 0 0 0 0 0","The transformation rule appears to be that if there is a non-zero value in the input grid, it remains unchanged in the output grid. If the value is zero and surrounded by non-zero values, it also remains zero. The rule does not change the structure of the non-zero values.","0","","Keep all non-zero values as they are; zeros remain zeros unless they are part of a pattern that should be filled according to surrounding non-zero values, which is not applicable here.","0","Incorrect","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape9","2","1","","0","0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0
+0 0 0 1 1 1 1 1 0 0 0
+0 0 1 1 1 1 1 1 1 0 0
+0 1 1 1 1 1 1 1 1 1 0
+1 1 1 1 1 1 1 1 1 1 1
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to be that if there is a '0' surrounded by non-zero values in all four cardinal directions (up, down, left, right), it changes to the value of its surrounding elements. Otherwise, the grid remains unchanged.","1","","If a '0' is surrounded by non-zero values in all four cardinal directions, change it to the value of its surrounding elements.","0","Correct","0","0",""
+"2025-09-08T23:29:23","CompleteShape","CompleteShape9","3","0","mismatch","0","4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 0 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 0 0 0 0 0 0 0 0 0 0 0 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4","The transformation rule appears to be that if there is a '0' inside a region of non-zero values, it remains '0'. Otherwise, all other values remain unchanged.","0","","If a '0' is surrounded by non-zero values in all four cardinal directions (up, down, left, right), it stays '0'. All other values are unchanged.","0","Incorrect","0","0",""

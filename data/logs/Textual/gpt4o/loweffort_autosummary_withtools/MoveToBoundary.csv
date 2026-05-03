@@ -1,0 +1,443 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule,validated
+2025-08-01T19:50:46,MoveToBoundary,MoveToBoundary1,1,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,2,0],[0,0,0,0,2,0],[0,1,1,1,2,0],[0,0,0,0,2,0],[0,0,0,0,2,0],[0,0,0,0,2,0]]","The transformation rule involves shifting the inner region of 1s to the right within two boundaries of 2s. The rows with 1s in the input are moved one unit to the right in the output.
+
+Rule: Shift the inner 1s one unit to the right within the boundaries marked by 2s.",,Shift the inner 1s one unit to the right within the boundaries marked by 2s.,0
+2025-08-01T19:51:03,MoveToBoundary,MoveToBoundary1,2,low,0,mismatch,0,"0 0 0 0 1 1 2 0 0
+0 0 0 0 1 0 2 0 0
+0 0 0 0 0 2 0 0 0
+0 0 0 0 1 0 2 0 0
+0 0 0 0 1 1 2 0 0
+0 0 0 0 1 0 2 0 0
+0 0 0 0 0 2 0 0 0
+0 0 0 0 1 0 2 0 0
+0 0 0 0 1 1 2 0 0","The transformation rule identified from the examples involves moving the position of '1's in the grid. Specifically, it appears that the block of '1's is shifted one position to the right in every row while the rest of the structure and other numbers ('0' and '2') remain unchanged. This transformation is applied consistently across different input grids.
+
+Rule: Shift the group of '1's one position to the right in each row.",,Shift the group of '1's one position to the right in each row.,0
+2025-08-01T19:50:59,MoveToBoundary,MoveToBoundary1,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 1 0 0 0 1 0 0 0
+1 0 1 0 1 0 1 0 1
+0 0 0 1 0 0 0 1 0
+0 0 0 0 0 0 0 0 0
+2 2 2 2 2 2 2 2 2
+0 0 0 0 0 0 0 0 0","The rule seems to focus on shifting a pattern of '1's downwards by one row while maintaining the surrounding unchanged '2's for recognition. Each cluster of '1's is moved one row lower in the grid.
+
+Rule: Identify clusters of '1's bounded by non-zero elements in rows above or below. Shift each cluster one row downward when possible. Maintain '2' boundaries intact.",,Identify clusters of '1's bounded by non-zero elements in rows above or below. Shift each cluster one row downward when possible. Maintain '2' boundaries intact.,0
+2025-08-01T19:50:32,MoveToBoundary,MoveToBoundary10,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 3 0 0 0 0 0 0 0 0 7 0 0 0
+0 0 0 0 3 0 3 0 0 0 0 0 7 0 7 0 0 0
+0 0 0 3 0 0 0 0 0 0 0 7 0 0 0 7 0 0
+0 0 0 0 3 0 3 0 0 0 0 0 7 0 7 0 0 0
+0 0 0 0 0 3 0 0 0 0 0 0 0 0 7 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","Analyzing the examples, we observe that rows containing non-zero blocks are shifted horizontally towards the center. For blocks on the left side, they are moved to the left, while blocks on the right are moved to the right. In the test input's row 1, a 3 present in the initial position is shifted left. Similarly, in row 2, blocks are shifted left and right, maintaining their respective original order within each segment.
+
+Rule: Shift non-zero blocks horizontally inward on each row: left for left-side blocks and right for right-side blocks.",,Shift non-zero blocks horizontally inward on each row: left for left-side blocks and right for right-side blocks.,0
+2025-08-01T19:50:53,MoveToBoundary,MoveToBoundary10,2,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[5,5,5,0,0,0,5,5,5,5,5,5,0,0,0,0,0,0],[5,4,5,0,0,0,5,4,4,4,4,5,0,0,0,0,0,0],[5,5,5,0,0,0,5,4,4,4,4,5,0,0,0,0,0,0],[0,0,0,0,0,0,5,4,4,4,4,5,0,0,0,0,0,0],[5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]","Observing the examples, each block of numbers, whether 2s, 3s, or 4s, is shifted left until it reaches the left border. The rest of the grid remains unchanged.
+
+Rule: Shift each group of consecutive non-zero numbers left on their row until they are adjacent to the left border, preserving their order.",,"Shift each group of consecutive non-zero numbers left on their row until they are adjacent to the left border, preserving their order.",0
+2025-08-01T19:52:13,MoveToBoundary,MoveToBoundary10,3,low,0,parse:non-integer token in row 1,0,"[[9,9,9,9,9,9,9,0,0,0,0,3,3,3,4,3,0,0,0,0,0,0,0,0,0],[9,0,0,0,9,9,9,0,0,0,0,3,3,4,4,3,0,0,0,0,0,0,0,0,0],[9,9,9,9,9,9,9,0,0,0,0,3,4,3,4,3,0,0,0,0,0,0,0,0,0],[9,0,0,0,9,9,9,0,0,0,0,3,4,4,3,3,0,0,0,0,0,0,0,0,0],[9,0,0,0,9,9,9,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0],[9,9,9,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]","In both examples, non-zero blocks in the middle rows are moved to the left, with accompanying zero blocks shifting right. The transformation consolidates visual blocks leftward by removing intermediate zero spaces, while maintaining the row's original order.
+
+Rule: Remove intermediate zeros between non-zero blocks and align blocks to the left for each row.",,Remove intermediate zeros between non-zero blocks and align blocks to the left for each row.,0
+2025-08-01T19:51:06,MoveToBoundary,MoveToBoundary2,1,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,7,7,7,7,7,7,7,0,0],[0,7,0,0,7,7,7,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]","The rule involves rotating columns so that continuous blocks of '7's are shifted upwards while maintaining the pattern as observed in previous examples.
+
+Rule: Shift continuous blocks of non-zero values upwards in each column individually.","import numpy as np
+
+def apply_transformation(input_grid):
+    # Rotate the columns of the input grid
+    rotated_grid = np.zeros_like(input_grid)
+
+    for i, col in enumerate(input_grid.T):
+        non_zero_indices = np.flatnonzero(col)
+        if non_zero_indices.size > 0:
+            start_index = non_zero_indices[0]
+            length = len(non_zero_indices)
+            rotated_grid[start_index:start_index + length, i] = col[non_zero_indices]
+
+    return rotated_grid
+
+# Test input grid
+test_input = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 7, 7, 7, 7, 7, 7, 7, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 7, 0, 0, 7, 7, 7, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+
+# Apply transformation
+final_grid = apply_transformation(test_input)
+final_grid_json = final_grid.tolist()
+
+final_grid_json",Shift continuous blocks of non-zero values upwards in each column individually.,0
+2025-08-01T19:50:52,MoveToBoundary,MoveToBoundary2,2,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 7, 0, 0, 0, 0, 0, 0, 0, 7], [0, 7, 0, 0, 0, 0, 0, 0, 0, 7], [0, 7, 0, 0, 0, 0, 0, 0, 0, 0], [0, 7, 0, 0, 0, 0, 0, 0, 0, 0], [0, 7, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 7, 0, 0, 0, 0], [0, 0, 0, 0, 0, 7, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","The transformation rule shifts existing sequences of '7's in each column to the topmost position previously occupied by a '7' within the column. This effectively pulls the blocks of '7' upwards without creating new ones.
+
+Rule: Shift all sequences of '7' upwards in each column to fill the space of the topmost '7' in that column.","import numpy as np
+
+def transform_grid(input_grid):
+    grid = np.array(input_grid)
+    output_grid = np.zeros_like(grid)
+
+    # Identify all positions containing 7s in the input grid
+    positions = np.argwhere(grid == 7)
+
+    # Determine the minimum row and modify the output grid
+    for pos in positions:
+        row, col = pos
+        if np.any(grid[:, col] == 7):
+            min_row = np.where(grid[:, col] == 7)[0][0]
+            output_grid[min_row:row + 1, col] = 7
+
+    return output_grid.tolist()
+
+# Test input grid
+input_grid_test = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 0, 0, 7],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+output_grid_test = transform_grid(input_grid_test)
+output_grid_test",Shift all sequences of '7' upwards in each column to fill the space of the topmost '7' in that column.,0
+2025-08-01T19:50:31,MoveToBoundary,MoveToBoundary2,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 7 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 7 0 7 7 0 0 0 0
+0 0 0 0 0 7 0 0 7 7
+0 0 0 0 0 0 0 0 0 0","The transformation involves moving sequences of '7's from their initial positions to different rows and columns while maintaining their sequence. The movement appears to shift the sequences towards the bottom right of the grid. The transformation distributes '7's within their respective rows, moving them further to the right if they occur in the initial positions. Each sequence of '7's maintains its length but shifts the position without crossing its bounds as per previous examples.
+
+Rule: Shift sequences of '7's to lower rows and towards the right, following the movement pattern observed in examples.",,"Shift sequences of '7's to lower rows and towards the right, following the movement pattern observed in examples.",0
+2025-08-01T19:50:56,MoveToBoundary,MoveToBoundary3,1,low,1,,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 2 2 2
+0 0 0 0 0 0 0 2 0 2
+0 0 0 0 0 0 0 2 2 2
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The pattern moves the '2' blocks to the right side of the grid by the maximum number of consecutive zeros on the right in each row.
+
+Rule: Shift all non-zero numbers in each row as far right as possible maintaining original order within each row.",,Shift all non-zero numbers in each row as far right as possible maintaining original order within each row.,0
+2025-08-01T19:50:52,MoveToBoundary,MoveToBoundary3,2,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,2,2,2],[0,0,0,0,0,0,0,0,0,2],[0,0,0,0,0,0,0,2,2,2],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]","The '2's in the input grid are horizontally shifted to the rightmost side, maintaining their row positions. The shift is such that the rightmost '2' in each row ends up in the last column.
+
+Rule: Shift all '2's in each row to the rightmost columns, preserving the horizontal order.","import numpy as np
+
+# Define the input grid for the test case
+input_grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+    [2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+def transform_grid(input_grid):
+    # Initialize output grid with zeros
+    output_grid = np.zeros_like(input_grid)
+    num_rows, num_cols = input_grid.shape
+    
+    # Find all '2's in the input grid
+    positions = np.argwhere(input_grid == 2)
+    
+    # Calculate the shift amount
+    shift_col = num_cols - max(positions[:, 1]) - 1 if len(positions) else 0
+    
+    # Apply shift to each position
+    for pos in positions:
+        new_col = pos[1] + shift_col
+        output_grid[pos[0], new_col] = 2
+
+    return output_grid
+
+# Transform the test input grid
+output_grid = transform_grid(input_grid)
+output_grid.tolist()","Shift all '2's in each row to the rightmost columns, preserving the horizontal order.",0
+2025-08-01T19:51:03,MoveToBoundary,MoveToBoundary3,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 2 2 2 2 2 2 2 2 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 2 2 2 2 2 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The task involves identifying a rule that transforms the input grid to the output grid using the examples provided. By analyzing the examples, it is evident that the '2's in the input grid shift from one position to the right along a horizontal axis without changing their vertical position. In Example 1, the vertical column of '2's moves one column to the right. Similarly, in Example 2, the horizontal row of '2's and the vertical column with some '2's also shift to the right. This pattern suggests a consistent rule of shifting any '2' to the immediate right position.
+
+Rule: Shift all '2's in the grid one step to the right.",,Shift all '2's in the grid one step to the right.,0
+2025-08-01T19:51:01,MoveToBoundary,MoveToBoundary4,1,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,6,0,0,0,0,0,0,0,0],[0,6,0,0,0,0,0,0,0,0],[6,6,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,6,0,0,0,0,0,0,0],[0,0,0,6,0,0,0,0,0,0]]","Analyzing the examples, the transformation seems to involve moving and rotating sections of the grid that contain the number 6. In each example, blocks of 6s appear to rotate 180 degrees around their clustered center, from the upper right to the lower left. Applying the same transformation to the given input grid should yield the desired output.
+
+Rule: Rotate clusters of 6s by 180 degrees around their composite center.",,Rotate clusters of 6s by 180 degrees around their composite center.,0
+2025-08-01T19:50:40,MoveToBoundary,MoveToBoundary4,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+6 6 6 6 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+6 6 6 6 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","By analyzing the examples, the task involves shifting all non-zero elements to the leftmost position possible without altering their row alignment. In essence, all '6's are shifted as far left as they can go in their respective rows.
+
+Rule: Shift all non-zero elements to the leftmost positions in their respective rows.",,Shift all non-zero elements to the leftmost positions in their respective rows.,0
+2025-08-01T19:50:52,MoveToBoundary,MoveToBoundary4,3,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0],[6, 0, 0, 0, 0, 0, 0, 0, 0, 0]]","The rule appears to involve moving all '6's to the far left edge of their respective rows. Rows where multiple '6's appear adjacent lead to blocks of '6's in the output, shifted to the left. Non-continuous groups of '6's will each shift leftmost in their row.
+
+Rule: Shift all '6's to the leftmost part of their row, maintaining vertical continuity if present.","import numpy as np
+
+def apply_rule(input_grid):
+    output_grid = np.zeros_like(input_grid)
+    
+    for r in range(input_grid.shape[0]):
+        for c in range(input_grid.shape[1]):
+            if input_grid[r, c] == 6:
+                # Move the 6 to the far left in its row
+                output_grid[r, 0] = 6
+                if r > 0 and input_grid[r - 1, c] == 6:
+                    output_grid[r - 1, 0] = 6
+    
+    return output_grid
+
+# Define the test input grid
+input_grid_test = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [6, 6, 6, 6, 6, 6, 6, 6, 6, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6]
+])
+
+# Apply the transformation rule to the test input grid
+output_grid_test = apply_rule(input_grid_test)
+output_grid_test.tolist()","Shift all '6's to the leftmost part of their row, maintaining vertical continuity if present.",0
+2025-08-01T19:50:29,MoveToBoundary,MoveToBoundary5,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 0 0 0 0 0
+0 0 0 0 4 4 4 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","In both examples, the pattern of non-zero numbers shifts to the right along the same rows.
+
+Rule: Shift all non-zero elements one space to the right.",,Shift all non-zero elements one space to the right.,0
+2025-08-01T19:50:36,MoveToBoundary,MoveToBoundary5,2,low,0,parse:non-integer token in row 1,1,"[[0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,2,0,0],[0,0,2,2,2,2,2,2,0,0],[0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]","The grids shift the numbered segment down and to the right, adjusting from its original position by translating horizontally so that the leftmost value appears three rows lower and at an adjusted horizontal position based on its last row placement.
+
+Rule: Identify a distinct pattern of numbers in the input grid and move it down vertically by two rows and horizontally to align the first number in the lower pattern level with a new horizontal position decided by its end alignment in the initial horizontal sequence.","import numpy as np
+
+# Define the transformation rule
+def transform_grid(input_grid):
+    output_grid = np.zeros_like(input_grid)
+    unique_values = np.unique(input_grid)[1:]  # Exclude the background value 0
+    for value in unique_values:
+        coords = np.argwhere(input_grid == value)
+        min_x = coords[:, 0].min()
+        max_x = coords[:, 0].max()
+        min_y = coords[:, 1].min()
+        output_grid[min_x-2:max_x-2+1, min_y:] = input_grid[min_x:max_x+1, min_y:]
+    return output_grid
+
+# Define the test input grid
+input_grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 2, 2, 2, 2, 2, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
+
+# Apply the transformation
+output_grid = transform_grid(input_grid)
+output_grid",Identify a distinct pattern of numbers in the input grid and move it down vertically by two rows and horizontally to align the first number in the lower pattern level with a new horizontal position decided by its end alignment in the initial horizontal sequence.,0
+2025-08-01T19:51:04,MoveToBoundary,MoveToBoundary5,3,low,0,mismatch,0,"0 0 0 0 8 0 0 0 0 0
+0 0 0 0 0 8 8 8 8 0
+0 0 0 0 0 8 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 8 0 0
+0 0 0 0 0 0 8 8 8 8
+0 0 0 0 0 0 0 8 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","The pattern involves moving blocks of non-zero numbers to the right. For each row in the input grid, the numbers shift towards the rightmost position without changing their order. This movement affects only the row segments containing the non-zero values, such as sequences of 5s or 7s.
+
+Rule: Shift each row's contiguous non-zero block to the rightmost available position in the same row.",,Shift each row's contiguous non-zero block to the rightmost available position in the same row.,0
+2025-08-01T19:50:34,MoveToBoundary,MoveToBoundary6,1,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]","From the examples, we observe that the transformation involves moving the '1' to the first row, retaining its column position. The rest of the grid is filled with 0s, ignoring any 4s.
+
+Rule: Move the '1' from its position to the same column in the first row. Set all other cells to 0.",,Move the '1' from its position to the same column in the first row. Set all other cells to 0.,0
+2025-08-01T19:50:59,MoveToBoundary,MoveToBoundary6,2,low,0,parse:non-integer token in row 1,1,"[[0, 1, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0]]","Identify the location of '1' in the input grid and move it to the first row at the same column.
+
+Rule: Move the cell containing '1' to the first row, keeping its column the same.","import numpy as np
+
+# Function to apply the transformation rule
+def transform_grid(input_grid):
+    # Create an output grid full of zeros with the same shape as the input grid
+    output_grid = np.zeros_like(input_grid)
+    
+    # Find the position of the '1' in the input grid
+    pos_one = np.argwhere(input_grid == 1)
+    
+    if pos_one.size > 0:
+        # Move '1' to the first row at the same column
+        row, col = pos_one[0]
+        output_grid[0, col] = 1
+    
+    return output_grid
+
+# Test input grid
+test_input = np.array([
+    [4, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0],
+    [4, 1, 0, 0, 0, 0],
+])
+
+# Transform the test input grid
+test_output = transform_grid(test_input)
+test_output.tolist()","Move the cell containing '1' to the first row, keeping its column the same.",0
+2025-08-01T19:50:30,MoveToBoundary,MoveToBoundary6,3,low,1,,0,"0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 9
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0","The rule seems to involve finding the first non-zero non-4 number from bottom to top in the input grid and moving that number to the rightmost position in its row, replacing the original number in its position, and setting all other numbers to zero.
+
+Rule: Find the first non-zero non-4 number from bottom to top and move it to the rightmost position in its row.",,Find the first non-zero non-4 number from bottom to top and move it to the rightmost position in its row.,0
+2025-08-01T19:50:40,MoveToBoundary,MoveToBoundary7,1,low,0,parse:non-integer token in row 1,1,"[[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [8, 8, 8, 0, 0, 0], [8, 0, 8, 0, 0, 0], [8, 8, 8, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [7, 7, 7, 7, 7, 7], [7, 0, 0, 0, 0, 7], [7, 0, 0, 0, 0, 7], [7, 0, 0, 0, 0, 7], [7, 0, 0, 0, 0, 7], [7, 0, 0, 0, 0, 7], [7, 7, 7, 7, 7, 7], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]","The transformation rule involves transposing the input grid. Patterns and numbers shift positions based on a rotation-like operation where rows become columns.
+
+Rule: Transpose the input grid.","import numpy as np
+
+# Define the input grid
+input_grid = np.array([
+    [0, 0, 8, 8, 8, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0],
+    [0, 0, 8, 0, 8, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 8, 8, 8, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0]
+])
+
+# Transpose the grid
+output_grid = input_grid.T
+
+# Convert output grid to list of lists
+output_grid_list = output_grid.tolist()
+
+output_grid_list",Transpose the input grid.,0
+2025-08-01T19:50:32,MoveToBoundary,MoveToBoundary7,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 3 3 3 3 3 3 3 3 0 0 0 0 0 0
+3 0 0 0 0 0 0 0 3 0 0 0 0 0 0
+0 3 0 0 0 0 0 3 0 0 0 0 0 0 0
+0 0 3 0 0 0 3 0 0 0 0 0 0 0 0
+0 0 0 3 0 3 0 0 0 0 0 0 0 0 0","In the given examples, specific elements on the grid are shifted vertically. Observing the grid transformations, numbers in specific areas are moved downwards by a few rows, while others remain unchanged. In Example 1, the blocks of 3s are moved down by two rows. In Example 2, the blocks of 4s are shifted down by three rows. Applying this pattern, the blocks of numbers move downwards by 3 rows while maintaining their horizontal position.
+
+Rule: Move contiguous non-zero blocks down by 3 rows, maintaining their horizontal positions.",,"Move contiguous non-zero blocks down by 3 rows, maintaining their horizontal positions.",0
+2025-08-01T19:50:40,MoveToBoundary,MoveToBoundary7,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 6 6 6 6 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 0 0
+0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 6 0 0
+0 0 0 1 1 1 0 0 0 0 0 6 0 0 0 0 6 6 6
+0 0 0 1 0 1 0 0 0 0 0 6 0 0 0 0 0 0 6
+0 0 0 1 1 1 0 0 0 0 0 6 6 6 6 6 6 6 6
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The examples demonstrate a rule in which certain rows are shifted upwards while others remain the same. Specifically, rows containing horizontal lines of non-zero numbers at the bottom are moved upwards while preserving vertical lines, with the rest of the numbers shifting accordingly.
+
+Rule: Shift rows containing contiguous non-zero horizontal segments up, while keeping other rows stationary.",,"Shift rows containing contiguous non-zero horizontal segments up, while keeping other rows stationary.",0
+2025-08-01T19:51:15,MoveToBoundary,MoveToBoundary8,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 7 0 0 0
+0 0 0 0 0 0 0 0 0 0 7 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 7 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 1 1 1 1 1
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation rule appears to involve sliding non-zero numbers horizontally in certain rows. In Example 1, the number '4' in the fifth row slides right until it positions between two zeroes, creating a consistent pattern. In Example 2, certain instances of '8' slide to the right as well. Applying this rule to the test input grid, the number '7' in the second, third, and fifth columns should be moved or assigned a new position in a way that maintains the consistency detected. For the test input, the number '7' in the first column on each row with an existing '7' is moved slightly to the left where zeroes were replaced or adjusted for the same number to maintain consistency as per previous examples.
+
+Rule: Move non-zero numbers horizontally left or right to a similar distribution/pattern as surrounding and respective rows having zeroes where horizontal translation allowed, specifically from a column already exhibiting numerical value in rows, similar to the pattern found in previous examples aligning or displacing between zeroes.",,"Move non-zero numbers horizontally left or right to a similar distribution/pattern as surrounding and respective rows having zeroes where horizontal translation allowed, specifically from a column already exhibiting numerical value in rows, similar to the pattern found in previous examples aligning or displacing between zeroes.",0
+2025-08-01T19:50:43,MoveToBoundary,MoveToBoundary8,2,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 0
+0 0 0 0 0 3 0 3 0 3 0 0 0 9 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","In the examples provided, certain numbers are shifted horizontally, while others remain in place. In Example 1, the 4s from the input grid are shifted right by 5 positions in the output grid. In Example 2, the 8s appear to shift left in a staggered formation. Applying a similar transformation to the test input grid, where non-zero rows with consistent values are shifted horizontally without altering the unchanged segments further clarifies the transformation. Given that the consistent value in the test input is 3, these are likely candidates for shifting.
+
+Rule: Shift all rows that contain non-zero numbers (except the number at the outermost columns) horizontally as per their consistent direction by a set distance from the input grid to the output grid.",,Shift all rows that contain non-zero numbers (except the number at the outermost columns) horizontally as per their consistent direction by a set distance from the input grid to the output grid.,0
+2025-08-01T19:50:43,MoveToBoundary,MoveToBoundary8,3,low,0,mismatch,0,"5 0 0 0 0 0 0 0 0 0 0 0 0
+5 0 0 0 0 0 0 0 0 0 0 0 0
+5 0 4 0 0 0 0 0 0 0 0 0 0
+5 0 0 0 0 0 0 0 0 0 0 0 0
+5 0 0 0 4 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 4 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","In both examples, certain non-zero values are translated within their rows. Example 1 shows a rightward shift of a row with 4. Example 2 shows a diagonal translation of the number 8 upwards and right. The pattern is to move specific non-zero values to new positions based on defined constraints. In the test input grid, we follow that the 4 should be shifted horizontally as observed in Example 1 and follow the same row behavior.
+
+Rule: Move any instances of the number 4 rightward by a certain number of spaces determined by position-specific rules noted in examples.",,Move any instances of the number 4 rightward by a certain number of spaces determined by position-specific rules noted in examples.,0
+2025-08-01T19:50:55,MoveToBoundary,MoveToBoundary9,1,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+4 4 4 4 0 0 0 0 6 6 6 6 0 0 0 0
+0 0 0 0 0 0 0 0 6 6 6 6 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","The transformation involves shifting non-zero segments to the left within each row. Each segment of unique numbers like [2,2,2], [3,0], or [4,4,4] is moved to the leftmost possible position in the same row while preserving its sequence and structure. Zeros are ignored in the shifting process.
+
+Rule: Shift non-zero segments to the leftmost possible position within the same row, preserving sequence.",,"Shift non-zero segments to the leftmost possible position within the same row, preserving sequence.",0
+2025-08-01T19:50:52,MoveToBoundary,MoveToBoundary9,2,low,0,parse:non-integer token in row 1,0,"[[0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0],[5,0,0,0,0,0,0,0,0,0,5,0,0,0],[5,0,0,0,0,0,0,0,0,0,5,0,0,0],[5,5,5,5,0,0,0,0,5,5,5,0,0,0],[5,0,0,0,0,0,0,0,0,0,5,0,0,0],[5,0,0,0,0,0,0,0,0,0,5,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0]]","The rule involves shifting non-zero rows horizontally to the left until they make up a contiguous group at the start of the row. For each non-zero row, the numbers shift to the leftmost available position while keeping their order. The rest of the elements in the rows remain zeros.
+
+Rule: Shift non-zero elements in each row to the leftmost available positions without changing their order.",,Shift non-zero elements in each row to the leftmost available positions without changing their order.,0
+2025-08-01T19:51:10,MoveToBoundary,MoveToBoundary9,3,low,0,mismatch,0,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 7 7 0 0 7 7 0 0 0 0 3 0 3 0 3 0 3 0 7 7 0 0 7 7 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 7 7 7 0 0 7 7 0 0 0 0 3 0 3 0 3 0 3 0 0 0 0 0 0 0 0 0 0 0,"The transformation involves shifting specific subsets of numbers within the grid. Observing examples, the groups of identical numbers are shifted horizontally to different positions. The first example shifts '2's and '1's to the left bottom corner and right bottom corner respectively, whereas in the second example, groups of '3's and '4's shift towards different positions, following similar displacements. Applying this logic, each group of numbers retains its structure but moves horizontally based on its initial position, with gaps created on one side and filled on the other with zeros.
+
+Rule: Identify horizontal groups of non-zero numbers, shift them towards the center, preserving their vertical positioning while adjusting horizontal positions based on examples.",,"Identify horizontal groups of non-zero numbers, shift them towards the center, preserving their vertical positioning while adjusting horizontal positions based on examples.",0

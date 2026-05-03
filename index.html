@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning">
+  <meta name="description" content="Dataset viewer; full data on Hugging Face.">
+  <meta name="keywords" content="ARC, abstract reasoning, evaluation, dataset">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Research project">
+  <meta property="og:title" content="Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning">
+  <meta property="og:description" content="Dataset viewer; full data on Hugging Face.">
+  <meta property="og:url" content="https://AIHumanAbstraction.github.io/">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning">
+  <meta name="twitter:description" content="Dataset viewer; full data on Hugging Face.">
+
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning</title>
+  <link rel="canonical" href="https://AIHumanAbstraction.github.io/" />
+
+  <!-- Explicit blank favicon: avoids browsers reusing a cached /favicon.ico from earlier deploys -->
+  <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+  <link rel="apple-touch-icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="visualizer.css">
+
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="visualizer.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning",
+    "description": "Dataset viewer; full data on Hugging Face.",
+    "url": "https://AIHumanAbstraction.github.io/"
+  }
+  </script>
+</head>
+<body>
+
+  <main id="main-content">
+
+    <header class="section">
+      <div class="container is-max-desktop">
+        <h1 class="title is-4 publication-title has-text-centered">
+          Distinguishing Performance and Competence in Evaluations of Humanlike Abstract Reasoning
+        </h1>
+      </div>
+    </header>
+
+    <section class="section hero is-small is-light" id="interactive-visualizer">
+      <div class="hero-body">
+        <div class="container is-widescreen">
+          <h2 class="title is-3">Dataset viewer</h2>
+          <p class="subtitle">Explore the dataset and model outputs in the browser.</p>
+          <div id="conceptarc-visualizer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Set the anchor href to your Hugging Face dataset or model page (e.g. https://huggingface.co/datasets/org/name). -->
+    <section class="section hero is-small is-light" id="full-data">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="content has-text-centered">
+            <p class="is-size-5">
+              Full data can be downloaded from the
+              <a href="https://huggingface.co/datasets/" target="_blank" rel="noopener noreferrer">linked Hugging Face repository</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      window.visualizer = new ConceptARCVisualizer('conceptarc-visualizer', {
+        cellSize: 34,
+        maxCellSize: 64,
+        minCellSize: 8
+      });
+    } catch (e) {
+      console.error('Visualizer init error:', e);
+    }
+  });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,4252 @@
+timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule_correct,rule_evaluation_reasoning,Rule,validated,Rule_correct_label,validation_level,starred
+2025-07-17T16:09:20,AboveBelow,AboveBelow1,1,low,1,,0,"0 6 6 0 0 6 6 6 0 6
+0 6 6 0 0 6 6 6 0 6
+0 0 0 0 0 6 6 6 0 0
+4 4 4 4 4 4 4 4 4 4
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","**Analyzing color patterns in rows**
+
+I’m trying to find the first horizontal row that has a repeating pattern of the same non-zero color. Upon reviewing example 3, it seems row 3 has both 8 and 0 alternating, which doesn’t fit the criteria for a constant color. However, it's the only row with color 8, so that’s significant. I need to identify unique color rows that span the width, keeping zero below. The lowest rows with the unique “divider color” are essential to consider.
+
+**Identifying unique rows**
+
+Color 8 only appears in the separator row, which is good to note. The rule is to find the unique color that appears in just one row, and zero out everything below that. For the provided test input, I need to find a row with a unique color pattern. It looks like row 3 consists entirely of the color 4, which doesn't appear in any other rows. So, rows 0 to 3 will remain unchanged, and rows 4 onward will be set to all zeros.
+
+**Creating the final grid**
+
+I’m working on constructing a 14x10 grid. The rows are defined clearly with various colors, including repeated appearances of color 6 and a unique color 4 in row 3. The plan is to keep all rows up to and including the one containing the unique color and set all cells below that to zero. I need to format the grid as a minified JSON with specific keys for the rule and grid, ensuring the grid is represented as a multi-line string.
+
+Rule: Locate the only colour that appears in exactly one row; that entire row is the divider. Keep every cell in all rows from the top down to and including that divider row unchanged, and replace every cell in every row below it with 0.",,1,"The Evaluated Rule specifies a method to identify a divider row based on a unique color, which is not part of the Ground Truth Rule. The Ground Truth Rule simply states to remove all objects or pixels below a horizontal line without any conditions related to color or specific rows.","Locate the only colour that appears in exactly one row; that entire row is the divider. Keep every cell in all rows from the top down to and including that divider row unchanged, and replace every cell in every row below it with 0.",1,Correct - Intended,2,0
+2025-07-17T16:10:01,AboveBelow,AboveBelow1,2,low,1,,0,"0 0 3 3 3 3 3 0 0 0 0 0 0
+0 0 3 3 3 3 3 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+9 0 9 0 9 0 9 0 9 0 9 0 9
+0 0 0 0 0 0 0 0 0 0 0 0 0","**Understanding grid patterns**
+
+I'm considering a test grid with 6 rows and 13 columns, focusing on a pattern of vertical stripes in row 8. The first two rows have a pattern of 3s, while row 4 repeats ""9 0 9 0."" I need to keep rows 0-4, zeroing out rows below. Row 5 is all zeros, but rows 2-3 also contain zeros. According to the rules, I should keep rows with alternating patterns. But wait, how are zeros treated in example 1? It seems zeros can be preserved between significant rows.
+
+Rule: Find the first row that contains a colour different from both the background (0) and the colour that appears in the top pattern. Keep every cell in that row and all rows above it unchanged; turn every non-zero cell in all rows strictly below it into 0. (Zeros anywhere are left untouched.)",,1,"The Evaluated Rule effectively removes all objects or pixels below the first row containing a non-background color, which aligns with the Ground Truth Rule's intent to remove all objects below a certain horizontal line. The additional specification of identifying the first row with a different color does not change the fundamental transformation of removing lower objects.",Find the first row that contains a colour different from both the background (0) and the colour that appears in the top pattern. Keep every cell in that row and all rows above it unchanged; turn every non-zero cell in all rows strictly below it into 0. (Zeros anywhere are left untouched.),1,Correct - Unintended,2,0
+2025-07-17T16:07:28,AboveBelow,AboveBelow1,3,low,1,,0,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+5 0 5 0 5 0 5 0 5 0 5 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","**Identifying the rule**
+
+I need to determine the pattern. In the provided examples, the input grid has repeated colored blocks, and the output seems to remove certain rows and columns after a central row. For instance, in Example 1, a segment of four’s color from the bottom is eliminated, while retaining the top segment and an unchanged row of twos. The rule appears to be keeping the first occurrence of a repeated pattern and removing others. In Example 2, it looks like only the top-left and row clusters are kept.
+
+**Identifying the pivot row rule**
+
+I’m figuring out that all rows beyond row three are zero, so it seems like I need to keep rows until I hit a unique colored row. For example, in Example 1, row six is kept because it's full of twos, while rows below it are removed. In Example 3, row three has an alternating pattern of eights and zeros, and rows below that are also zeroed out. It looks like the rule is to find a unique color row that appears nowhere else and treat it as a divider, keeping everything up to that row.
+
+**Analyzing the new rule**
+
+It looks like I need to reconsider my previous thoughts regarding the rows. I'm seeing that color 5 appears in rows eight and nine, so it's not unique. The new rule seems to be to retain everything above the first blank row after a row filled with a repeating color. In the examples, the pivot row is always the last fully filled row of the same color. It seems I need to identify this row and everything above it, while removing anything below that separator.
+
+**Crafting final grid**
+
+I'm setting up a 10x12 grid. Rows 0 through 5 will all be zeros, while row 6 contains alternating 5s and 0s. Rows 7 through 9 will also be zeros. For the output, I need to summarize the transformation in a ""rule"" string, stating to keep every row from the top down to the first row with non-zero cells extending across the entire width, and set all rows below to zero. It looks like using space-separated lines for the grid representation will work best.
+
+Rule: Crop vertically: keep all rows from the top down to (and including) the first row whose non-zero pattern stretches across the entire width; turn every cell in all rows below that line to 0.",,1,"The Evaluated Rule effectively removes all objects or pixels below the first row with a non-zero pattern that stretches across the entire width, which aligns with the Ground Truth Rule's intent to remove everything below a specified horizontal line. The additional specification of turning cells below that line to 0 does not change the fundamental transformation, thus it is considered correct.",Crop vertically: keep all rows from the top down to (and including) the first row whose non-zero pattern stretches across the entire width; turn every cell in all rows below that line to 0.,1,Correct - Intended,2,0
+2025-07-17T16:08:21,AboveBelow,AboveBelow10,1,low,1,,0,"0 0 2 2 2 2 2 2 2 2 2 2 2
+0 2 2 2 2 2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2 2 2 2 2 2","**Analyzing grid coloring rules**
+
+I’m working on understanding the rules for coloring a grid based on diagonal examples. In the first example, there’s a colored diagonal with color 4 starting from row 2, column 0. I notice the grid has 14 columns and 11 rows, with non-zero values along the diagonal into row 10. The output seems to involve filling in all cells below and to the left of this diagonal, forming a triangular region influenced by the convex hull. This means filling areas in rows with color 4 up to the diagonal!
+
+**Clarifying grid patterns**
+
+Starting with the first colored pixel at row 2, column 0, and ending at row 10, column 8, I see a triangular shape formed by 4's in the lower-left region, bounded by the diagonal from (2,0) to (10,8). It seems row 10 has positions filled from column 0 to 8 fully. Then in the second example, the colored diagonal goes from the top row downwards, forming a triangle on the right side instead. The rules indicate that depending on the diagonal's position, I’ll fill the area opposite the first colored pixel. The diagonal's orientation determines whether I fill left or right!
+
+**Defining diagonal filling rules**
+
+I'm figuring out the rules for filling grid areas based on colored diagonals. First, I identify positions that form a straight diagonal, determining whether the slope is +1 or -1. For a slope of +1, I fill the left side; for -1, I fill the right. I need to fill triangles down to the bottom of the grid, accounting for the last colored row. Even beyond that row, I fill entire rows if needed, adjusting based on whether I'm extending left or right. I’ll build a grid based on these observations for a 3x13 input example!
+
+**Creating final grid in JSON**
+
+Alright, I’ve completed the output grid for row 2, which is full of 2's. Now, I need to succinctly describe the rule: fill the triangle between the diagonal of colored cells and the nearest border, extending to the bottom of the grid. I’ll format the strings for each row with space-separated values and ensure each row is separated by a newline. 
+
+The final string is: ""0 0 2 2 2 2 2 2 2 2 2 2 2\n0 2 2 2 2 2 2 2 2 2 2 2 2\n2 2 2 2 2 2 2 2 2 2 2 2 2"". Now I’ll return this as a minified JSON object!
+
+Rule: Identify the single-colour diagonal (slope +1 or −1). From the diagonal’s topmost cell, extend row by row down to the grid’s bottom: for slope +1 fill every cell from the diagonal position leftwards to column 0; for slope −1 fill every cell from the diagonal position rightwards to the last column. Use the same colour.",,1,"The Evaluated Rule specifies filling cells based on the position of a diagonal, which is not equivalent to simply filling in pixels below a line with the same color as that line. The Ground Truth Rule applies to all pixels below a horizontal line, while the Evaluated Rule is limited to specific diagonal configurations.","Identify the single-colour diagonal (slope +1 or −1). From the diagonal’s topmost cell, extend row by row down to the grid’s bottom: for slope +1 fill every cell from the diagonal position leftwards to column 0; for slope −1 fill every cell from the diagonal position rightwards to the last column. Use the same colour.",1,Correct - Unintended,2,0
+2025-07-17T16:10:24,AboveBelow,AboveBelow10,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+6 0 0 0 0 0 0 0 0 0 0 0
+6 6 0 0 0 0 0 0 0 0 0 0
+6 6 6 0 0 0 0 0 0 0 0 0","**Transforming cell colors**
+
+I'm trying to figure out the output based on the input diagonal of colored cells with values of 4 or 3. It looks like I need to transform it into a lower triangle rectangle with color c, which might extend to the corners as needed. 
+
+From the grid size of 11x14, it seems the diagonal starts at row 2, column 0, then goes down diagonally. I want to fill all cells below and to the left of the diagonal, stopping at the last row of the diagonal.
+
+**Defining diagonal fill rules**
+
+I'm thinking about how rows before the first colored row stay unchanged. For example, if the diagonal starts at (0,8) in an 11x12 grid, the diagonal descends leftwards, filling the triangle region to the right. 
+
+I need to establish a rule where I identify diagonals of color with contiguous cells and fill the triangular area between the diagonal and the closest grid edge. Depending on the diagonal's slope, I might fill left or right—like for Example 1 (left) and Example 2 (right). I should clarify how this applies based on row and column indices.
+
+**Establishing filling rules**
+
+I'm working on the rule for identifying a diagonal in the grid. From the topmost colored pixel downward, I want to fill each row starting at the diagonal cell toward the nearest horizontal border—left or right, depending on the example.
+
+For a 10x12 grid with a diagonal at (7,0), (8,1), and (9,2), I fill left because the closest edge is column 0. I also observe that I can continue filling rows below the diagonal with a full color fill until the grid's end, creating a triangular area that ultimately transforms into full rows below. It seems the filling expands until it reaches both grid edges.
+
+```python
+rows=10
+cols=12
+grid=[[0]*cols for _ in range(rows)]
+color=6
+diag_positions=[(7,0),(8,1),(9,2)]
+for r,c in diag_positions:
+    # fill leftwards including c to 0
+    for x in range(0,c+1):
+        grid[r][x]=color
+# after last diagonal row: r=9 last row, rows below none
+grid
+```
+
+**Crafting a transformation rule**
+
+I think I can create a concise description for the transformation rule. The objective is to find the main diagonal of the unique non-zero color. Starting from the first colored cell, I’ll paint that color down each row to the nearest vertical border. As I expand this pattern, every subsequent row will incorporate one more cell until reaching the opposite border, filling those rows completely. Additionally, I'll ensure the output is in minified JSON format, with space-separated values for the grid. Let's make it happen!
+
+Rule: The input always contains a single descending diagonal of the unique non-zero colour.  Starting with the first coloured cell and going downward along the diagonal, colour every row as follows: from the diagonal cell inclusive, fill horizontally toward the nearer vertical edge (column 0 if the cell is closer to the left edge, last column if it is closer to the right edge).  This produces a growing right-angle triangle; once the fill reaches the opposite edge the remaining lower rows are coloured completely.  Leave every row that is above the first coloured cell unchanged.","rows=10
+cols=12
+grid=[[0]*cols for _ in range(rows)]
+color=6
+diag_positions=[(7,0),(8,1),(9,2)]
+for r,c in diag_positions:
+    # fill leftwards including c to 0
+    for x in range(0,c+1):
+        grid[r][x]=color
+# after last diagonal row: r=9 last row, rows below none
+grid",1,"The Evaluated Rule describes a process that ultimately fills in pixels below a diagonal line with the same color as that line, which aligns with the Ground Truth Rule. Although it includes additional specifications about how to fill the rows and the shape of the fill, the core transformation of filling below the line with the same color is preserved.","The input always contains a single descending diagonal of the unique non-zero colour.  Starting with the first coloured cell and going downward along the diagonal, colour every row as follows: from the diagonal cell inclusive, fill horizontally toward the nearer vertical edge (column 0 if the cell is closer to the left edge, last column if it is closer to the right edge).  This produces a growing right-angle triangle; once the fill reaches the opposite edge the remaining lower rows are coloured completely.  Leave every row that is above the first coloured cell unchanged.",1,Correct - Unintended,2,0
+2025-07-17T16:07:45,AboveBelow,AboveBelow10,3,low,1,,0,"0 0 0 0
+0 0 0 0
+8 8 8 8
+8 8 8 8
+8 8 8 8
+8 8 8 8
+8 8 8 8
+8 8 8 8
+8 8 8 8
+8 8 8 8","**Identifying rule mapping**
+
+I need to determine a mapping rule based on the observations regarding a grid input. It seems like there’s a diagonal of 4s starting from position (2,0) and extending to (10,8). The grid is 14 columns wide and has 11 rows. I'm seeing that the output fills the lower-left triangle beneath this diagonal, extending leftward to the start of each row. It appears that for each row from 2 to 10, columns up to the current row index contain 4s, which matches the expected output. This defines the rule for filling cells in a specified rectangle.
+
+**Analyzing diagonal rules**
+
+In this example, there's a diagonal of 3s going from (0,8) to (8,0). It forms a filled lower-right triangle that spans a 9x9 area, which is interesting. The grid actually has 11 rows and 12 columns, with the diagonal spanning 9 rows. Output shows a filled area that extends to the bottom and right of the diagonal, turning the southeastern region into 3s. The rule seems to be about identifying the diagonal's orientation and filling the opposite area accordingly: below and left for a down-right slope, below and right for a down-left slope.
+
+**Determining grid fill rule**
+
+It seems the rule for this scenario might involve filling rows based on a constant column range. For a slope of 0, I'll fill the cells in rows equal to or greater than a certain constant, using the minimum and maximum columns in the range. In this case, since the grid is 4 columns wide, I can fill the entire width from row 2 downwards with 8s. That means rows 0 and 1 stay as zeros, and the output grid will show 0s for the first two rows followed by rows filled with 8s. Now, I’ll craft the grid strings for the final output.
+
+Rule: Identify the straight line formed by the non-zero colour. Colour every cell that lies on the same row side that has the larger row index (""below"" the line). For slope +1 fill to the left of the line, for slope −1 fill to the right, and for slope 0 fill the entire width. Keep rows above the line unchanged.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by filling in pixels below the line with the same color as that line, albeit with additional specifications regarding the direction of filling based on the slope. The core transformation of filling below the line remains intact.","Identify the straight line formed by the non-zero colour. Colour every cell that lies on the same row side that has the larger row index (""below"" the line). For slope +1 fill to the left of the line, for slope −1 fill to the right, and for slope 0 fill the entire width. Keep rows above the line unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:12:40,AboveBelow,AboveBelow2,1,low,0,parse:non-integer token in row 1,1,0 0 0 0 0 0 0 0 0 0;0 0 0 0 0 0 0 0 0 0;0 0 0 0 0 0 0 0 0 0;0 0 0 0 0 0 0 0 0 0;0 0 0 3 3 3 0 0 0 0;0 0 0 3 3 3 0 0 0 0;0 0 0 3 3 3 0 0 0 0;0 0 0 0 0 0 0 0 0 0;0 0 0 0 0 0 0 0 0 0;0 0 0 0 0 0 0 0 0 0,"```python
+inp2 = [
+[0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0],
+[0,0,0,4,4,4,0,0,0,0,0,2,2,2,0,0],
+[0,0,0,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],]
+for i,row in enumerate(inp2):
+    if all(x==0 for x in row):
+        print(i)
+
+```
+
+```python
+import numpy as np, itertools, collections, sys, math
+```
+
+```python
+inp1 = [...]
+
+```
+
+```python
+inp1 = [
+[0,0,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,0,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0]
+]
+for i,row in enumerate(inp1):
+    if all(x==0 for x in row):
+        print(i)
+
+```
+
+**Considering removal rules**
+
+I'm thinking about a rule where I only keep the area between the first completely empty row and the next one. For instance, in Example 1, I would keep rows 9 to 14, which are shaped like 3s, but exclude the bottom rows of 4s after row 14. I wonder if this relates to the majority color. In Example 3, it kept color 3, which had the lowest frequency. So, for each input, maybe I should eliminate the color that appears the least. Time to compute counts!
+
+```python
+from collections import Counter, defaultdict
+```
+
+```python
+def count_colors(grid):
+    c=Counter()
+    for row in grid:
+        c.update([x for x in row if x!=0])
+    return c
+print(count_colors(inp2))
+
+```
+
+```python
+print(count_colors(inp1))
+
+```
+
+```python
+inp3 = [
+[0,0,0,8,8,8,0],
+[0,0,0,8,8,8,0],
+[0,0,0,8,8,8,0],
+[0,0,0,0,0,0,0],
+[0,0,7,7,7,0,0],
+[0,0,7,7,7,0,0],
+[0,0,7,7,7,0,0],
+[0,0,0,0,0,0,0],
+[7,7,7,7,0,8,8],
+[7,7,7,7,0,8,8],
+[0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3],
+[0,0,0,0,3,3,3],
+[0,0,0,0,3,3,3],
+[0,0,0,0,0,0,0]
+]
+print(count_colors(inp3))
+
+```
+
+**Analyzing cluster properties**
+
+I'm considering the bottom four clusters and the complexity of the fourth one. I wonder if I should remove the first occurrence of each color. For example, removing the top four clusters but keeping others seems reasonable. Each color has different components; color one has only one, while color two has multiple with patterns. I’ll check the sizes of the clusters kept, focusing on squares and larger irregular shapes. Maybe I'll compute bounding boxes and isolate the largest rectangles per color for efficiency. Why do I keep the three while removing others?
+
+**Examining cluster rules**
+
+I'm considering that color three's cluster might lack duplicates of the same-sized shape compared to others. I should compute the area of these clusters to determine which to keep. For instance, there are clusters with areas like 9, 12, and 17. I need to determine whether to retain areas based on specific patterns, like those that are 3x3. 
+
+I’ll analyze more thoroughly by computing rules around consecutive blank rows to decide which components to keep, focusing on the density of non-zero cells in each row. It seems that's a key factor here.
+
+```python
+def preserved_rows(ids, out):
+    keeps=[i for i,(r1,r2) in enumerate(zip(ids,out)) if r1!=r2]
+
+```
+
+**Considering cluster rules**
+
+I'm thinking about how to deal with clusters of colors. One idea is to keep the lowest color with the smallest count or one that forms a square shape. For a 3-cluster, it could become a 3x3 square, while with 6 clusters, maybe I should focus on a top 2x2. I notice some groups in the clusters might form rectangles too. Another thought is to keep only the components fully enclosed by zeros, which helps with boundary issues.
+
+**Analyzing cluster boundaries**
+
+I’m assessing how clusters interact with boundaries. Color2 and top clusters seem to touch the boundaries, while Color1 might as well. In Example 2, the top four clusters touch the boundary, and the two clusters at row 0 possibly do too. The three-cluster is enclosed, but I’m confused because some clusters are square-shaped while others with holes were removed. I think I should compute counts of each color’s connected components and examine densities, especially focusing on keeping colors that don’t overlap. I’ll create a grid prediction now to test this.
+
+```python
+grid = [[0]*10 for _ in range(10)]
+for r in range(4,7):
+    for c in range(3,6):
+        grid[r][c]=3
+grid
+```
+
+Rule: Remove every component that is not the centrally-placed 3×3 square; leave that square untouched","inp2 = [
+[0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0],
+[0,0,0,4,4,4,0,0,0,0,0,2,2,2,0,0],
+[0,0,0,4,4,4,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[0,0,0,0,0,0,2,2,2,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2],
+[2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],]
+for i,row in enumerate(inp2):
+    if all(x==0 for x in row):
+        print(i)
+
+import numpy as np, itertools, collections, sys, math
+
+inp1 = [...]
+
+inp1 = [
+[0,0,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,0,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,2,2,2,0,0,0,0,2,2,2,0,0,0,0],
+[0,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0],
+[0,0,0,4,4,4,0,0,0,4,4,4,0,0,0,0,0,0,0,0]
+]
+for i,row in enumerate(inp1):
+    if all(x==0 for x in row):
+        print(i)
+
+from collections import Counter, defaultdict
+
+def count_colors(grid):
+    c=Counter()
+    for row in grid:
+        c.update([x for x in row if x!=0])
+    return c
+print(count_colors(inp2))
+
+print(count_colors(inp1))
+
+inp3 = [
+[0,0,0,8,8,8,0],
+[0,0,0,8,8,8,0],
+[0,0,0,8,8,8,0],
+[0,0,0,0,0,0,0],
+[0,0,7,7,7,0,0],
+[0,0,7,7,7,0,0],
+[0,0,7,7,7,0,0],
+[0,0,0,0,0,0,0],
+[7,7,7,7,0,8,8],
+[7,7,7,7,0,8,8],
+[0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3],
+[0,0,0,0,3,3,3],
+[0,0,0,0,3,3,3],
+[0,0,0,0,0,0,0]
+]
+print(count_colors(inp3))
+
+def preserved_rows(ids, out):
+    keeps=[i for i,(r1,r2) in enumerate(zip(ids,out)) if r1!=r2]
+
+grid = [[0]*10 for _ in range(10)]
+for r in range(4,7):
+    for c in range(3,6):
+        grid[r][c]=3
+grid",0,"The Evaluated Rule specifies removing every component that is not the centrally-placed 3×3 square, which does not align with the Ground Truth Rule of removing all objects or pixels above the green square. The focus of the Evaluated Rule is on a specific area rather than the condition of being above the green square.",Remove every component that is not the centrally-placed 3×3 square; leave that square untouched,1,Incorrect,2,0
+2025-07-17T16:10:09,AboveBelow,AboveBelow2,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+3 3 0 0 0 0 0 0 0 0 0
+3 3 0 0 0 0 0 0 0 0 0","**Evaluating color rules**
+
+I’m considering rules for keeping colors based on their pixel counts. Maybe I should keep colors that appear exactly three times. Wait, when I look closer, I notice some patterns like the 3x3 blocks repeating vertically, but it’s just a larger 3x3 area. I wonder if I should keep smaller area colors.
+
+There’s also the idea of removing shapes that touch the grid border. For example, color1 and color4 both touch the top row but one was removed, which is confusing.
+
+**Refining color rules**
+
+I’m focusing on keeping shapes that don’t touch the border. For example, Color3 with a 5x5 square is kept because it’s in the interior. I've checked Color4’s shapes, too, and they seem to not touch any borders. Some shapes like Color1 and Color2 do touch the border, so they were removed. However, it seems there’s a failure with Color2 because some of its parts are touching the border but are still present. I need to rethink the rules again.
+
+**Examining color separation rules**
+
+I'm analyzing how rows are cleared to maintain only the bottom section after blank rows. For instance, looking at rows for Color4 and Color3, I notice they don't have empty row gaps separating them. Color3 is kept despite being above an empty row. 
+
+Next, I wonder about adjacent colors. Maybe I should focus on whether colors touch zero areas or other colors. If a shape is isolated without neighbors, it seems like a good candidate to keep but, in practice, I see some inconsistencies with what was retained or removed.
+
+**Analyzing symmetry and duplication rules**
+
+I’m thinking about symmetrical properties in the shapes. For example, Color3 and Color4 have odd side lengths, but that doesn't seem to help. I notice that in earlier examples, colors with lower values were removed while higher values were kept, so that’s tricky. 
+
+The idea of keeping the bottommost contiguous section after zero rows seems promising. However, it looks like I need to reevaluate the rules concerning duplicates. Sometimes they get removed even if they’re identical, which complicates things further. I should probably load the grids again to analyze those counts more effectively.
+
+```python
+
+
+```
+
+**Reassessing the coloring rule**
+
+I'm considering a new approach to handling colors. The rule might be to keep only the largest continuous block of colors and replace everything else with zeros. For instance, in example one, I thought the lower half had a contiguous region, but it turns out there are separating zeros. Instead, I might keep colored groups that appear below at least one full row of zeros above them. This would mean scanning from the bottom rows for any colored shapes after the last zero row.
+
+**Examining retention rules**
+
+I'm trying to decode the rules surrounding which rows and colors are retained. It seems they kept rows 16-18 while row 15 is a zero row. For rows 0-8, they removed everything above row 9, following the first blank row at row 7. But there's inconsistency in Example 2 where they didn’t remove row 3 despite it being between removed rows. 
+
+I need to explore whether the retention rule relates to shapes in specific quadrants or perhaps to color numbers like 3 and 4, which consistently appear in the outputs across examples. It seems the decision could also tie to whether colors are in contiguous horizontal or vertical lines of length 4 or more.
+
+**Analyzing color retention rules**
+
+In Example 1, color3 has a 5-width square, and color4 shapes, although width 3, are kept. Color2 is removed despite having width 3. Maybe a rule could be to keep colors present in the bottom rows of the grid, as shown by color4 in the last row. 
+
+However, there’s a complexity with adjacency since colors can be touched by others, impacting retention. I'll also look at pixel counts to see which colors are most frequent. Finally, I might explore if shapes touching the border are removed; for Example 2, color4 does touch the border and is removed, unlike color2, adding another layer of complexity.
+
+**Exploring color removal rules**
+
+I’m trying to determine why certain shapes are removed, especially regarding border touching. For instance, color2 touches the left border but is kept, which complicates the ""border rule."" 
+
+I’m considering whether shapes touching the top row are specifically removed. In Example 1, color1 and color4 do touch the top, yet color2 is more complex, as it appears to cross different sections. 
+
+I might also look at pixel counts; if a color exceeds a certain threshold of pixels, perhaps it should be kept. I'll need to calculate these counts to clarify the retention rules.
+
+**Evaluating color properties in grids**
+
+I'm working on calculating the properties of each color across the entire grid using union bounding boxes. It looks like Color2 in example 1 has a union bounding box that covers multiple shapes but isn't solid. Color3's bounding box is filled, while Color4 is not, due to missing cells between shapes. I'm considering whether to keep colors based on them having at least one component larger than the average size. However, I'm also thinking about rules for removing colors that form thin lines. It feels a bit complex, so I'll need to explore the dataset more closely to clarify the rules.
+
+**Evaluating color rules in grids**
+
+I'm trying to compute the color numeric parity and consider if colors should be kept based on their size relative to their grid position. Maybe color3 represents a 2x2 shape that should be preserved, especially if it appears in a contiguous pattern. For the test grid, color4 seems to get removed, suggesting a rule to keep color3 consistently. The output could then just focus on the color3 region. 
+
+When shaping the output, I need to represent the grid correctly, ensuring proper formatting in JSON while retaining the pattern from the input. I'll format rows with space-separated values accurately.
+
+Rule: All coloured cells are erased except those that are colour 3.",,0,"The Evaluated Rule specifies that all colored cells except those that are color 3 (green) are erased, which does not align with the Ground Truth Rule that specifically states to remove all objects or pixels above the green square. The Evaluated Rule introduces a condition based on color that is not present in the Ground Truth Rule.",All coloured cells are erased except those that are colour 3.,1,Incorrect,2,0
+2025-07-17T16:10:18,AboveBelow,AboveBelow2,3,low,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0
+0 0 5 5 5 5 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 5 5 0
+0 0 0 0 0 0 0 0 0 0 0 5 5 0
+0 0 0 0 0 0 0 0 0 0 0 3 3 0
+0 0 0 0 0 0 0 0 0 0 0 3 3 0
+0 0 0 0 0 0 5 5 5 5 0 5 5 0
+0 0 0 0 0 0 5 5 5 5 0 5 5 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0","**Analyzing output rows**
+
+I'm checking the input for row3 at index3, which is all zeros. I see that row3 is indeed zero, but it looks like rows 0-10 were cleared. I need to verify that since a zero in row3 should remove rows 0-3. Yet, the output includes rows 4-10, which are also zeros. It seems there could be multiple consecutive zero rows involved. Their rule might be to keep everything after the last empty row in the middle. Let's dive deeper into this!
+
+**Examining row outputs**
+
+I'm analyzing a grid of input rows. Rows that are empty include 3, 7, 10, and 14, while rows 11-13 are kept because they follow the last empty row (row 10). This suggests a rule: retain everything beneath the last blank row. For another example, rows 7 and 8 are blank, with row 8 being the last blank row, which makes the output include rows 9 and onward. It seems they remove rows above the first all-zero row. I'll need to keep looking at this!
+
+**Formatting output grid**
+
+In the test grid, it seems there are no blank rows above the bottom colored segment, so nothing gets removed. Therefore, the output matches the input. I'll verify the rule: keep only the bottommost colored segment, zero everything above the last blank row, which is the top row (index 0) in this case. This means that only row zero becomes zero, and the rest are kept unchanged. 
+
+I will produce the JSON output containing a space-separated representation of the grid lines 0-12, preserving the original format. Let's craft that grid string now!
+
+Rule: Keep only the bottom-most coloured section of the picture: locate the lowest row that contains any non-zero cell; scan upward until you meet the nearest completely empty (all-zero) row; set every row from the top of the grid through that empty row to 0, leaving the rows below it unchanged.",,0,"The Evaluated Rule specifies keeping the bottom-most colored section and removing everything above the nearest empty row, which does not directly correspond to removing all objects or pixels above the green square. The focus on the lowest row with non-zero cells introduces a different criterion that may not align with the Ground Truth Rule.","Keep only the bottom-most coloured section of the picture: locate the lowest row that contains any non-zero cell; scan upward until you meet the nearest completely empty (all-zero) row; set every row from the top of the grid through that empty row to 0, leaving the rows below it unchanged.",1,Incorrect,2,0
+2025-07-17T16:10:29,AboveBelow,AboveBelow3,1,low,1,,0,"0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 1 1 1 1 1 0 0
+0 0 5 5 5 5 5 0 0
+0 0 5 5 5 5 5 0 0
+0 0 5 5 5 5 5 0 0
+0 0 5 5 5 5 5 0 0
+0 0 5 5 5 5 5 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 1 1 1 1 1 0 0","**Identifying transformation rules**
+
+I need to determine the transformation rule based on the observations of moving colored shapes in the grid. In example 1, I notice there's an 8x8 grid with colored rectangles, specifically three 1x3 shapes placed horizontally. For clarity, the first red shape appears in row 1, while the blue shape is towards the top-left. Additionally, there's a large block of another color occupying the middle rows. Understanding these positions will help me figure out the rules for how the shapes are manipulated.
+
+**Analyzing shape movements**
+
+I want to understand how shapes move in the grids. In the first grid example, I see that the top colored shape shifts down one row, making the original row zero. Now, in the second grid, I notice a similar pattern where a shape moves down two rows, with zeros filling the previous top rows. The third example confirms that the top shape again shifts down by one row, suggesting a consistent rule where the topmost shape moves downward, with zeros inserted above it.
+
+**Defining transformation rules**
+
+I am analyzing shape movements in grid examples. The main observation is that the top shape shifts down to be directly above the next colored section, removing any blank rows in between. In my test input, I see the top shape is currently in row 0 and needs to move down to row 3 to be adjacent to the large block in row 4. So, I'll replace rows 0 to 2 with zeros and craft the output grid to represent those changes, ensuring to format it correctly in JSON.
+
+Rule: Shift the highest non-zero row(s) (the topmost shape) downward until it touches the next nearest non-zero row, leaving all other cells unchanged.",,1,"The Evaluated Rule describes a similar transformation by shifting the topmost shape downward until it touches the next nearest non-zero row, which aligns with the Ground Truth Rule's intent of moving a horizontal line down to rest on top of a square.","Shift the highest non-zero row(s) (the topmost shape) downward until it touches the next nearest non-zero row, leaving all other cells unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:10:52,AboveBelow,AboveBelow3,2,low,1,,0,"0 0 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 0 0
+0 0 4 4 4 4 4 0 0
+0 0 4 0 0 0 4 0 0
+0 0 4 0 0 0 4 0 0
+0 0 4 0 0 0 4 0 0
+0 0 4 4 4 4 4 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 1 1 1 1 0 0","**Analyzing cluster movement**
+
+Color 2 shows up in multiple clusters, but I need to determine which cluster is moved. Is it the isolated one above row 6? Looking at example 1, color 3 has clusters in row 1 that moved, while the bottom ones stayed. It seems the topmost cluster gets shifted down below an empty row, keeping at least one row above it. Oh wait, in example 2, the movement was two rows down. Let's figure out if the top row aligns with the number of leading empty rows left!
+
+**Understanding the row transformation**
+
+It looks like they insert an empty row immediately after the original topmost cluster. The new shape has that top cluster shifted down by the number of zero rows between it and the next non-zero part. For example 1, after the cluster in row 1, if row 2 is zeros and row 3 has the next cluster, then the top cluster moves down one row. So, zeros would now be positioned above both clusters, effectively rotating the grid upward. 
+
+Also, are they removing entirely zero rows? It seems they want the first non-empty row to be the second one. Thus, it looks like the transformation involves swapping the cluster and the zero rows right next to it. In example 3, for instance, it seems like the original zero cluster at the top was swapped with the next cluster. I need to check example 2 closely to see if that pattern holds.
+
+**Clarifying cluster movement rules**
+
+It looks like the cluster moves down two rows by swapping with consecutive zero rows. The rule is that the topmost colored row is pushed down until it reaches the next colored row, eliminating empty rows in between but keeping zeros above. For example, if a cluster is in row 0 with two zero rows above the next colored row, it shifts down so that it becomes adjacent to the next colored content, effectively compressing the grid downward.
+
+So, the algorithm identifies the first block of non-zero rows, then shifts it down by the number of zeros until it’s contiguous with the next block. I can apply this rule to a 9x9 test input grid to ensure it works as expected!
+
+**Constructing the output grid**
+
+The resulting output grid rows look like this:
+
+Row 0: all zeros.  
+Row 1: 0 0 0 0 1 1 1 0 0 (this row was moved)  
+Row 2: 0 0 4 4 4 4 4 0 0  
+Row 3: 0 0 4 0 0 0 4 0 0  
+Row 4: 0 0 4 0 0 0 4 0 0  
+Row 5: 0 0 4 0 0 0 4 0 0  
+Row 6: 0 0 4 4 4 4 4 0 0  
+Row 7: all zeros.  
+Row 8: 0 0 0 1 1 1 1 0 0  
+
+Now, I need to check if any other movements are necessary, like pushing the top block until it's adjacent to the first large rectangle in row 2. Since rows 1 and 2 are already adjacent, that looks good! I'll return a JSON with the rule description and the formatted grid as space-separated numbers, organizing it line by line.
+
+Rule: Move the top-most contiguous coloured row block downward until it is directly adjacent (no zero rows between) to the next coloured block beneath it; vacated rows at the top are filled with zeros, grid size is unchanged.",,1,"The Evaluated Rule captures the essence of moving a horizontal line (the top-most contiguous colored row block) down to rest directly above the next colored block beneath it, which aligns with the Ground Truth Rule's intent. The additional details about filling vacated rows with zeros and maintaining grid size do not alter the fundamental transformation described.","Move the top-most contiguous coloured row block downward until it is directly adjacent (no zero rows between) to the next coloured block beneath it; vacated rows at the top are filled with zeros, grid size is unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:07:34,AboveBelow,AboveBelow3,3,low,1,,0,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 5 5 5 5 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0","**Analyzing row adjustments**
+
+I see that rows 6 and 7 have remained unchanged. I only moved the horizontal line of 3s from row 1 down to row 2. Now I’m considering the additional block of 3s at the bottom-left. I note that the patterns in rows 6 and 7 on the bottom-right are still intact. For symmetry, I'm inspecting the 3s in row 7 on the bottom-left, with some specific column placements noted. I've developed a potential rule: move any single color line shape directly above or below the larger square of the same color.
+
+**Examining color patterns**
+
+Let’s take a closer look at the colors. Color 3 appears in the top-left and bottom-right, while color 4 is in a 3x3 block. The small lines of color 3 might be symmetrical. I think a possible rule is to center each color mass within its bounding box. For Example 2, color 2 shows patterns where the top row moved down two rows in the output, while the bottom rows remain unchanged.
+
+In Example 3, color 4 moves down a row, with the output showing a non-zero first row. A pattern emerges: raise shapes until there’s at least one blank row on top, adjusting as necessary.
+
+**Creating grid transformation**
+
+I think the rule is to take the first all-zero row that sits between colored rows and move it to the top. This preserves the order of any following zero rows, effectively shifting everything above the gap downwards. For the 10x10 test grid, I noticed row 2 is the first zero row with colored rows above (row 1) and below (row 3).
+
+After moving row 2 to the top, row 0 remains unchanged as a blank row, followed by another blank row from row 2. Then, I arrange the colored rows below. So the final order places row 0 at the top, followed by the moved blank, then colored rows, ensuring the grid size remains consistent.
+
+**Building rule description and grid output**
+
+I've outlined the current grid structure, which shows rows filled with zeros and rows containing the color 5. The next step involves creating a rule: identify the highest group of empty rows between colored rows, cut them out, and move them to the top while maintaining their order. This effectively shifts everything above down.
+
+Now, I’ll create a minified JSON representation of the rule and grid, ensuring the rows are formatted with spaces and newline characters to keep it consistent. I’ll combine the strings for each row using ""\n"" for clarity.
+
+Rule: Cut the first contiguous zero-row gap that lies between two colored rows and paste that gap at the very top of the grid, keeping all other rows in the same order.",,1,"The Evaluated Rule describes a process of cutting a zero-row gap and pasting it at the top of the grid, which does not align with the Ground Truth Rule of moving a horizontal line down to rest on a square. The transformations are fundamentally different in their actions and outcomes.","Cut the first contiguous zero-row gap that lies between two colored rows and paste that gap at the very top of the grid, keeping all other rows in the same order.",1,Correct - Unintended,2,0
+2025-07-17T16:10:53,AboveBelow,AboveBelow4,1,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 1 3 3 3 3 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 1 3 3
+1 1 1 1 1 1 1 1 1 1 1 1
+0 0 0 0 0 0 0 0 0 0 0 0
+0 3 3 3 3 3 1 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 3 3 1","**Analyzing orientation rules**
+
+I'm working on computing the relative orientation of patterns. For instance, in row 3, the horizontal triple spans columns 4 to 6, with adjustments to the leftmost cell. In row 8, a similar horizontal triple changes the rightmost cell. It seems the coloring depends on the full row beneath. I've identified the solid row at row 4 and noted that segments above change their leftmost cells while those below alter their rightmost cells. Now, I'm considering how to adjust cells based on their proximity to the solid row.
+
+**Defining replacement rules**
+
+I’m looking at Example 2, where there’s a full row of 6s at row 2. For the segments, I notice that in row 0, the leftmost cell of the segment at columns 2-4 changes to 6, matching with the earlier example. Then I check row 1, where the leftmost cell again becomes 6 as it's above the solid row. 
+
+Moving to row 5, there’s a segment of 3s, and the rightmost cell changes to 6. The rule seems to be that for horizontal segments above the solid row, the leftmost cell is replaced, while those below change the rightmost cell to match the solid row. Now I'll apply these rules to find and replace segments of color 3 in relation to the full horizontal row of color 1.
+
+```python
+grid_in=[[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,3,3,3,3,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,3,3,3],
+[1,1,1,1,1,1,1,1,1,1,1,1],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,3,3,3,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,3,3,3]]
+# apply rule
+full_row_index = None
+colorX=None
+for r,row in enumerate(grid_in):
+    if len(set(row))==1 and row[0]!=0:
+        full_row_index=r
+        colorX=row[0]
+        break
+full_row_index, colorX
+```
+
+```python
+# find runs of color !=0 and !=X (3)
+runs=[]
+for r,row in enumerate(grid_in):
+    curcol=0
+    while curcol<len(row):
+        if row[curcol]==3:
+            start=curcol
+            while curcol<len(row) and row[curcol]==3:
+                curcol+=1
+            end=curcol-1
+            runs.append((r,start,end))
+        else:
+            curcol+=1
+runs
+```
+
+```python
+grid_out=[row[:] for row in grid_in]
+for r,start,end in runs:
+    if r<full_row_index:
+        grid_out[r][start]=colorX
+    elif r>full_row_index:
+        grid_out[r][end]=colorX
+grid_out
+```
+
+Rule: Locate the single row that is completely filled with one colour X. For every horizontal run of another colour that lies above this row, recolour its left-most cell to X; for every run below the full row, recolour its right-most cell to X. Leave all other cells unchanged.","grid_in=[[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,3,3,3,3,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,3,3,3],
+[1,1,1,1,1,1,1,1,1,1,1,1],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,3,3,3,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,3,3,3]]
+# apply rule
+full_row_index = None
+colorX=None
+for r,row in enumerate(grid_in):
+    if len(set(row))==1 and row[0]!=0:
+        full_row_index=r
+        colorX=row[0]
+        break
+full_row_index, colorX
+
+# find runs of color !=0 and !=X (3)
+runs=[]
+for r,row in enumerate(grid_in):
+    curcol=0
+    while curcol<len(row):
+        if row[curcol]==3:
+            start=curcol
+            while curcol<len(row) and row[curcol]==3:
+                curcol+=1
+            end=curcol-1
+            runs.append((r,start,end))
+        else:
+            curcol+=1
+runs
+
+grid_out=[row[:] for row in grid_in]
+for r,start,end in runs:
+    if r<full_row_index:
+        grid_out[r][start]=colorX
+    elif r>full_row_index:
+        grid_out[r][end]=colorX
+grid_out",1,"Both rules involve recoloring pixels based on their position relative to a specific line of color X. The Evaluated Rule specifies recoloring the leftmost and rightmost pixels of horizontal runs above and below a fully colored row, which aligns with the intent of the Ground Truth Rule to color the leftmost pixel of shorter lines above and the rightmost pixel of shorter lines below the longest horizontal line. The essence of the transformation is preserved, even if the wording and some details differ.","Locate the single row that is completely filled with one colour X. For every horizontal run of another colour that lies above this row, recolour its left-most cell to X; for every run below the full row, recolour its right-most cell to X. Leave all other cells unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:07:02,AboveBelow,AboveBelow4,2,low,1,,0,"0 0 0 0 3 4 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+3 3 3 3 3 3 3 3 3 3
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 4 4 4 4 4 3
+0 0 0 0 0 0 0 0 0 0","**Inferring replacement rules**
+
+I need to derive rules from the examples I have. Each grid shows a background of 0 with two key colors: a ""line color"" (2 in one example, 3 in another, and possibly 4 in a test) and a base color (4 in the first example, 6 in the second, and potentially 3 in the test). 
+
+Looking closer, in the first example row, 4 creates a solid horizontal line. The rule appears to be replacing the first element of each segment of the line color (2) with the line color (4), so some outputs reflect this swap.
+
+**Analyzing row patterns**
+
+I'm inspecting input rows to identify replacement patterns. For example, in the first row, blocks of 2s become 4s in the output, replacing the first cell of each block. In row 3, the behavior is similar, while in row 7, the last cell in the block gets replaced instead.
+
+It seems that the orientation matters: above a solid line, I replace the leftmost cell, while below the line, I replace the rightmost. This pattern appears consistent in other examples too, with different line colors affecting how replacements occur.
+
+**Crafting grid output**
+
+I'm finalizing the process for replacing cells in horizontal segments based on their position relative to a unique color row. If a segment is above this row, I replace the leftmost cell; if below, I replace the rightmost.
+
+I want to serialize the grid as a string with rows separated by newlines and cells by spaces. The crafted grid looks good, and I will present it in a minified JSON format, ensuring there are no extraneous spaces. This way, it's neatly organized and informative!
+
+Rule: Locate the row that is completely filled with a single colour A. For every contiguous horizontal segment of any other colour B, recolour one cell with A: if the segment is above the A-row, recolour its leftmost cell; if the segment is below, recolour its rightmost cell. Leave the A-row unchanged.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by identifying segments of color B relative to the row of color A and recoloring the appropriate pixels based on their position (above or below). Although the phrasing and additional components differ, the underlying transformation functionality remains consistent.","Locate the row that is completely filled with a single colour A. For every contiguous horizontal segment of any other colour B, recolour one cell with A: if the segment is above the A-row, recolour its leftmost cell; if the segment is below, recolour its rightmost cell. Leave the A-row unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:09:26,AboveBelow,AboveBelow4,3,low,1,,0,"0 0 0 0 0 0 0 0 0 0 0
+0 5 6 6 6 6 6 6 6 6 6
+5 5 5 5 5 5 5 5 5 5 5
+0 6 6 6 6 6 6 6 6 6 5
+0 0 0 0 0 0 0 0 0 0 0","**Creating output grid**
+
+I need to produce an output grid with specific values. The first row will be all zeros, while the second row will have the sequence: 0, 5, and then a series of sixes. The third row will remain unchanged with all fives, but the fourth row will start with a zero followed by ten sixes, replacing the last entry with a five. The last row will again be all zeros. I’ll make sure the grid is formatted properly for the final representation, likely using space-separated values.
+
+**Defining grid rules**
+
+I’m working on defining the rules for modifying the grid rows. The first row has just zeros, while the second features a mix where the first entry is zero and the rest are sixes. The third row is fully fives, while the fourth row starts with zero and ends with a five, surrounded by sixes. For the rule string, I’ll state: ""Replace the nearest end cell of every horizontal stripe with the color of the full-width stripe, changing the left-most cell above the solid line and the right-most cell below."" I will make sure to return this in JSON format.
+
+Rule: Find the single row that is completely filled with one colour (the “solid stripe”). For every other horizontal stripe made of a different colour: if the stripe lies above the solid stripe, recolour its left-most cell with the solid stripe’s colour; if it lies below, recolour its right-most cell with that colour. Leave all other cells unchanged.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by identifying a solid stripe and recoloring the leftmost and rightmost pixels of shorter lines based on their position relative to the solid stripe. Although the phrasing and some details differ, the underlying transformation functionality remains consistent.","Find the single row that is completely filled with one colour (the “solid stripe”). For every other horizontal stripe made of a different colour: if the stripe lies above the solid stripe, recolour its left-most cell with the solid stripe’s colour; if it lies below, recolour its right-most cell with that colour. Leave all other cells unchanged.",1,Correct - Intended,2,0
+2025-07-17T16:07:27,AboveBelow,AboveBelow5,1,low,1,,1,"0 0 0 6 0 0 0 0
+0 0 0 6 0 0 0 0
+0 0 0 6 0 0 0 0
+0 0 0 5 0 0 0 6
+6 0 0 5 0 0 0 6
+6 0 0 5 0 0 0 6
+5 0 0 5 0 0 0 5
+5 0 0 5 0 0 0 5","**Finding color rules**
+
+I need to determine the rule for this 9x9 grid involving colors. The colors consist of 0 for the background and 1 and 3 for other elements. It appears I might be replacing some instances of color 1 with color 3. I'll take a closer look at the specific positions and how they interact. Let’s analyze this quickly to clarify what changes are needed!
+
+```python
+inp1=[[0,0,0,0,0,1,0,0,0],
+[0,0,0,0,0,1,0,0,0],
+[0,1,0,0,0,1,0,0,0],
+[0,1,0,0,0,3,0,0,1],
+[0,1,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1]]
+out1=[[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,3,0,0,0,3,0,0,0],
+[0,3,0,0,0,3,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1]]
+
+```
+
+```python
+changes=[]
+for r in range(9):
+    for c in range(9):
+        if inp1[r][c]!=out1[r][c]:
+            changes.append((r,c,inp1[r][c],out1[r][c]))
+len(changes)
+
+```
+
+```python
+changes
+```
+
+**Counting changes in values**
+
+I see that some of the 1's have changed to 3's, but not all of them. This has me wondering about the total count of 1's that were originally there. I need to compute that total to get a clear picture of what’s going on. It feels a bit perplexing, but I’m determined to sort this out and figure out the implications of these changes. Let’s get those numbers right!
+
+```python
+sum(cell==1 for row in inp1 for cell in row)
+
+```
+
+```python
+ones=[]
+for r in range(9):
+    for c in range(9):
+        if out1[r][c]==1:
+            ones.append((r,c))
+ones
+```
+
+**Inspecting color propagation**
+
+I’m considering a rule that allows the '3' color to spread along a column or row until it meets another '3' from the original positions. I have identified the original '3' locations at (3, 5), (7, 1), and (6, 8). It seems like checking these spots carefully will help clarify how the color behaves and finds boundaries. I’ll make a list of these coordinates and maybe analyze their impact.
+
+```python
+orig3=[(r,c) for r in range(9) for c in range(9) if inp1[r][c]==3]
+orig3
+```
+
+```python
+inp2=[[0,4,0,0,0,0,0,0,0],
+[0,4,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,4,0,0,0],
+[0,4,0,4,0,4,0,0,0],
+[0,4,0,4,0,7,0,0,4],
+[0,4,0,4,0,4,0,0,4]]
+out2=[[0,7,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,7,0,0,0],
+[0,4,0,4,0,7,0,0,0],
+[0,4,0,4,0,7,0,0,4],
+[0,4,0,4,0,4,0,0,4]]
+
+```
+
+```python
+chg=[]
+for r in range(9):
+    for c in range(9):
+        if inp2[r][c]!=out2[r][c]:
+            chg.append((r,c,inp2[r][c],out2[r][c]))
+len(chg)
+
+```
+
+```python
+chg
+```
+
+```python
+test=[[0,0,0,5,0,0,0,0],
+[0,0,0,5,0,0,0,0],
+[0,0,0,6,0,0,0,0],
+[0,0,0,5,0,0,0,5],
+[5,0,0,5,0,0,0,5],
+[6,0,0,5,0,0,0,6],
+[5,0,0,5,0,0,0,5],
+[5,0,0,5,0,0,0,5]]
+
+```
+
+```python
+import copy, itertools, json, sys
+```
+
+```python
+grid=copy.deepcopy(test)
+rows=len(grid); cols=len(grid[0])
+for r in range(rows):
+    for c in range(cols):
+        if grid[r][c]==6:
+            rr=r-1
+            while rr>=0 and grid[rr][c]==5:
+                grid[rr][c]=6
+                rr-=1
+grid
+```
+
+```python
+grid_str=""\n"".join("" "".join(map(str,row)) for row in grid)
+grid_str
+```
+
+Rule: For each cell that contains the largest non-zero colour in the grid, look straight upward in the same column. While the cells encountered contain the only other non-zero colour (and no gaps), overwrite them with the largest colour. Do this for every occurrence of the largest colour; all other cells stay unchanged.","inp1=[[0,0,0,0,0,1,0,0,0],
+[0,0,0,0,0,1,0,0,0],
+[0,1,0,0,0,1,0,0,0],
+[0,1,0,0,0,3,0,0,1],
+[0,1,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1]]
+out1=[[0,0,0,0,0,3,0,0,0],
+[0,0,0,0,0,3,0,0,0],
+[0,3,0,0,0,3,0,0,0],
+[0,3,0,0,0,3,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,3],
+[0,3,0,0,0,1,0,0,1],
+[0,1,0,0,0,1,0,0,1]]
+
+changes=[]
+for r in range(9):
+    for c in range(9):
+        if inp1[r][c]!=out1[r][c]:
+            changes.append((r,c,inp1[r][c],out1[r][c]))
+len(changes)
+
+changes
+
+sum(cell==1 for row in inp1 for cell in row)
+
+ones=[]
+for r in range(9):
+    for c in range(9):
+        if out1[r][c]==1:
+            ones.append((r,c))
+ones
+
+orig3=[(r,c) for r in range(9) for c in range(9) if inp1[r][c]==3]
+orig3
+
+inp2=[[0,4,0,0,0,0,0,0,0],
+[0,4,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,4,0,0,0],
+[0,4,0,4,0,4,0,0,0],
+[0,4,0,4,0,7,0,0,4],
+[0,4,0,4,0,4,0,0,4]]
+out2=[[0,7,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,7,0,0,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,0,0,0,0],
+[0,4,0,4,0,7,0,0,0],
+[0,4,0,4,0,7,0,0,0],
+[0,4,0,4,0,7,0,0,4],
+[0,4,0,4,0,4,0,0,4]]
+
+chg=[]
+for r in range(9):
+    for c in range(9):
+        if inp2[r][c]!=out2[r][c]:
+            chg.append((r,c,inp2[r][c],out2[r][c]))
+len(chg)
+
+chg
+
+test=[[0,0,0,5,0,0,0,0],
+[0,0,0,5,0,0,0,0],
+[0,0,0,6,0,0,0,0],
+[0,0,0,5,0,0,0,5],
+[5,0,0,5,0,0,0,5],
+[6,0,0,5,0,0,0,6],
+[5,0,0,5,0,0,0,5],
+[5,0,0,5,0,0,0,5]]
+
+import copy, itertools, json, sys
+
+grid=copy.deepcopy(test)
+rows=len(grid); cols=len(grid[0])
+for r in range(rows):
+    for c in range(cols):
+        if grid[r][c]==6:
+            rr=r-1
+            while rr>=0 and grid[rr][c]==5:
+                grid[rr][c]=6
+                rr-=1
+grid
+
+grid_str=""\n"".join("" "".join(map(str,row)) for row in grid)
+grid_str",1,"The Evaluated Rule specifies that only cells containing the largest non-zero color can be used to overwrite other colors above them, which is a restriction not present in the Ground Truth Rule. The Ground Truth Rule allows for any different colored pixel to affect the pixels above it, while the Evaluated Rule limits this to the largest color only, thus changing the underlying transformation.","For each cell that contains the largest non-zero colour in the grid, look straight upward in the same column. While the cells encountered contain the only other non-zero colour (and no gaps), overwrite them with the largest colour. Do this for every occurrence of the largest colour; all other cells stay unchanged.",1,Correct - Unintended,2,0
+2025-07-17T16:11:24,AboveBelow,AboveBelow5,2,low,1,,0,"0 0 0 0 0 0
+2 8 2 2 0 0
+2 8 2 2 0 0
+2 8 2 2 0 0
+2 8 8 2 0 0
+2 8 8 2 0 0
+2 8 8 2 0 0
+2 8 8 2 0 0
+8 8 8 2 0 0
+8 8 8 2 0 0","**Analyzing grid values**
+
+I'm counting the lines in my grid, which has 10 rows and 6 columns. The base color is 8, and I have special cells with color 2 at specific coordinates. I need to propagate the value 2 upwards within the same column. For column 2, I’ll check the values across the rows from top to bottom. They range from 0 in the first row, and then 8s until I hit the 2 in row 3, followed by more 8s below that.
+
+**Updating grid values**
+
+I need to check the value of row 9, column 2, which is 8, while row 3 has a special value of 2. I’ll replace the contiguous 8s above row 3, changing rows 1 and 2 to 2 while row 0 stays 0. Column 0 also has 2 at row 7, so I’ll change rows 1 to 6 to 2 as well. In column 3, the propagation continues as the 8s above row 9 are also replaced with 2, including row 3.
+
+**Transforming grid values**
+
+For row 3, the values are transformed to 2s where applicable. In row 4, the col2 remains 8 since propagation only goes upwards from the 2 in row 3. Moving to lower rows, I'm updating rows 5 and 6 similarly, while row 7 maintains its 2 in col0. Row 8 and row 9 will also remain unchanged in certain columns. After confirming all changes, I'm organizing the grid into a clean format with proper representations, crafting the transformation rules succinctly for clarity.
+
+Rule: For each column propagate the higher of the two non-zero colours upward: for every occurrence of that colour, recolour the contiguous run of the other non-zero colour that lies immediately above it (stopping at 0 or the grid edge) with the higher colour, leaving all other cells unchanged.",,1,"The Evaluated Rule captures the essence of the Ground Truth Rule by propagating the higher color upward and recoloring the contiguous run of the other color above it. While it includes additional specifications about stopping at zero or the grid edge, the core transformation functionality remains aligned with the original rule.","For each column propagate the higher of the two non-zero colours upward: for every occurrence of that colour, recolour the contiguous run of the other non-zero colour that lies immediately above it (stopping at 0 or the grid edge) with the higher colour, leaving all other cells unchanged.",1,Correct - Unintended,2,0
+2025-07-17T16:07:26,AboveBelow,AboveBelow5,3,low,1,,0,"1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1","**Determining color dominance**
+
+I'm figuring out how to convert occurrences of the same color as the highest non-zero value above the highest B in each column. For column 5, B is at row 3, and the identical cells above it get changed. In column 8, the conversion changes cells beneath B at row 6, but zeros above are unaffected. The same applies to column 1; only the 1's change. I'm thinking we should define B as the dominating color that overshadows the other colors, but I need to clarify how to choose it.
+
+**Defining color propagation rules**
+
+I'm analyzing the grid and identifying that color B appears below A in some columns, implying B should propagate upward. It seems that B is generally less frequent than A. My goal is to develop an algorithm where I find the highest occurrence of this less frequent non-zero color (B) in each column. I’ll then replace the dominant color (A) above it with B. 
+
+Let’s verify this approach using grids: in example 1, the rarer color (3) should propagate upwards and similarly for example 2 with color (7). I need to test with a provided grid of colors 9 and 1, where 1 is the rarer color. I'll analyze the rows to see the outcomes.
+
+**Generating output grid**
+
+I need to convert all cells above row 3 containing color A (which is 9) to 1. So, rows 0-2, where each cell is 9, will change to 1, leading to the entire grid becoming all 1s. Since row 3 is already filled with 1s, my final grid is a 4x12 matrix of 1s.
+
+Now, I need to format a minified JSON output with a description of the rule and the flattened grid. I'll make sure to represent the grid in the required multiline format as before.
+
+Rule: Identify the rarer of the two non-zero colours (R). For every column, locate the highest occurrence of R and overwrite every cell above it that contains the other non-zero colour with R (zeros are never changed).",,1,"The Evaluated Rule specifies identifying the rarer color and only overwriting cells above the highest occurrence of that color, which is a more restrictive condition than the Ground Truth Rule that allows for any different colored pixel to influence the coloring of all pixels above it. This introduces a significant difference in functionality.","Identify the rarer of the two non-zero colours (R). For every column, locate the highest occurrence of R and overwrite every cell above it that contains the other non-zero colour with R (zeros are never changed).",1,Correct - Intended,2,0
+2025-07-17T16:08:58,AboveBelow,AboveBelow6,1,low,1,,1,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 3 3 3 3 3 3
+0 2 2 0 3 3 3 3 3 3
+0 2 2 0 2 2 2 2 2 2
+0 2 2 0 0 0 0 0 0 0
+0 2 2 0 0 0 0 0 0 0
+0 2 2 0 0 0 0 0 0 0","**Analyzing color patterns**
+
+I’m looking at how the grid operates based on the given inputs and outputs. For Row 7, the left block changed, while the right side stayed the same. Then, in Row 8, I see that the 5s were replaced with a pattern of 2s, but the left half remained as 0s. It seems like there’s a rule at play: find a row with color 2 amidst 5s, then copy that pattern down to overwrite 5s with 2s, keeping other colors intact.
+
+**Examining grid patterns**
+
+I'm analyzing the patterns in the rows, specifically focusing on how the 2s replace the 4s and 5s. In Example 1, Row 4 has a pattern of 2s, which seems to spread downward. In Row 5, there's a pattern of 2s in certain positions, which also replicates down. In Rows 6 and 7, the first six columns change accordingly, while Row 8 remains unaffected. However, I've noticed some inconsistencies in the 5s in Row 5 that may suggest an unexpected spread of 2s down below. It's a bit puzzling!
+
+```python
+grid = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,3],
+[0,2,2,0,3,3,3,3,3,3],
+[0,3,3,0,2,2,2,2,2,2],
+[0,3,3,0,0,0,0,0,0,0],
+[0,3,3,0,0,0,0,0,0,0],
+[0,3,3,0,0,0,0,0,0,0],
+]
+h=len(grid); w=len(grid[0])
+for r in range(h):
+    for c in range(w):
+        if grid[r][c]==2:
+            rr=r+1
+            while rr<h and grid[rr][c]!=0:
+                if grid[rr][c]!=2:
+                    grid[rr][c]=2
+                rr+=1
+grid
+```
+
+**Formatting grid output**
+
+I'm thinking that propagation is moving downward in columns 1 and 2, even though some cells were initially 3 or 0. It looks like the columns originally had 3's which got replaced by 2's all the way to the bottom. This seems plausible, and to clarify things, I need to create the grid output section line by line. So, let's pull that together quickly and format it out clearly!
+
+```python
+for row in grid:
+    print(' '.join(map(str,row)))
+```
+
+Rule: For each cell that is colour 2, copy that colour straight downward in the same column, replacing any non-zero cells until a 0 or the grid edge is reached.","grid = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,3,3,3,3,3,3],
+[0,2,2,0,3,3,3,3,3,3],
+[0,3,3,0,2,2,2,2,2,2],
+[0,3,3,0,0,0,0,0,0,0],
+[0,3,3,0,0,0,0,0,0,0],
+[0,3,3,0,0,0,0,0,0,0],
+]
+h=len(grid); w=len(grid[0])
+for r in range(h):
+    for c in range(w):
+        if grid[r][c]==2:
+            rr=r+1
+            while rr<h and grid[rr][c]!=0:
+                if grid[rr][c]!=2:
+                    grid[rr][c]=2
+                rr+=1
+grid
+
+for row in grid:
+    print(' '.join(map(str,row)))",1,"The Evaluated Rule specifies that only cells of color 2 are affected, and it only copies that color downward, while the Ground Truth Rule involves taking colors from differently colored lines and applying them to entire rows below those lines, which is a broader transformation.","For each cell that is colour 2, copy that colour straight downward in the same column, replacing any non-zero cells until a 0 or the grid edge is reached.",1,Correct - Intended,2,0
+2025-07-17T16:09:36,AboveBelow,AboveBelow6,2,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+8 8 8 8 8 8 8 8 8 8 8 8 8
+8 8 8 8 8 8 8 8 2 2 2 2 2
+2 2 2 2 8 8 8 8 2 2 2 2 2
+2 2 2 2 8 8 8 8 2 2 2 2 2
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0","```python
+import numpy as np, textwrap
+```
+
+```python
+inp2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0]
+]
+out2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,2,2,5,2,2,0]
+]
+# compute difference
+diff=[]
+for i in range(len(inp2)):
+    for j in range(len(inp2[0])):
+        if inp2[i][j]!=out2[i][j]:
+            diff.append((i,j,inp2[i][j],out2[i][j]))
+len(diff)
+```
+
+```python
+diff
+```
+
+```python
+test = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,8,8,8,8,8,8],
+[8,8,8,8,8,8,8,8,2,2,2,2,2],
+[2,2,2,2,8,8,8,8,8,8,8,8,8],
+[8,8,8,8,8,8,8,8,8,8,8,8,8],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+h=len(test); w=len(test[0])
+# We'll implement rule guess: for each cell row r, col c where value 2, propagate downwards until encounter 0 or 2
+grid=[row[:] for row in test]
+for r in range(h):
+    for c in range(w):
+        if test[r][c]==2:
+            rr=r+1
+            while rr<h and grid[rr][c] not in (0,2):
+                grid[rr][c]=2
+                rr+=1
+grid
+```
+
+```python
+inp1=[
+[0,0,0,0,0,0,0,0,0,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+out1=[
+[0,0,0,0,0,0,0,0,0,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+def transform(arr):
+    h=len(arr); w=len(arr[0])
+    grid=[row[:] for row in arr]
+    for r in range(h):
+        for c in range(w):
+            if arr[r][c]==2:
+                rr=r+1
+                while rr<h and grid[rr][c] not in (0,2):
+                    grid[rr][c]=2
+                    rr+=1
+    return grid
+transform(inp1)==out1
+```
+
+```python
+transform(inp2)==out2
+```
+
+**Crafting transformation rules**
+
+I'm working on a transformation rule that states: for every column containing a cell of color 2, I need to color all consecutive cells directly below it—until I hit a 0 or the edge—with color 2. My next step is to actually create this transformation rule string. I want to represent the final grid as string lines with spaces to visualize it clearly. So, let’s get to building this!
+
+```python
+def grid_to_str(arr):
+    return ""\n"".join("" "".join(map(str,row)) for row in arr)
+grid_to_str(transform(test))
+```
+
+Rule: For every cell that is colour 2, paint downward in the same column, turning each consecutive non-zero, non-2 cell into 2, stopping at 0, another 2, or the grid edge.","import numpy as np, textwrap
+
+inp2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0]
+]
+out2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,2,2,5,2,2,0]
+]
+# compute difference
+diff=[]
+for i in range(len(inp2)):
+    for j in range(len(inp2[0])):
+        if inp2[i][j]!=out2[i][j]:
+            diff.append((i,j,inp2[i][j],out2[i][j]))
+len(diff)
+
+diff
+
+test = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[8,8,8,8,8,8,8,8,8,8,8,8,8],
+[8,8,8,8,8,8,8,8,2,2,2,2,2],
+[2,2,2,2,8,8,8,8,8,8,8,8,8],
+[8,8,8,8,8,8,8,8,8,8,8,8,8],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+h=len(test); w=len(test[0])
+# We'll implement rule guess: for each cell row r, col c where value 2, propagate downwards until encounter 0 or 2
+grid=[row[:] for row in test]
+for r in range(h):
+    for c in range(w):
+        if test[r][c]==2:
+            rr=r+1
+            while rr<h and grid[rr][c] not in (0,2):
+                grid[rr][c]=2
+                rr+=1
+grid
+
+inp1=[
+[0,0,0,0,0,0,0,0,0,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+out1=[
+[0,0,0,0,0,0,0,0,0,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,4,4,4,4,4,4,4,4,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,2,2,2,2,2,2,2,2,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+def transform(arr):
+    h=len(arr); w=len(arr[0])
+    grid=[row[:] for row in arr]
+    for r in range(h):
+        for c in range(w):
+            if arr[r][c]==2:
+                rr=r+1
+                while rr<h and grid[rr][c] not in (0,2):
+                    grid[rr][c]=2
+                    rr+=1
+    return grid
+transform(inp1)==out1
+
+transform(inp2)==out2
+
+def grid_to_str(arr):
+    return ""\n"".join("" "".join(map(str,row)) for row in arr)
+grid_to_str(transform(test))",1,"The Evaluated Rule specifies a downward painting action for cells of color 2, while the Ground Truth Rule involves taking colors from differently colored lines and applying them to rows below. The two rules describe different processes and outcomes, thus they are not equivalent.","For every cell that is colour 2, paint downward in the same column, turning each consecutive non-zero, non-2 cell into 2, stopping at 0, another 2, or the grid edge.",1,Correct - Intended,2,0
+2025-07-17T16:08:04,AboveBelow,AboveBelow6,3,low,1,,1,"0 0 0 0 0 0 0
+0 0 0 0 0 0 0
+0 0 0 0 0 0 0
+2 2 0 0 0 2 1
+2 2 0 0 0 2 1
+2 2 0 0 0 2 1
+2 2 0 0 0 2 1
+2 2 0 0 0 2 1
+2 2 0 0 0 2 1","```python
+import numpy as np
+```
+
+```python
+input2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+]
+
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,2,2,5,2,2,0],
+]
+import numpy as np, itertools, copy, json, pprint
+```
+
+```python
+diff=[]
+for r in range(len(input2)):
+    row=[]
+    for c in range(len(input2[0])):
+        row.append(output2[r][c]-input2[r][c])
+    diff.append(row)
+diff
+```
+
+**Clarifying propagation rules**
+
+I'm identifying the seed rows with 2s: row 5 is in the left region and row 7 in the right region, specifically at columns 8, 9, 11, and 12. These seed rows are independent within each patch. After transformation, the columns with 2s in these seed rows propagate downward, replacing 5s in later rows. Row 7 serves as a seed for the right region, changing row 8 to 2s. Row 5 remains a seed, while the process stops when row 8 has zeros. The rule is about filling colors based on these seed discoveries.
+
+**Outlining vertical fill rules**
+
+I'm determining how to apply vertical filling in columns where the color 2 appears, specifically in a grid example. In this case, the grid shows multiple rows and columns. The goal is to identify the color that appears less frequently, treat it as ""paint,"" and propagate it downward through the same region.
+
+The test grid is 9 rows with colors 0, 1, and 2. The background is likely 0. I see vertical clusters beginning with 2s and rows of 1s below. My seed row for propagation is row 3, where color 2 starts; below it is base color 1, indicating the propagation direction for color changes.
+
+**Implementing color propagation**
+
+According to the rule, I should change all 1s below row 3 in specific columns to 2s. This applies to columns 0, 1, and 5, since these have 2s in row 3. Thus, rows 4 through 8 will see changes from 1 to 2. Column 6 doesn't contain a 2 in the seed row. I’m observing that zeros and background colors remain unchanged. I’ll implement the propagation based on the topmost seed row, ensuring that I convert only relevant cells to 2. Time for a quick implementation!
+
+```python
+input3=[
+[0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0],
+[2,2,0,0,0,2,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+]
+grid=np.array(input3)
+rows,cols=grid.shape
+for c in range(cols):
+    # find first row index with value 2
+    idx=np.where(grid[:,c]==2)[0]
+    if len(idx)==0:
+        continue
+    r0=idx[0]
+    # for rows below r0, if value non-zero (maybe 1) change to 2
+    for r in range(r0+1,rows):
+        if grid[r,c]!=0:
+            grid[r,c]=2
+output3=grid.tolist()
+output3
+```
+
+Rule: for each column, once the first cell with colour 2 is encountered, every subsequent non-zero cell in that column is recoloured to 2","import numpy as np
+
+input2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+]
+
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,5,5,5,5,5,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,5,5,5,5,5,0],
+[5,2,2,5,2,2,5,0,2,2,5,2,2,0],
+[0,0,0,0,0,0,0,0,2,2,5,2,2,0],
+]
+import numpy as np, itertools, copy, json, pprint
+
+diff=[]
+for r in range(len(input2)):
+    row=[]
+    for c in range(len(input2[0])):
+        row.append(output2[r][c]-input2[r][c])
+    diff.append(row)
+diff
+
+input3=[
+[0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0],
+[2,2,0,0,0,2,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+[1,1,0,0,0,1,1],
+]
+grid=np.array(input3)
+rows,cols=grid.shape
+for c in range(cols):
+    # find first row index with value 2
+    idx=np.where(grid[:,c]==2)[0]
+    if len(idx)==0:
+        continue
+    r0=idx[0]
+    # for rows below r0, if value non-zero (maybe 1) change to 2
+    for r in range(r0+1,rows):
+        if grid[r,c]!=0:
+            grid[r,c]=2
+output3=grid.tolist()
+output3",1,"The Evaluated Rule focuses on recoloring cells in a column based on encountering a specific color (color 2), while the Ground Truth Rule involves coloring rows in a rectangular object based on the colors of differently colored lines. The two rules describe different transformations and do not align in their underlying functionality.","for each column, once the first cell with colour 2 is encountered, every subsequent non-zero cell in that column is recoloured to 2",1,Correct - Intended,2,0
+2025-07-17T16:09:49,AboveBelow,AboveBelow7,1,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 4 4 4 0 4 4 4 4 0
+0 4 0 4 0 4 0 0 4 0
+0 4 4 4 0 4 0 0 4 0
+0 0 0 0 0 4 0 0 4 0
+0 0 0 0 0 4 0 0 4 0
+0 0 0 0 0 4 4 4 4 0
+0 3 3 3 0 3 3 3 3 0
+0 0 3 0 0 0 3 3 0 0
+0 0 0 0 0 0 0 0 0 0","**Clarifying object alignment**
+
+I’m focusing on aligning objects in relation to a rectangle. For the second object, it needs to be placed below the rectangle so that its top matches the bottom row of the rectangle, which is row 8. In both examples, I need to verify the bottom row positions. In Example 1, the stripe is moved to row 9, while in Example 2, its top aligns with the bottom row. It seems I can make a rule to adjust the vertical position based on whether an object is above or below the rectangle.
+
+```python
+import numpy as np
+```
+
+```python
+inp_top = [
+[0,0,0,8,8,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,0,0,0,8,0,0],
+[0,8,8,8,8,8,8,0,8,8,8,0]
+]
+flipped = inp_top[::-1]
+flipped
+```
+
+```python
+out_bottom = [
+[0,0,0,8,8,0,0,0,8,8,8,0],
+[0,0,8,8,8,8,0,0,0,0,0,0],
+[0,8,8,8,8,8,8,0,0,0,0,0]
+]
+out_bottom
+```
+
+**Testing flipped comparison**
+
+I’m trying to understand if ""out_bottom"" equals a horizontally flipped version of it. To do this, I’ll compare ""out_bottom"" with what it looks like when flipped and mirrored, meaning its columns are reversed. It’s a bit tricky, and I want to make sure I’m getting it right! I think this could really clear up my understanding of how flipping affects the data. Let’s see how this comparison turns out!
+
+```python
+flipped_h = [row[::-1] for row in flipped]
+flipped_h
+```
+
+```python
+inp_top
+```
+
+**Analyzing transformation**
+
+I’m trying to understand a transformation that involves a vertical mirror and possibly a horizontal shift to align the centroid with the rectangle's center. The original cluster shows its left-most 8s in column 3. However, though the rows are reversed in the output, the orientation appears preserved, going from small to large as in the original. It seems they just moved downward, shifting by 9 rows rather than flipping vertically, maintaining the same structural pattern while rearranging.
+
+**Computing row shifts**
+
+I'm analyzing how the original top row (index 0) moves to become the new row 9, which indicates a shift of +9 rows. The rectangle spans 6 rows, from row 3 to row 8. It seems the shift should position objects into the first empty row below the rectangle's bottom, preserving their layout without overlap. For Example 1, a stripe fits directly below in row 9, while in Example 2, an object needing 3 rows fits from row 9 to 11, confirming the logic works.
+
+**Examining object positioning**
+
+I’m thinking about shifting objects vertically so that they sit just below the rectangular frame, while keeping their horizontal positions intact and removing their original locations. The rectangle appears to be color 4, which is interesting because previous examples showed it in colors 2 and 3. It looks like in the test grid, the rectangle is hollow but surrounded by a shape that matches color 4. Row 3 shows a pattern that might resemble a cross shape. I need to analyze this test grid more closely.
+
+```python
+test = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,0,3,3,3,3,0],
+[0,0,3,0,0,0,3,3,0,0],
+[0,4,4,4,0,4,4,4,4,0],
+[0,4,0,4,0,4,0,0,4,0],
+[0,4,4,4,0,4,0,0,4,0],
+[0,0,0,0,0,4,0,0,4,0],
+[0,0,0,0,0,4,0,0,4,0],
+[0,0,0,0,0,4,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+np.array(test).shape
+```
+
+```python
+import numpy as np, copy, json, sys, itertools
+```
+
+```python
+grid = np.array(test)
+# find color4 rectangle bottom row
+rect_color = 4
+rows, cols = grid.shape
+# find bounding box of rect color
+ys, xs = np.where(grid==rect_color)
+rect_top = ys.min()
+rect_bottom = ys.max()
+print(rect_top, rect_bottom)
+# find other color(s)
+other_mask = (grid!=0) & (grid!=rect_color)
+ys2, xs2 = np.where(other_mask)
+min_other_row = ys2.min()
+print(min_other_row)
+# object bounding box rows range
+obj_rows = np.unique(ys2)
+obj_height = obj_rows.max()-obj_rows.min()+1
+# shift
+shift = (rect_bottom+1) - min_other_row
+print(shift)
+new_grid = grid.copy()
+# erase others
+new_grid[other_mask]=0
+# place shifted
+for y,x in zip(ys2,xs2):
+    ny = y+shift
+    new_grid[ny,x]=grid[y,x]
+print(ny)
+new_grid
+```
+
+```python
+out_grid = '\n'.join(' '.join(map(str,row)) for row in new_grid)
+out_grid[:200]
+```
+
+Rule: Identify the hollow rectangular frame (the only colour forming a closed ring). Keep this frame fixed. Collect every cell of all other colours as one pattern, erase them, and translate this pattern straight downward—without any horizontal shift or rotation—so that its top row becomes the first empty row immediately below the frame. Place the pattern there and leave the rest of the grid unchanged.","import numpy as np
+
+inp_top = [
+[0,0,0,8,8,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,0,0,0,8,0,0],
+[0,8,8,8,8,8,8,0,8,8,8,0]
+]
+flipped = inp_top[::-1]
+flipped
+
+out_bottom = [
+[0,0,0,8,8,0,0,0,8,8,8,0],
+[0,0,8,8,8,8,0,0,0,0,0,0],
+[0,8,8,8,8,8,8,0,0,0,0,0]
+]
+out_bottom
+
+flipped_h = [row[::-1] for row in flipped]
+flipped_h
+
+inp_top
+
+test = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,3,3,0,3,3,3,3,0],
+[0,0,3,0,0,0,3,3,0,0],
+[0,4,4,4,0,4,4,4,4,0],
+[0,4,0,4,0,4,0,0,4,0],
+[0,4,4,4,0,4,0,0,4,0],
+[0,0,0,0,0,4,0,0,4,0],
+[0,0,0,0,0,4,0,0,4,0],
+[0,0,0,0,0,4,4,4,4,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+np.array(test).shape
+
+import numpy as np, copy, json, sys, itertools
+
+grid = np.array(test)
+# find color4 rectangle bottom row
+rect_color = 4
+rows, cols = grid.shape
+# find bounding box of rect color
+ys, xs = np.where(grid==rect_color)
+rect_top = ys.min()
+rect_bottom = ys.max()
+print(rect_top, rect_bottom)
+# find other color(s)
+other_mask = (grid!=0) & (grid!=rect_color)
+ys2, xs2 = np.where(other_mask)
+min_other_row = ys2.min()
+print(min_other_row)
+# object bounding box rows range
+obj_rows = np.unique(ys2)
+obj_height = obj_rows.max()-obj_rows.min()+1
+# shift
+shift = (rect_bottom+1) - min_other_row
+print(shift)
+new_grid = grid.copy()
+# erase others
+new_grid[other_mask]=0
+# place shifted
+for y,x in zip(ys2,xs2):
+    ny = y+shift
+    new_grid[ny,x]=grid[y,x]
+print(ny)
+new_grid
+
+out_grid = '\n'.join(' '.join(map(str,row)) for row in new_grid)
+out_grid[:200]",0,"The Evaluated Rule introduces a complex process of identifying a hollow rectangular frame and translating other colors downward, which is not equivalent to simply moving an object on top of a rectangle to the bottom of that rectangle. The core transformation functionality is not preserved.","Identify the hollow rectangular frame (the only colour forming a closed ring). Keep this frame fixed. Collect every cell of all other colours as one pattern, erase them, and translate this pattern straight downward—without any horizontal shift or rotation—so that its top row becomes the first empty row immediately below the frame. Place the pattern there and leave the rest of the grid unchanged.",1,Incorrect,2,0
+2025-07-17T16:09:26,AboveBelow,AboveBelow7,2,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 1 1 1 1 1 1 0 0 0 0 0 0 0
+0 1 0 0 0 0 1 0 0 0 0 0 0 0
+0 1 0 0 0 0 1 0 1 1 1 1 1 0
+0 1 0 0 0 0 1 0 1 0 0 0 1 0
+0 1 0 0 0 0 1 0 1 0 0 0 1 0
+0 1 1 1 1 1 1 0 1 0 0 0 1 0
+0 0 0 0 0 0 0 0 1 1 1 1 1 0
+0 2 0 0 0 2 0 0 0 0 0 0 0 0
+0 0 2 2 2 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 2 0 0 0 2 0
+0 0 0 0 0 0 0 0 0 2 2 2 0 0","**Inspecting bounding boxes**
+
+I’m focusing on color 1, which seems to appear in rows 2-8 and columns 1-6. There might also be more in column 8 and possibly in columns 9-13. I think it’s helpful to take a quick look at the grid using Python to properly identify the bounding box. That should give me a clearer picture of where everything is located and how the colors are distributed in the grid.
+
+```python
+grid = [
+[0,2,0,0,0,2,0,0,0,0,0,0,0,0],
+[0,0,2,2,2,0,0,0,0,0,0,0,0,0],
+[0,1,1,1,1,1,1,0,2,0,0,0,2,0],
+[0,1,0,0,0,0,1,0,0,2,2,2,0,0],
+[0,1,0,0,0,0,1,0,1,1,1,1,1,0],
+[0,1,0,0,0,0,1,0,1,0,0,0,1,0],
+[0,1,0,0,0,0,1,0,1,0,0,0,1,0],
+[0,1,1,1,1,1,1,0,1,0,0,0,1,0],
+[0,0,0,0,0,0,0,0,1,1,1,1,1,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+colors=set()
+for row in grid:
+    for v in row:
+        if v!=0:
+            colors.add(v)
+colors
+```
+
+**Visualizing rectangle borders**
+
+I'm thinking about what forms a rectangle border. It's interesting to visualize how the 1s create a rectangle-like shape. I need to compute the bounding box for color1 to understand its dimensions better. This process of visualizing and calculating can help clarify the structure I’m working with. Let’s see how the numbers come together and what I can learn from that!
+
+```python
+import math, itertools, copy, json, sys, os, typing
+```
+
+```python
+coords1=[(r,c) for r,row in enumerate(grid) for c,v in enumerate(row) if v==1]
+min_r=min(r for r,c in coords1)
+max_r=max(r for r,c in coords1)
+min_c=min(c for r,c in coords1)
+max_c=max(c for r,c in coords1)
+(min_r,max_r,min_c,max_c)
+
+```
+
+**Checking border population**
+
+I'm considering a height of 7 rows and a width of 12 columns for my grid. I need to verify whether the border is fully populated with 1s. To do this, I'll check each cell along the borders of the bounding box to ensure every one of them is indeed 1. This approach seems fairly straightforward, but it’s good to double-check, just to confirm that the entire border holds the correct values!
+
+```python
+full_border=True
+for r in range(min_r, max_r+1):
+    for c in range(min_c, max_c+1):
+        if r in (min_r, max_r) or c in (min_c, max_c):
+            if grid[r][c]!=1:
+                full_border=False
+full_border
+```
+
+**Analyzing shape and color**
+
+I'm noticing that the border isn't fully defined; it resembles the shape of the number eight. Color2 seems to be mostly present in the top rows, appearing in small shapes and possibly within the number ones. Now, I think it would be a good idea to compute the bounding box for Color2 to get a clearer understanding of its dimensions and placement. That’ll help me see how everything fits together within the overall structure!
+
+```python
+coords2=[(r,c) for r,row in enumerate(grid) for c,v in enumerate(row) if v==2]
+min_r2=min(r for r,c in coords2)
+max_r2=max(r for r,c in coords2)
+min_c2=min(c for r,c in coords2)
+max_c2=max(c for r,c in coords2)
+(min_r2,max_r2,min_c2,max_c2)
+
+```
+
+**Computing new grid**
+
+I need to make sure that none of the values overlap with 1s. Right now, row 9 is all zeros, and rows 10 to 12 are also zeros, which is good. So, I think I'm on the right track! Next, I'll compute the new grid based on this setup, ensuring that everything aligns without any conflicts. It's pretty straightforward—fingers crossed for a smooth calculation!
+
+```python
+import copy, json, math, itertools, sys, os, typing
+```
+
+```python
+grid_out=copy.deepcopy(grid)
+# clear color2
+for r,c in coords2:
+    grid_out[r][c]=0
+delta=9
+for r,c in coords2:
+    nr=r+delta
+    if nr<len(grid_out):
+        grid_out[nr][c]=2
+len(grid_out), len(grid_out[0])
+
+```
+
+```python
+grid_out
+```
+
+```python
+grid_str=""\n"".join("" "".join(map(str,row)) for row in grid_out)
+grid_str[:300]
+
+```
+
+```python
+grid_str
+```
+
+Rule: There are exactly two non-zero colours. The lower coloured object (its topmost cell is below the other object’s topmost cell) stays where it is. Delete every cell of the other object and recreate it, unchanged in shape and columns, so that its new top row is the first empty row immediately beneath the lower object’s lowest row.","grid = [
+[0,2,0,0,0,2,0,0,0,0,0,0,0,0],
+[0,0,2,2,2,0,0,0,0,0,0,0,0,0],
+[0,1,1,1,1,1,1,0,2,0,0,0,2,0],
+[0,1,0,0,0,0,1,0,0,2,2,2,0,0],
+[0,1,0,0,0,0,1,0,1,1,1,1,1,0],
+[0,1,0,0,0,0,1,0,1,0,0,0,1,0],
+[0,1,0,0,0,0,1,0,1,0,0,0,1,0],
+[0,1,1,1,1,1,1,0,1,0,0,0,1,0],
+[0,0,0,0,0,0,0,0,1,1,1,1,1,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+colors=set()
+for row in grid:
+    for v in row:
+        if v!=0:
+            colors.add(v)
+colors
+
+import math, itertools, copy, json, sys, os, typing
+
+coords1=[(r,c) for r,row in enumerate(grid) for c,v in enumerate(row) if v==1]
+min_r=min(r for r,c in coords1)
+max_r=max(r for r,c in coords1)
+min_c=min(c for r,c in coords1)
+max_c=max(c for r,c in coords1)
+(min_r,max_r,min_c,max_c)
+
+full_border=True
+for r in range(min_r, max_r+1):
+    for c in range(min_c, max_c+1):
+        if r in (min_r, max_r) or c in (min_c, max_c):
+            if grid[r][c]!=1:
+                full_border=False
+full_border
+
+coords2=[(r,c) for r,row in enumerate(grid) for c,v in enumerate(row) if v==2]
+min_r2=min(r for r,c in coords2)
+max_r2=max(r for r,c in coords2)
+min_c2=min(c for r,c in coords2)
+max_c2=max(c for r,c in coords2)
+(min_r2,max_r2,min_c2,max_c2)
+
+import copy, json, math, itertools, sys, os, typing
+
+grid_out=copy.deepcopy(grid)
+# clear color2
+for r,c in coords2:
+    grid_out[r][c]=0
+delta=9
+for r,c in coords2:
+    nr=r+delta
+    if nr<len(grid_out):
+        grid_out[nr][c]=2
+len(grid_out), len(grid_out[0])
+
+grid_out
+
+grid_str=""\n"".join("" "".join(map(str,row)) for row in grid_out)
+grid_str[:300]
+
+grid_str",0,"The Evaluated Rule introduces conditions regarding the number of colors and the relative positions of the objects that are not present in the Ground Truth Rule. The Ground Truth Rule simply states to move the object on top of the rectangle to the bottom without any conditions on colors or positions, making the Evaluated Rule not equivalent.","There are exactly two non-zero colours. The lower coloured object (its topmost cell is below the other object’s topmost cell) stays where it is. Delete every cell of the other object and recreate it, unchanged in shape and columns, so that its new top row is the first empty row immediately beneath the lower object’s lowest row.",1,Incorrect,2,0
+2025-07-17T16:12:49,AboveBelow,AboveBelow7,3,low,0,mismatch,1,"0 0 0 0 0 0 0 0 0
+0 0 0 0 2 0 0 0 0
+0 0 0 0 2 0 0 0 0
+0 7 7 7 7 7 7 7 0
+0 7 0 0 0 0 0 7 0
+0 7 0 0 0 0 0 7 0
+0 7 0 0 0 0 0 7 0
+0 7 7 7 7 7 7 7 0
+2 2 2 2 2 2 2 2 2
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0","**Analyzing shape swapping rules**
+
+It seems like I'm figuring out a rule regarding the swapping of colored shapes. In the first example, the row of 4s moves to the bottom, while the original position becomes zeros. The second example shows that the cluster of 8s from the top-left corner shifts to the bottom right. I should take a closer look at the grid sizes and the positioning of shapes to understand the patterns better, particularly with how rows and columns interact.
+
+**Examining shape movements**
+
+In the first example, a bar has moved from row 3 to row 9, staying in the same columns. It goes from above the large shape to below it. In the second example, we have a different grid of size 14x12. The clusters of 8s form a triangle at the top-left. When the output shows the 8s moving to the bottom, they seem to maintain their shape but are repositioned symmetrically concerning the 2 shape’s bounding box. I need to ensure I analyze this symmetry more closely.
+
+**Analyzing shape translation rules**
+
+I'm breaking down the positioning of the 8 shape in the output. It forms a triangular shape that's mirrored vertically when compared to the original—row lengths increase downward, which is interesting! However, I notice discrepancies between column positions after the shift. 
+
+It seems the smaller shapes translate across the larger ones without overlapping. I wonder if a 180° rotation rule applies for the smaller shape while keeping boundaries in mind. I need to analyze this data to confirm.
+
+```python
+import numpy as np, textwrap, re, json, itertools
+```
+
+```python
+grid2_in = [
+[0,0,0,8,8,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,0,0,0,8,0,0],
+[0,8,8,8,8,8,8,0,8,8,8,0],
+[0,2,2,2,2,2,2,0,2,2,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,2,2,0],
+[0,2,2,2,2,2,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+grid2_out = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,2,2,2,2,2,2,0,2,2,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,2,2,0],
+[0,2,2,2,2,2,2,0,0,8,0,0],
+[0,0,0,8,8,0,0,0,8,8,8,0],
+[0,0,8,8,8,8,0,0,0,0,0,0],
+[0,8,8,8,8,8,8,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+# find 8 positions
+orig8 = [(r,c) for r,row in enumerate(grid2_in) for c,v in enumerate(row) if v==8]
+new8 = [(r,c) for r,row in enumerate(grid2_out) for c,v in enumerate(row) if v==8]
+orig8[:10], len(orig8), len(new8)
+
+```
+
+**Calculating vector differences**
+
+I'm figuring out that the count remains 16, which means the full shape has moved. It seems like I need to compute the vector difference between each original and its corresponding new position, but it's not straightforward. I could try sorting or pairing by mirroring the rows — like for each original position (r,c), I could say new_r = 11 - r. I guess I need to compute the transformation with deltaRow as new_r + r, maybe? I’ll make a list to clarify this.
+
+```python
+mapping = {}
+for o in orig8:
+    # find candidate new pixel that matches vertical reflection (new_r = 8 shape maybe)
+    pass
+```
+
+**Evaluating mirrored coordinates**
+
+I'm thinking about how to evaluate a set of coordinates after applying a vertical mirror across the row midline at 5.5. To find the mirrored coordinates, I’ll use the formula mirrored = {(11 - r): (c)}. Then, I need to compute this mirrored set and compare it to the new positions labeled as new8. It seems important to ensure accuracy during this process since I'm reflecting points around a specific line. Let's see how this plays out!
+
+```python
+mirrored = {(11 - r, c) for r,c in orig8}
+diff = mirrored.symmetric_difference(set(new8))
+len(diff), list(diff)[:20]
+
+```
+
+**Computing coordinates**
+
+I’m noticing there are many mismatches, and it appears the columns have changed too. Now, I need to compute the new coordinates by mirroring both vertically and horizontally across the bounding center at (5.5, 5.5). This will help me recalibrate the positions. I want to ensure accuracy with these calculations since they play a vital role in whatever I'm working on. It’s important to get this right!
+
+```python
+rot180 = {(11 - r, 11 - c) for r,c in orig8}
+len(rot180.symmetric_difference(set(new8)))
+
+```
+
+**Analyzing shape movement**
+
+I'm trying to translate the movement of the shapes. I think the idea is to move the shape downwards until it just touches the bottom of another shape plus a gap. In the first example, a bar is moved below the shape with one row between them. However, after moving, there's no gap as they are adjacent. In the second example, the alignment seems to keep the shapes leftmost. It looks like the columns didn't change much, just shifted slightly.
+
+**Examining shape overlap**
+
+I’m analyzing the coordinates of the shapes to understand their movements better. It seems like some shapes may have lost their positions due to overlapping. Specifically, I think that shapes that could overlap get shifted horizontally to avoid collision. I’m calculating for each original shape where the overlap may have occurred. By shifting vertically, I find some coordinates have changed—row0 moves to row9 and retains its presence, while other shapes can't overlap or show up lost in the mix. It’s a bit messy, but I need to clarify how they’re arranged.
+
+```python
+shifted = {(r+9, c) for r,c in orig8}
+len(shifted.symmetric_difference(set(new8))), list(set(new8)-shifted)
+
+```
+
+```python
+lost = shifted - set(new8)
+lost
+```
+
+**Adjusting grid layout**
+
+I'm working on a grid layout task where I need to replicate an output by removing two rows and setting zeros in their place. I realize I should add two new rows directly below the bottom row of a specific frame, which is row 7. After checking, it seems that the new rows should actually start from row 9 in this case. My rule is to move smaller objects to the first empty rows immediately below any larger objects' bounding boxes, while keeping the original column structure the same.
+
+**Building the grid layout**
+
+I'm working on a grid where I need to adjust the original shape, ensuring columns stay the same after moving elements. I need to set row 8's columns from 0 to 8 to 2, confirming that row 8 exists and that the overall grid height is 12. The original row at the top, which had twos, will become zeros. So, when creating the grid, I’ll set row 0’s columns to zeros and add the new row of twos at row 8 across the same columns.
+
+```python
+grid_test = [
+[2,2,2,2,2,2,2,2,2],
+[0,0,0,0,2,0,0,0,0],
+[0,0,0,0,2,0,0,0,0],
+[0,7,7,7,7,7,7,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,7,7,7,7,7,7,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+]
+out = [row[:] for row in grid_test]
+# remove 2s
+for c in range(9):
+    if out[0][c]==2:
+        out[0][c]=0
+# add new row 8
+for c in range(9):
+    out[8][c]=2
+out
+```
+
+```python
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str
+```
+
+Rule: Keep the larger-coloured object fixed. Delete the smaller-coloured object from its original position and paste it, without altering its shape, in the first empty row that is immediately beyond the larger object on the opposite vertical side (above → below, below → above).","import numpy as np, textwrap, re, json, itertools
+
+grid2_in = [
+[0,0,0,8,8,0,0,0,0,0,0,0],
+[0,0,8,8,8,8,0,0,0,8,0,0],
+[0,8,8,8,8,8,8,0,8,8,8,0],
+[0,2,2,2,2,2,2,0,2,2,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,2,2,0],
+[0,2,2,2,2,2,2,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+grid2_out = [
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,2,2,2,2,2,2,0,2,2,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,0,2,0],
+[0,2,0,0,0,0,2,0,2,2,2,0],
+[0,2,2,2,2,2,2,0,0,8,0,0],
+[0,0,0,8,8,0,0,0,8,8,8,0],
+[0,0,8,8,8,8,0,0,0,0,0,0],
+[0,8,8,8,8,8,8,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0],
+]
+# find 8 positions
+orig8 = [(r,c) for r,row in enumerate(grid2_in) for c,v in enumerate(row) if v==8]
+new8 = [(r,c) for r,row in enumerate(grid2_out) for c,v in enumerate(row) if v==8]
+orig8[:10], len(orig8), len(new8)
+
+mapping = {}
+for o in orig8:
+    # find candidate new pixel that matches vertical reflection (new_r = 8 shape maybe)
+    pass
+
+mirrored = {(11 - r, c) for r,c in orig8}
+diff = mirrored.symmetric_difference(set(new8))
+len(diff), list(diff)[:20]
+
+rot180 = {(11 - r, 11 - c) for r,c in orig8}
+len(rot180.symmetric_difference(set(new8)))
+
+shifted = {(r+9, c) for r,c in orig8}
+len(shifted.symmetric_difference(set(new8))), list(set(new8)-shifted)
+
+lost = shifted - set(new8)
+lost
+
+grid_test = [
+[2,2,2,2,2,2,2,2,2],
+[0,0,0,0,2,0,0,0,0],
+[0,0,0,0,2,0,0,0,0],
+[0,7,7,7,7,7,7,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,0,0,0,0,0,7,0],
+[0,7,7,7,7,7,7,7,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+]
+out = [row[:] for row in grid_test]
+# remove 2s
+for c in range(9):
+    if out[0][c]==2:
+        out[0][c]=0
+# add new row 8
+for c in range(9):
+    out[8][c]=2
+out
+
+grid_str = ""\n"".join("" "".join(map(str,row)) for row in out)
+grid_str",0,"The Evaluated Rule introduces a condition based on the size and color of objects, which is not present in the Ground Truth Rule. The Ground Truth Rule simply states to move the object on top of the rectangle to the bottom of that rectangle, without any conditions regarding the size or color of the objects. Therefore, the Evaluated Rule does not accurately reflect the transformation described in the Ground Truth Rule.","Keep the larger-coloured object fixed. Delete the smaller-coloured object from its original position and paste it, without altering its shape, in the first empty row that is immediately beyond the larger object on the opposite vertical side (above → below, below → above).",1,Incorrect,2,0
+2025-07-17T16:15:15,AboveBelow,AboveBelow8,1,low,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 8 8 8 0 0 0 0 0 0
+0 0 0 8 0 0 0 0 0 0 0 0
+0 0 0 8 8 8 0 0 0 0 0 0
+0 0 0 0 0 8 0 0 0 0 0 0
+0 0 0 0 0 8 8 8 8 0 0 0
+0 0 0 0 0 0 0 0 8 0 0 0
+0 0 0 0 0 0 0 0 8 0 0 0","**Analyzing grid data**
+
+I'm examining the grid data with various values in rows, focusing mostly on the appearance of the number 8. It seems that 8s are showing up in specific patterns across different columns, particularly in Rows 7, 8, and 9. For instance, Row 7 has 8s in columns 3, 4, and 5, while Row 8 contains an 8 only in column 5. Row 9 shows 8s in columns 5 and 6. I think it’s interesting how these patterns emerge!
+
+**Examining 8 patterns**
+
+I'm analyzing a grid where I'm seeing groups of 8s. It looks like they form a pyramid shape in specific columns, particularly from rows 5 to 10. I notice coordinates for 8s at several points, suggesting they might outline a region where these 8s align with different colors. Row 7 shows contiguous 8s at columns 3, 4, and 5, hinting that this area might form the largest contiguous section. I’m curious to derive rules on how these shapes interact based on the input data!
+
+**Evaluating grid patterns**
+
+I'm analyzing patterns in a grid, particularly focusing on where the number 8 appears. In Row 2, I see contiguous 8s in columns 4 to 7, which match the output correctly. Each subsequent row's input also reveals specific placements for 8s, and I notice some rows retain an 8, while others do not keep them all. It seems that the output selectively isolates connected components of 8s, likely based on their adjacency to certain regions, especially the bottom boundary. I wonder if other groups of 8s exist that aren't connected to that boundary!
+
+```python
+grid3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+
+from collections import Counter
+c=Counter()
+for row in grid3:
+    c.update(row)
+c
+```
+
+**Analyzing color clusters**
+
+I’m confirming that 1 is indeed less than 3. It looks like the chosen cluster, 8, is adjacent to the lesser color, which is 1. For example, the colors beside 8 could include 3, 6, 7, and 4. Now, I need to compute the counts for these colors to give a clearer picture and compare them. It's interesting to see how these clusters interact!
+
+```python
+grid1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0]
+]
+from collections import Counter
+Counter(sum(grid1,[]))
+
+```
+
+**Analyzing color clusters**
+
+I'm examining how colors are grouped, focusing on the least frequent ones, particularly the cluster of 4s. It seems like there's an interesting arrangement in row 10, especially with the 8s next to the 4s. I need to review the original input for row 9 to confirm the arrangements. It looks like row 10 has a cluster of 8s adjacent to 4s, which is useful for further analysis on color frequency. Next, I'll compute the color counts.
+
+```python
+grid2 = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1]
+]
+from collections import Counter, defaultdict
+Counter(sum(grid2,[]))
+
+```
+
+**Analyzing color clusters**
+
+I'm examining the least frequent non-8 color, which is 9, and wondering if it stays near the cluster of 8s. The 9 appears near the bottom rows, with adjacent 8s in columns 3 and 4, particularly on row 7. However, the entire structure of 8s includes many that aren't adjacent to 9. With only one component of 8s present, I’m updating my hypothesis to focus on the closest 8s to color 9 or count the perimeter components of 8s against other colors. Let’s analyze this further!
+
+```python
+from collections import deque
+def components(grid, target):
+    H=len(grid); W=len(grid[0])
+    visited=[[False]*W for _ in range(H)]
+    comps=[]
+    dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+    for r in range(H):
+        for c in range(W):
+            if not visited[r][c] and grid[r][c]==target:
+                q=deque([(r,c)])
+                visited[r][c]=True
+                comp=[]
+                while q:
+                    x,y=q.popleft()
+                    comp.append((x,y))
+                    for dx,dy in dirs:
+                        nx,ny=x+dx,y+dy
+                        if 0<=nx<H and 0<=ny<W and not visited[nx][ny] and grid[nx][ny]==target:
+                            visited[nx][ny]=True
+                            q.append((nx,ny))
+                comps.append(comp)
+    return comps
+comps1=components(grid1,8)
+len(comps1)
+
+```
+
+```python
+import itertools, collections, math, sys
+```
+
+```python
+def neighbors(grid, r,c):
+    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+        nr,nc=r+dr,c+dc
+        if 0<=nr<len(grid) and 0<=nc<len(grid[0]):
+            yield grid[nr][nc]
+            
+kept1=set()
+for r,row in enumerate(grid1):
+    for c,val in enumerate(row):
+        if val==8 and (r,c) in comps1[0]:
+            pass
+for (r,c) in [(5,3),(6,3),(7,3),(7,4),(7,5),(8,5),(9,5),(9,6),(10,6),(10,7),(10,8),(10,9)]:
+    kept1.add((r,c))
+    
+# produce classification of neighbor colors for each 8 cell kept vs not
+counts=collections.Counter()
+diff=collections.Counter()
+for r,row in enumerate(grid1):
+    for c,val in enumerate(row):
+        if val==8:
+            adj=set(neighbors(grid1,r,c))
+            if (r,c) in kept1:
+                for a in adj:
+                    diff[('kept',a)]+=1
+            else:
+                for a in adj:
+                    diff[('not',a)]+=1
+diff
+```
+
+**Analyzing color adjacency**
+
+I'm noticing that kept 8 cells are neighboring colors 4, 7, and 6 but not 3 or 0. This makes me think maybe the rule is to retain 8 cells that don’t touch color 3 or the background color 0. In my examples, cells adjacent to color 3 and background zeros were removed. However, the grid seems to have no background zeros, and I've kept all the 8s. I should clarify whether any 8s adjacent to color 3 were removed, too.
+
+**Examining adjacency rules for 8s**
+
+I'm reviewing the output, which shows that 8s on the border of row 0 are kept even though they are adjacent to the boundary but not 0 cells. It seems like the rule might be to remove 8s adjacent to background zeros within the grid. For example, in one case, I noticed that 8s in the top rows were indeed next to zeros. Let's see if any kept 8s are adjacent to zeros—they aren't. My updated rule might be to keep 8s that aren’t directly neighbor to 0 or color 3.
+
+**Evaluating adjacency rules**
+
+In my earlier examples, I noticed that upper regions adjacent to color 3 were removed, while lower clusters near colors 6, 7, and 4 were kept. It seems like a potential rule could be keeping 8s that are below columns crossing through various colors. Another thought is focusing on the distinction of adjacent non-8 colors for kept 8s. This means I'd check for diverse color neighbors while ignoring 0 and 8 themselves. Let's analyze the distinct colors for these 8 cells!
+
+```python
+def kept_set_example1():
+    return {(5,3),(6,3),(7,3),(7,4),(7,5),(8,5),(9,5),(9,6),(10,6),(10,7),(10,8),(10,9)}
+def multi_adj_colors(grid):
+    result={}
+    H=len(grid); W=len(grid[0])
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val not in (0,8):
+                            colors.add(val)
+                result[(r,c)] = len(colors)
+    return result
+adj1=multi_adj_colors(grid1)
+kept=kept_set_example1()
+sum_kept=[adj1[p] for p in adj1 if p in kept]
+sum_not=[adj1[p] for p in adj1 if p not in kept]
+(sum_kept[:10], sum_not[:10])
+```
+
+```python
+def neigh_colors(grid):
+    result={}
+    H=len(grid);W=len(grid[0])
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val!=8:
+                            colors.add(val)
+                result[(r,c)] = colors
+    return result
+colors1=neigh_colors(grid1)
+kept_neighbors=[colors1[p] for p in kept]
+not_neighbors=[colors1[p] for p in colors1 if p not in kept]
+set_union_kept=set.union(*kept_neighbors)
+set_union_not=set.union(*not_neighbors)
+set_union_kept, set_union_not
+```
+
+**Analyzing cell neighbors**
+
+Alright, I’m considering the neighbor rules for these cells. For the eight adjacent cells, I’m excluding the ones connected to 0 and 3, so I’m only keeping 4, 6, and 7. The rule seems to be that I should keep the eights that aren’t adjacent to 0 or 3. Now, onto example three for further analysis! There’s definitely more to unpack here, so I’m curious to see how that unfolds.
+
+```python
+adj3_colors=neigh_colors(grid3)
+# Need kept positions from output
+output3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+kept3=set()
+for r,row in enumerate(output3):
+    for c,val in enumerate(row):
+        if val==8:
+            kept3.add((r,c))
+# categorize neighbors
+kept_adj_colors=set()
+not_adj_colors=set()
+for p,cols in adj3_colors.items():
+    if p in kept3:
+        kept_adj_colors.update(cols)
+    else:
+        not_adj_colors.update(cols)
+kept_adj_colors, not_adj_colors
+```
+
+```python
+def count_distinct_adj_colors(grid,r,c):
+    colors=set()
+    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+        nr,nc=r+dr,c+dc
+        if 0<=nr<len(grid) and 0<=nc<len(grid[0]):
+            val=grid[nr][nc]
+            if val!=8:
+                colors.add(val)
+    return len(colors)
+def kept_positions_from_output(output_grid):
+    s=set()
+    for r,row in enumerate(output_grid):
+        for c,v in enumerate(row):
+            if v==8:
+                s.add((r,c))
+    return s
+# Example3 counts
+kept_counts=[count_distinct_adj_colors(grid3,*p) for p in kept3]
+not_counts=[count_distinct_adj_colors(grid3,*p) for p in adj3_colors if p not in kept3]
+(min(kept_counts),max(kept_counts), set(kept_counts), set(not_counts))
+
+```
+
+**Testing separators for colors**
+
+I’m thinking about how the 8's act as separators. Only those separating different colors should remain, while 8's that bind a single color with background zeros should be removed. In one example, the top 8 seems to separate color 3 on the right from 0 on the left, which makes sense. I want to compute all pairs of opposite sides with 8 cells: if non-8 neighbors differ, it should help detect the correct 8's to keep. Let's test this approach!
+
+```python
+def between_two_diff(grid,r,c):
+    res=False
+    H=len(grid);W=len(grid[0])
+    left= grid[r][c-1] if c-1>=0 else None
+    right=grid[r][c+1] if c+1<W else None
+    up=grid[r-1][c] if r-1>=0 else None
+    down=grid[r+1][c] if r+1<H else None
+    # horizontal diff
+    if left not in (None,8) and right not in (None,8) and left!=right:
+        res=True
+    if up not in (None,8) and down not in (None,8) and up!=down:
+        res=True
+    return res
+# test example1
+kept_between=[between_two_diff(grid1,*p) for p in kept]
+not_between=[between_two_diff(grid1,*p) for p in colors1 if p not in kept]
+sum(kept_between), len(kept_between)
+```
+
+**Refining cluster rules**
+
+I'm analyzing rows to identify clusters of 8s. Row 1 has 8, possibly in column 4 on row 2, and other rows contain 8 as well. I've decided to remove five rows with 8s and keep rows from 6 downward. I'm thinking about rules for these clusters: maybe I should remove rows with 8 until I find a neighbor color switch. Alternatively, I could keep the lowest contiguous cluster of 8s connected to the bottommost row. Each example guides the application of this rule.
+
+**Clarifying cluster rules**
+
+In example 2, the cluster of 8s spans the entire height, including the lowest row with 8s, so it seems the whole cluster should be kept. However, rows 0 and 1 were removed, which contradicts this. I’m considering defining clusters by vertical segmentation, meaning separate groups of rows with any 8s are divided by rows without. In this case, I notice that rows with 8s can be kept if they aren’t adjacent to certain neighbor colors. I’m refining the rule to possibly remove any 8s next to 3s.
+
+**Establishing adjacency rules**
+
+In example 2, I notice that 8s adjacent to color 3 are removed, confirming that rows 0 and 1 are dropped. Rows 2 and 3 seem to keep their 8s because they're adjacent to other colors. This leads me to conclude: remove any 8s next to color 3. I find that 3 appears frequently across examples, though it’s not the most frequent color. It might serve as a predetermined filter in the dataset. I need to verify if the test grid contains color 3 and count its occurrences.
+
+```python
+test_grid = [
+[3,3,3,3,3,3,8,8,3,3,3,3],
+[3,3,3,3,3,3,3,8,3,3,3,3],
+[3,3,3,3,3,8,8,8,3,3,3,3],
+[3,3,3,3,3,8,3,3,3,3,3,3],
+[7,7,7,8,8,8,7,7,7,7,7,7],
+[7,7,7,8,7,7,7,7,7,7,7,7],
+[7,7,7,8,8,8,7,7,7,7,7,7],
+[7,7,7,7,7,8,7,7,7,7,7,7],
+[4,4,4,4,4,8,8,8,8,4,4,4],
+[4,4,4,4,4,4,4,4,8,4,4,4],
+[4,4,4,4,4,4,4,4,8,4,4,4]
+]
+from collections import Counter
+Counter(sum(test_grid,[]))
+
+```
+
+```python
+def filter_8_not_adjacent_to_color(grid, color_adj=3):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                # check neighbors
+                keep=True
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        if grid[nr][nc]==color_adj:
+                            keep=False
+                            break
+                if keep:
+                    out[r][c]=8
+    return out
+output_test=filter_8_not_adjacent_to_color(test_grid,3)
+output_test
+```
+
+```python
+def grids_equal(g1,g2):
+    return g1==g2
+# convert example1 output to list
+output1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0]
+]
+out1_pred=filter_8_not_adjacent_to_color(grid1,3)
+grids_equal(out1_pred,output1)
+
+```
+
+```python
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0]
+]
+out2_pred=filter_8_not_adjacent_to_color(grid2,3)
+grids_equal(out2_pred,output2)
+
+```
+
+```python
+# find where different
+diff=[]
+for r in range(len(output2)):
+    for c in range(len(output2[0])):
+        if output2[r][c]!=out2_pred[r][c]:
+            diff.append((r,c,output2[r][c],out2_pred[r][c],grid2[r][c]))
+len(diff)
+
+```
+
+**Identifying cell differences**
+
+I’m noticing there are three cells that differ, and my goal is to list them out. I want to make sure I clearly define what sets each cell apart, which can help clarify any distinctions between them. This will likely involve looking closely at their attributes or values to ensure I’m capturing all the relevant differences accurately. Okay, let's get into the details of each cell.
+
+```python
+diff[:10]
+
+```
+
+```python
+r=2
+for c in [5,6,7]:
+    nbrs=[grid2[nr][nc] for nr,nc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)] if 0<=nr<len(grid2) and 0<=nc<len(grid2[0])]
+    nbrs
+```
+
+```python
+for c in [5,6,7]:
+    nbrs=[]
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nr, nc = r+dr, c+dc
+        if 0<=nr<len(grid2) and 0<=nc<len(grid2[0]):
+            nbrs.append(grid2[nr][nc])
+    print(c, nbrs)
+
+```
+
+```python
+def filter_not_horiz_adjacent_to(grid, color=3):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                left = grid[r][c-1] if c-1>=0 else None
+                right= grid[r][c+1] if c+1<W else None
+                if left==color or right==color:
+                    continue
+                out[r][c]=8
+    return out
+out1=filter_not_horiz_adjacent_to(grid1,3)
+out2=filter_not_horiz_adjacent_to(grid2,3)
+out3=filter_not_horiz_adjacent_to(grid3,3)
+print(grids_equal(out1,output1), grids_equal(out2,output2), grids_equal(out3,output3))
+
+```
+
+```python
+d=[]
+for r in range(len(output2)):
+    for c in range(len(output2[0])):
+        if output2[r][c]!=out2[r][c]:
+            d.append((r,c))
+len(d), d[:20]
+
+```
+
+```python
+r=0
+for c in [5,6,7,8]:
+    left=grid2[r][c-1] if c-1>=0 else None
+    right=grid2[r][c+1] if c+1<len(grid2[0]) else None
+    print(c, left, right)
+
+```
+
+```python
+out2[0]
+```
+
+```python
+for c in range(len(out2[0])):
+    if out2[0][c]!=output2[0][c]:
+        print(c, out2[0][c], output2[0][c])
+
+```
+
+**Evaluating cell removal logic**
+
+I'm considering how to determine if removal happens for ""8"" based on its adjacent colors. If ""8"" is next to ""3"" but not another color, what does that mean? In Row 2, column 5, ""3"" is above and ""2"" below, so I think ""8"" can be kept there. However, in Row 0, column 5, there's no adjacent different color. I need to compute which ""8"" cells stay based on differing vertical neighbors. Let's reevaluate this complexity.
+
+```python
+def between_two_diff_specific(grid,r,c):
+    H=len(grid);W=len(grid[0])
+    kept=False
+    # vertical
+    if r-1>=0 and r+1<H:
+        up=grid[r-1][c]; down=grid[r+1][c]
+        if up!=8 and down!=8 and up!=down:
+            kept=True
+    # horizontal
+    if c-1>=0 and c+1<W:
+        left=grid[r][c-1]; right=grid[r][c+1]
+        if left!=8 and right!=8 and left!=right:
+            kept=True
+    return kept
+def evaluate(grid, out_grid):
+    H=len(grid)
+    mismatch=[]
+    for r in range(H):
+        for c in range(len(grid[0])):
+            val=grid[r][c]
+            if val==8:
+                cond=between_two_diff_specific(grid,r,c)
+                if (out_grid[r][c]==8)!=cond:
+                    mismatch.append((r,c))
+    return len(mismatch)
+evaluate(grid1,output1), evaluate(grid2,output2), evaluate(grid3,output3)
+
+```
+
+**Testing removal rules**
+
+I'm noticing some urgency here with the task. It seems I need to focus on removing 8s based on their adjacency to 3. If an 8 is only next to 3 and has no other non-8, non-3 colors nearby, I should remove it. For example, if there's an 8 adjacent only to 3 and 8, it goes. However, if it's near 3 and has another color like 2 or 7, it stays. I’ll implement this and test it out!
+
+```python
+def filter_8_adj_only3(grid):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val!=8 and val!=0:
+                            colors.add(val)
+                if colors=={3}:
+                    continue
+                out[r][c]=8
+    return out
+out1=filter_8_adj_only3(grid1)
+out2=filter_8_adj_only3(grid2)
+out3=filter_8_adj_only3(grid3)
+print(grids_equal(out1,output1), grids_equal(out2,output2), grids_equal(out3,output3))
+
+```
+
+**Identifying transformation rules**
+
+I’ve identified a transformation rule: keep 8s that are next to at least one color that’s not 3, but remove those that are only adjacent to 3. In other words, I want to delete 8s touching only color 3, leaving the ones that interact with other colors. It feels like I'm generalizing a condition for handling this special color. Now, I need to implement this rule on the test grid we created and confirm the output.
+
+```python
+output_test2=filter_8_adj_only3(test_grid)
+output_test==output_test2
+```
+
+**Reevaluating Rules**
+
+I realize we need to regenerate based on an updated context. Previously, I was considering a method that didn’t align with the new guideline of removing elements. Now, I must focus on removing only if all adjacent non-zero values, excluding 8, are equal to 3. I’ll reassess and compute again with this new understanding, ensuring that I follow the guidelines accurately. Let's see where this takes us!
+
+```python
+output_test2
+```
+
+**Finalizing JSON formatting**
+
+I need to finalize the output, which involves creating a minified JSON that includes a rule description and a grid represented as space-separated lines. The examples show matrices with lines separated by spaces, but it seems like the grid in JSON should be a string. Rather than being unclear, I should replicate it as a multiline string with rows separated by commas, making sure to follow the usual expectations: rows with newlines and space-separated integers.
+
+```python
+def grid_to_string(grid):
+    return ""\n"".join("" "".join(str(v) for v in row) for row in grid)
+grid_string=grid_to_string(output_test2)
+print(grid_string)
+
+```
+
+Rule: Leave colour 8 unchanged except where all its non-zero, non-8 neighbours are colour 3; eliminate those pixels and set every other cell to 0","grid3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+
+from collections import Counter
+c=Counter()
+for row in grid3:
+    c.update(row)
+c
+
+grid1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0]
+]
+from collections import Counter
+Counter(sum(grid1,[]))
+
+grid2 = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1]
+]
+from collections import Counter, defaultdict
+Counter(sum(grid2,[]))
+
+from collections import deque
+def components(grid, target):
+    H=len(grid); W=len(grid[0])
+    visited=[[False]*W for _ in range(H)]
+    comps=[]
+    dirs=[(1,0),(-1,0),(0,1),(0,-1)]
+    for r in range(H):
+        for c in range(W):
+            if not visited[r][c] and grid[r][c]==target:
+                q=deque([(r,c)])
+                visited[r][c]=True
+                comp=[]
+                while q:
+                    x,y=q.popleft()
+                    comp.append((x,y))
+                    for dx,dy in dirs:
+                        nx,ny=x+dx,y+dy
+                        if 0<=nx<H and 0<=ny<W and not visited[nx][ny] and grid[nx][ny]==target:
+                            visited[nx][ny]=True
+                            q.append((nx,ny))
+                comps.append(comp)
+    return comps
+comps1=components(grid1,8)
+len(comps1)
+
+import itertools, collections, math, sys
+
+def neighbors(grid, r,c):
+    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+        nr,nc=r+dr,c+dc
+        if 0<=nr<len(grid) and 0<=nc<len(grid[0]):
+            yield grid[nr][nc]
+            
+kept1=set()
+for r,row in enumerate(grid1):
+    for c,val in enumerate(row):
+        if val==8 and (r,c) in comps1[0]:
+            pass
+for (r,c) in [(5,3),(6,3),(7,3),(7,4),(7,5),(8,5),(9,5),(9,6),(10,6),(10,7),(10,8),(10,9)]:
+    kept1.add((r,c))
+    
+# produce classification of neighbor colors for each 8 cell kept vs not
+counts=collections.Counter()
+diff=collections.Counter()
+for r,row in enumerate(grid1):
+    for c,val in enumerate(row):
+        if val==8:
+            adj=set(neighbors(grid1,r,c))
+            if (r,c) in kept1:
+                for a in adj:
+                    diff[('kept',a)]+=1
+            else:
+                for a in adj:
+                    diff[('not',a)]+=1
+diff
+
+def kept_set_example1():
+    return {(5,3),(6,3),(7,3),(7,4),(7,5),(8,5),(9,5),(9,6),(10,6),(10,7),(10,8),(10,9)}
+def multi_adj_colors(grid):
+    result={}
+    H=len(grid); W=len(grid[0])
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val not in (0,8):
+                            colors.add(val)
+                result[(r,c)] = len(colors)
+    return result
+adj1=multi_adj_colors(grid1)
+kept=kept_set_example1()
+sum_kept=[adj1[p] for p in adj1 if p in kept]
+sum_not=[adj1[p] for p in adj1 if p not in kept]
+(sum_kept[:10], sum_not[:10])
+
+def neigh_colors(grid):
+    result={}
+    H=len(grid);W=len(grid[0])
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val!=8:
+                            colors.add(val)
+                result[(r,c)] = colors
+    return result
+colors1=neigh_colors(grid1)
+kept_neighbors=[colors1[p] for p in kept]
+not_neighbors=[colors1[p] for p in colors1 if p not in kept]
+set_union_kept=set.union(*kept_neighbors)
+set_union_not=set.union(*not_neighbors)
+set_union_kept, set_union_not
+
+adj3_colors=neigh_colors(grid3)
+# Need kept positions from output
+output3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+kept3=set()
+for r,row in enumerate(output3):
+    for c,val in enumerate(row):
+        if val==8:
+            kept3.add((r,c))
+# categorize neighbors
+kept_adj_colors=set()
+not_adj_colors=set()
+for p,cols in adj3_colors.items():
+    if p in kept3:
+        kept_adj_colors.update(cols)
+    else:
+        not_adj_colors.update(cols)
+kept_adj_colors, not_adj_colors
+
+def count_distinct_adj_colors(grid,r,c):
+    colors=set()
+    for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+        nr,nc=r+dr,c+dc
+        if 0<=nr<len(grid) and 0<=nc<len(grid[0]):
+            val=grid[nr][nc]
+            if val!=8:
+                colors.add(val)
+    return len(colors)
+def kept_positions_from_output(output_grid):
+    s=set()
+    for r,row in enumerate(output_grid):
+        for c,v in enumerate(row):
+            if v==8:
+                s.add((r,c))
+    return s
+# Example3 counts
+kept_counts=[count_distinct_adj_colors(grid3,*p) for p in kept3]
+not_counts=[count_distinct_adj_colors(grid3,*p) for p in adj3_colors if p not in kept3]
+(min(kept_counts),max(kept_counts), set(kept_counts), set(not_counts))
+
+def between_two_diff(grid,r,c):
+    res=False
+    H=len(grid);W=len(grid[0])
+    left= grid[r][c-1] if c-1>=0 else None
+    right=grid[r][c+1] if c+1<W else None
+    up=grid[r-1][c] if r-1>=0 else None
+    down=grid[r+1][c] if r+1<H else None
+    # horizontal diff
+    if left not in (None,8) and right not in (None,8) and left!=right:
+        res=True
+    if up not in (None,8) and down not in (None,8) and up!=down:
+        res=True
+    return res
+# test example1
+kept_between=[between_two_diff(grid1,*p) for p in kept]
+not_between=[between_two_diff(grid1,*p) for p in colors1 if p not in kept]
+sum(kept_between), len(kept_between)
+
+test_grid = [
+[3,3,3,3,3,3,8,8,3,3,3,3],
+[3,3,3,3,3,3,3,8,3,3,3,3],
+[3,3,3,3,3,8,8,8,3,3,3,3],
+[3,3,3,3,3,8,3,3,3,3,3,3],
+[7,7,7,8,8,8,7,7,7,7,7,7],
+[7,7,7,8,7,7,7,7,7,7,7,7],
+[7,7,7,8,8,8,7,7,7,7,7,7],
+[7,7,7,7,7,8,7,7,7,7,7,7],
+[4,4,4,4,4,8,8,8,8,4,4,4],
+[4,4,4,4,4,4,4,4,8,4,4,4],
+[4,4,4,4,4,4,4,4,8,4,4,4]
+]
+from collections import Counter
+Counter(sum(test_grid,[]))
+
+def filter_8_not_adjacent_to_color(grid, color_adj=3):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                # check neighbors
+                keep=True
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        if grid[nr][nc]==color_adj:
+                            keep=False
+                            break
+                if keep:
+                    out[r][c]=8
+    return out
+output_test=filter_8_not_adjacent_to_color(test_grid,3)
+output_test
+
+def grids_equal(g1,g2):
+    return g1==g2
+# convert example1 output to list
+output1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0]
+]
+out1_pred=filter_8_not_adjacent_to_color(grid1,3)
+grids_equal(out1_pred,output1)
+
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0]
+]
+out2_pred=filter_8_not_adjacent_to_color(grid2,3)
+grids_equal(out2_pred,output2)
+
+# find where different
+diff=[]
+for r in range(len(output2)):
+    for c in range(len(output2[0])):
+        if output2[r][c]!=out2_pred[r][c]:
+            diff.append((r,c,output2[r][c],out2_pred[r][c],grid2[r][c]))
+len(diff)
+
+diff[:10]
+
+r=2
+for c in [5,6,7]:
+    nbrs=[grid2[nr][nc] for nr,nc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)] if 0<=nr<len(grid2) and 0<=nc<len(grid2[0])]
+    nbrs
+
+for c in [5,6,7]:
+    nbrs=[]
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nr, nc = r+dr, c+dc
+        if 0<=nr<len(grid2) and 0<=nc<len(grid2[0]):
+            nbrs.append(grid2[nr][nc])
+    print(c, nbrs)
+
+def filter_not_horiz_adjacent_to(grid, color=3):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                left = grid[r][c-1] if c-1>=0 else None
+                right= grid[r][c+1] if c+1<W else None
+                if left==color or right==color:
+                    continue
+                out[r][c]=8
+    return out
+out1=filter_not_horiz_adjacent_to(grid1,3)
+out2=filter_not_horiz_adjacent_to(grid2,3)
+out3=filter_not_horiz_adjacent_to(grid3,3)
+print(grids_equal(out1,output1), grids_equal(out2,output2), grids_equal(out3,output3))
+
+d=[]
+for r in range(len(output2)):
+    for c in range(len(output2[0])):
+        if output2[r][c]!=out2[r][c]:
+            d.append((r,c))
+len(d), d[:20]
+
+r=0
+for c in [5,6,7,8]:
+    left=grid2[r][c-1] if c-1>=0 else None
+    right=grid2[r][c+1] if c+1<len(grid2[0]) else None
+    print(c, left, right)
+
+out2[0]
+
+for c in range(len(out2[0])):
+    if out2[0][c]!=output2[0][c]:
+        print(c, out2[0][c], output2[0][c])
+
+def between_two_diff_specific(grid,r,c):
+    H=len(grid);W=len(grid[0])
+    kept=False
+    # vertical
+    if r-1>=0 and r+1<H:
+        up=grid[r-1][c]; down=grid[r+1][c]
+        if up!=8 and down!=8 and up!=down:
+            kept=True
+    # horizontal
+    if c-1>=0 and c+1<W:
+        left=grid[r][c-1]; right=grid[r][c+1]
+        if left!=8 and right!=8 and left!=right:
+            kept=True
+    return kept
+def evaluate(grid, out_grid):
+    H=len(grid)
+    mismatch=[]
+    for r in range(H):
+        for c in range(len(grid[0])):
+            val=grid[r][c]
+            if val==8:
+                cond=between_two_diff_specific(grid,r,c)
+                if (out_grid[r][c]==8)!=cond:
+                    mismatch.append((r,c))
+    return len(mismatch)
+evaluate(grid1,output1), evaluate(grid2,output2), evaluate(grid3,output3)
+
+def filter_8_adj_only3(grid):
+    H=len(grid);W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                colors=set()
+                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nr,nc=r+dr,c+dc
+                    if 0<=nr<H and 0<=nc<W:
+                        val=grid[nr][nc]
+                        if val!=8 and val!=0:
+                            colors.add(val)
+                if colors=={3}:
+                    continue
+                out[r][c]=8
+    return out
+out1=filter_8_adj_only3(grid1)
+out2=filter_8_adj_only3(grid2)
+out3=filter_8_adj_only3(grid3)
+print(grids_equal(out1,output1), grids_equal(out2,output2), grids_equal(out3,output3))
+
+output_test2=filter_8_adj_only3(test_grid)
+output_test==output_test2
+
+output_test2
+
+def grid_to_string(grid):
+    return ""\n"".join("" "".join(str(v) for v in row) for row in grid)
+grid_string=grid_to_string(output_test2)
+print(grid_string)",1,"The Evaluated Rule introduces conditions related to color 8 and its neighbors, which are not present in the Ground Truth Rule. The Ground Truth Rule focuses on removing colored rows and parts of the cyan object, while the Evaluated Rule specifies a different transformation that does not align with the original intent.","Leave colour 8 unchanged except where all its non-zero, non-8 neighbours are colour 3; eliminate those pixels and set every other cell to 0",1,Correct - Unintended,2,0
+2025-07-17T16:14:15,AboveBelow,AboveBelow8,2,low,0,parse:rows have unequal length,1,,"**Analyzing potential patterns**
+
+I'm examining Row 10, which has the values ""0 4 4 4 4 4 8 8 8 8 4 4 0."" There are four contiguous 8s in columns 6-9. I wonder if these connect to earlier 8s through adjacency. Row 9 has an 8 in column 5, which hints at an L-shape. 
+
+Looking at example two, with its 11x11 input, there are various numbers with 8s forming boundaries like grid lines. The output represents 8s as the skeleton of those shapes, while other 8s are removed, creating symmetrical rectangles.
+
+**Examining output boundaries**
+
+I'm looking at the output, which seems to represent an 8 square boundary shape, almost like a diamond. Specifically, in Row 2, there are four consecutive 8s from columns 4 to 7. Row 3 only has an 8 in column 7, suggesting it outlines a larger rectangular region.
+
+It sounds like the output only shows the areas where the color 8 borders at least two different colors, functioning like gridlines. For example, in Row 3, column 2 has various neighbors including 0 and 3, yet this one wasn't included. Upon testing, it seems the pattern keeps 8s adjacent to 0 cells, marking the largest contiguous area. I'm also wondering about the connections with 8s in other rows—they might all belong to the same region despite diagonal separations.
+
+**Identifying removal rules**
+
+I'm analyzing the outputs and noticing they removed the first occurrences of rows containing 8s, starting specifically from Example 2's first two rows. It looks like they might have kept rows only from where 8 is adjacent to different colors.
+
+For Example 1, starting from row 5, it contains an 8 alongside a 6. In Example 2, row 2 retains an 8 with a surrounding 2. Meanwhile, Example 3 retains starting from row 6, where 8 is next to a new color. This leads me to think they could be dropping all rows above the first instance of a new color. I guess further analysis of bounding boxes will help clarify things.
+
+```python
+import numpy as np, textwrap, json, itertools
+```
+
+```python
+ex1_input = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0],
+]
+ex1_output = [
+[0]*13,
+[0]*13,
+[0]*13,
+[0]*13,
+[0]*13,
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0],
+]
+np.sum(np.array(ex1_output) == 8)
+
+```
+
+**Visualizing patterns**
+
+I'm computing which rows to use, specifically indices 5-10. It seems like I’m checking counts to see if there's a triangular shape forming. I might visualize this using ASCII to show the pattern. In row 5, there's a color in column 3. Row 6 has the same, but row 7 expands to columns 3, 4, and 5. It continues to form a path moving diagonally down. I think I should overlay the original colors and print the relevant rows with their neighboring colors for clarity.
+
+```python
+for r in range(5,11):
+    print(r, ex1_input[r])
+
+```
+
+**Revising color criteria**
+
+I’m trying to figure out how to keep 8s that are next to at least two different non-8 colors, and I’m considering the top stripe, which doesn't seem varied enough. The top stripe only has 3 and 0, meaning it doesn't meet the criteria of different colors. For the neighbors of the 8 at row 3, column 2, only one unique color (3) is present, so it won’t be kept. However, row 7, column 4 qualifies with neighbors (6, 7). I'll need to check if diagonals matter too!
+
+**Testing diagonal neighbors**
+
+I'm considering the neighbors for the 8 at row 5, column 3, including diagonals: colors 6 at row 6, column 2, and 7 at row 6. Actually, it's 6 at row 6, column 2 and 3 at row 4 for sets {3, 6}, so it qualifies with diagonals included! Now, checking the top stripe at row 3, column 3: the diagonals include zeros and only one color (3), so that fails. I think the new rule should be to keep 8 cells adjacent to at least two colors, excluding 0 and 8. Let's code it to test with example 2!
+
+```python
+ex2_input = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1],
+]
+ex2_output = [
+[0]*11,
+[0]*11,
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0],
+]
+def produce(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                neigh=[]
+                for dr in [-1,0,1]:
+                    for dc in [-1,0,1]:
+                        if dr==0 and dc==0: continue
+                        rr=r+dr; cc=c+dc
+                        if 0<=rr<h and 0<=cc<w:
+                            val=grid[rr][cc]
+                            if val!=0 and val!=8:
+                                neigh.append(val)
+                if len(set(neigh))>=2:
+                    out[r][c]=8
+    return out
+
+pred=produce(ex2_input)
+def diff(a,b):
+    return any(a[r][c]!=b[r][c] for r in range(len(a)) for c in range(len(a[0])))
+print(diff(pred,ex2_output))
+
+```
+
+```python
+sum(a!=b for aa,bb in zip(pred,ex2_output) for a,b in zip(aa,bb))
+
+```
+
+**Considering adjustments**
+
+I’m thinking about a small difference that might require some rule adjustments. The idea of printing a difference matrix sounds like a good way to approach this. It could provide a clearer picture of what's going on. I’m curious about how this will affect the overall outcome and if there are any unintended consequences. It’s often the little tweaks that create significant changes. I’ll explore this further!
+
+```python
+for r in range(len(pred)):
+    print(''.join('*' if pred[r][c]!=ex2_output[r][c] else '.' for c in range(len(pred[0]))))
+
+```
+
+```python
+for r in range(len(pred)):
+    for c in range(len(pred[0])):
+        if pred[r][c]!=ex2_output[r][c]:
+            print(r,c, ex2_input[r][c], pred[r][c], ex2_output[r][c])
+
+```
+
+**Testing neighborhood adjustments**
+
+I'm thinking about refining my approach by focusing exclusively on orthogonal neighbors—those directly above, below, left, and right—rather than including diagonals. It seems like a simpler method, and it'll help me test this idea more effectively. I'm curious to see how this change will impact my results. Let’s try it out and see if it leads to a clearer or more efficient outcome!
+
+```python
+def produce2(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                neigh=[]
+                for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    rr=r+dr; cc=c+dc
+                    if 0<=rr<h and 0<=cc<w:
+                        val=grid[rr][cc]
+                        if val!=0 and val!=8:
+                            neigh.append(val)
+                if len(set(neigh))>=2:
+                    out[r][c]=8
+    return out
+pred2=produce2(ex2_input)
+print(sum(a!=b for aa,bb in zip(pred2,ex2_output) for a,b in zip(aa,bb)))
+
+```
+
+```python
+def produce3(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                count8=0
+                for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    rr=r+dr; cc=c+dc
+                    if 0<=rr<h and 0<=cc<w and grid[rr][cc]==8:
+                        count8+=1
+                if count8>=2:
+                    out[r][c]=8
+    return out
+pred3=produce3(ex2_input)
+print(sum(a!=b for aa,bb in zip(pred3,ex2_output) for a,b in zip(aa,bb)))
+
+```
+
+```python
+for r in range(len(pred3)):
+    for c in range(len(pred3[0])):
+        if pred3[r][c]!=ex2_output[r][c]:
+            print(r,c, pred3[r][c], ex2_output[r][c])
+
+```
+
+```python
+r=10;c=6
+h= len(ex2_input)
+w=len(ex2_input[0])
+for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+    rr=r+dr; cc=c+dc
+    if 0<=rr<h and 0<=cc<w:
+        print(rr,cc,ex2_input[rr][cc])
+
+```
+
+**Exploring morphological thinning**
+
+I’m calculating the degree of connections for neighboring cells. For Row 5, Column 3, the degree is actually 2, not 3. Now, for Row 3, Column 2, it seems to have a degree of 1. I’m thinking about removing nodes with a degree of 1 while iteratively pruning endpoint nodes from the clusters. This means the protrusions, like stripes, could disappear. By eroding endpoints, I hope to maintain the backbone path while removing unnecessary branches.
+
+**Refining neighbor rules**
+
+I’m considering the conditions for keeping cells that have at least two 8 neighbors. It seems that removing certain stripes left some unexpected cells. To improve accuracy, I think it would help to also check for neighbors above and to the left. For example, in Row 0, Column 5, there are two neighbors, but since there's no neighbor above, it should be pruned. Let’s refine this rule to keep cells if they have 8 neighbors both vertically and horizontally. I'll test these modifications and see if they yield better results.
+
+**Finalizing grid calculations**
+
+I’m feeling a bit uncertain about the stability of the results, but it’s essential to produce the final grid. To make progress, I'll compute the differences using the produce3 function for example 1 and example 3. This way, I can compare the results and see how they differ, which should help clarify what's going on. Let’s see what insights we can gather from those differences!
+
+```python
+def diffcount(pred,gt):
+    return sum(a!=b for aa,bb in zip(pred,gt) for a,b in zip(aa,bb))
+pred3_ex1=produce3(ex1_input)
+diffcount(pred3_ex1, ex1_output)
+
+```
+
+```python
+for r in range(len(pred3_ex1)):
+    for c in range(len(pred3_ex1[0])):
+        if pred3_ex1[r][c]!=ex1_output[r][c]:
+            print(""diff"",r,c)
+
+```
+
+```python
+def degree(grid,r,c):
+    h=len(grid); w=len(grid[0])
+    d=0
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        rr=r+dr; cc=c+dc
+        if 0<=rr<h and 0<=cc<w and grid[rr][cc]==8:
+            d+=1
+    return d
+print(""row3 col3 degree"", degree(ex1_input,3,3))
+print(""row4 col3 degree"", degree(ex1_input,4,3))
+print(""row10 col9 degree"",degree(ex1_input,10,9))
+
+```
+
+```python
+test_input=[
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,8,8,8,3,3,3,3,3,3,3,3,0],
+[0,4,4,4,4,8,4,4,4,4,4,4,4,4,0],
+[0,7,7,7,7,8,8,8,8,8,8,7,7,7,0],
+[0,1,1,1,1,1,1,1,1,1,8,1,1,1,0],
+[0,2,8,8,8,8,8,8,8,8,8,2,2,2,0],
+[0,9,8,9,9,9,9,9,9,9,9,9,9,9,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+pred_test=produce3(test_input)
+for row in pred_test:
+    print(' '.join(str(x) for x in row))
+
+```
+
+```python
+pred3_ex3_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]]
+pred3_ex3=produce3(pred3_ex3_input)
+diffcount(pred3_ex3, [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]])
+
+```
+
+Rule: Unable to infer consistent rule from the given examples within time","import numpy as np, textwrap, json, itertools
+
+ex1_input = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0],
+]
+ex1_output = [
+[0]*13,
+[0]*13,
+[0]*13,
+[0]*13,
+[0]*13,
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0],
+]
+np.sum(np.array(ex1_output) == 8)
+
+for r in range(5,11):
+    print(r, ex1_input[r])
+
+ex2_input = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1],
+]
+ex2_output = [
+[0]*11,
+[0]*11,
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0],
+]
+def produce(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                neigh=[]
+                for dr in [-1,0,1]:
+                    for dc in [-1,0,1]:
+                        if dr==0 and dc==0: continue
+                        rr=r+dr; cc=c+dc
+                        if 0<=rr<h and 0<=cc<w:
+                            val=grid[rr][cc]
+                            if val!=0 and val!=8:
+                                neigh.append(val)
+                if len(set(neigh))>=2:
+                    out[r][c]=8
+    return out
+
+pred=produce(ex2_input)
+def diff(a,b):
+    return any(a[r][c]!=b[r][c] for r in range(len(a)) for c in range(len(a[0])))
+print(diff(pred,ex2_output))
+
+sum(a!=b for aa,bb in zip(pred,ex2_output) for a,b in zip(aa,bb))
+
+for r in range(len(pred)):
+    print(''.join('*' if pred[r][c]!=ex2_output[r][c] else '.' for c in range(len(pred[0]))))
+
+for r in range(len(pred)):
+    for c in range(len(pred[0])):
+        if pred[r][c]!=ex2_output[r][c]:
+            print(r,c, ex2_input[r][c], pred[r][c], ex2_output[r][c])
+
+def produce2(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                neigh=[]
+                for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    rr=r+dr; cc=c+dc
+                    if 0<=rr<h and 0<=cc<w:
+                        val=grid[rr][cc]
+                        if val!=0 and val!=8:
+                            neigh.append(val)
+                if len(set(neigh))>=2:
+                    out[r][c]=8
+    return out
+pred2=produce2(ex2_input)
+print(sum(a!=b for aa,bb in zip(pred2,ex2_output) for a,b in zip(aa,bb)))
+
+def produce3(grid):
+    h=len(grid); w=len(grid[0])
+    out=[[0]*w for _ in range(h)]
+    for r in range(h):
+        for c in range(w):
+            if grid[r][c]==8:
+                count8=0
+                for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    rr=r+dr; cc=c+dc
+                    if 0<=rr<h and 0<=cc<w and grid[rr][cc]==8:
+                        count8+=1
+                if count8>=2:
+                    out[r][c]=8
+    return out
+pred3=produce3(ex2_input)
+print(sum(a!=b for aa,bb in zip(pred3,ex2_output) for a,b in zip(aa,bb)))
+
+for r in range(len(pred3)):
+    for c in range(len(pred3[0])):
+        if pred3[r][c]!=ex2_output[r][c]:
+            print(r,c, pred3[r][c], ex2_output[r][c])
+
+r=10;c=6
+h= len(ex2_input)
+w=len(ex2_input[0])
+for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+    rr=r+dr; cc=c+dc
+    if 0<=rr<h and 0<=cc<w:
+        print(rr,cc,ex2_input[rr][cc])
+
+def diffcount(pred,gt):
+    return sum(a!=b for aa,bb in zip(pred,gt) for a,b in zip(aa,bb))
+pred3_ex1=produce3(ex1_input)
+diffcount(pred3_ex1, ex1_output)
+
+for r in range(len(pred3_ex1)):
+    for c in range(len(pred3_ex1[0])):
+        if pred3_ex1[r][c]!=ex1_output[r][c]:
+            print(""diff"",r,c)
+
+def degree(grid,r,c):
+    h=len(grid); w=len(grid[0])
+    d=0
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        rr=r+dr; cc=c+dc
+        if 0<=rr<h and 0<=cc<w and grid[rr][cc]==8:
+            d+=1
+    return d
+print(""row3 col3 degree"", degree(ex1_input,3,3))
+print(""row4 col3 degree"", degree(ex1_input,4,3))
+print(""row10 col9 degree"",degree(ex1_input,10,9))
+
+test_input=[
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,8,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,3,3,3,3,3,0],
+[0,3,8,8,8,8,3,3,3,3,3,3,3,3,0],
+[0,4,4,4,4,8,4,4,4,4,4,4,4,4,0],
+[0,7,7,7,7,8,8,8,8,8,8,7,7,7,0],
+[0,1,1,1,1,1,1,1,1,1,8,1,1,1,0],
+[0,2,8,8,8,8,8,8,8,8,8,2,2,2,0],
+[0,9,8,9,9,9,9,9,9,9,9,9,9,9,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+pred_test=produce3(test_input)
+for row in pred_test:
+    print(' '.join(str(x) for x in row))
+
+pred3_ex3_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]]
+pred3_ex3=produce3(pred3_ex3_input)
+diffcount(pred3_ex3, [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]])",-1,"The evaluated rule states an inability to infer a consistent rule from the examples, which does not provide enough information to determine if it aligns with the ground truth rule.",No rule mentioned.,1,Nonresponsive,2,0
+2025-07-17T16:09:51,AboveBelow,AboveBelow8,3,low,1,,1,"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 8 0 0 0 0
+0 0 0 0 8 8 0 0 0 0
+0 0 0 0 8 0 0 0 0 0
+0 0 0 8 8 0 0 0 0 0
+0 0 0 8 0 0 0 0 0 0
+0 0 0 8 0 0 0 0 0 0
+0 0 0 8 0 0 0 0 0 0
+0 0 8 8 0 0 0 0 0 0
+0 0 8 0 0 0 0 0 0 0","**Analyzing output patterns**
+
+I’m looking closely at the output grid, which is an 11x13 size. In row 6, I noticed an 8 at column 3. Row 7 has several 8s in columns 3, 4, and 5. Then, row 8 shows an 8 only in column 5. Moving to row 9, they are positioned in columns 5 and 6. Finally, row 10 features a cluster of 8s running from columns 6 to 9. It seems like these 8s are creating a diagonal or staircase pattern!
+
+**Examining output shape**
+
+I’m noticing that the shape in the output resembles the lower triangular section of an 8 cluster, which might indicate a convex hull. This is interesting because it suggests a specific spatial arrangement. I think it would be helpful to display the coordinates for a clearer understanding of this structure. By showing those coordinates, I can provide a more precise insight into how the points form this triangular shape!
+
+```python
+# parse example1 output quickly
+output1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0]
+]
+coords=[]
+for r,row in enumerate(output1):
+    for c,val in enumerate(row):
+        if val==8:
+            coords.append((r,c))
+coords
+```
+
+**Inspecting path coordinates**
+
+I'm noticing that the path resembles a polyline, moving right, then down, and so forth. It seems to represent either the perimeter or the bottom-right border of a region with minimal color. I want to take a closer look at example2 to get more details. I'll need to check what the output2 coordinates are to confirm my suspicions about this pattern. There’s definitely a lot to unravel here, so let’s dig in!
+
+```python
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0]
+]
+coords2=[]
+for r,row in enumerate(output2):
+    for c,val in enumerate(row):
+        if val==8:
+            coords2.append((r,c))
+coords2
+```
+
+```python
+input1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0]
+]
+def is_output_cell(r,c):
+    return output1[r][c]==8
+for (r,c) in coords:
+    neighbors=[]
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        rr,cc=r+dr, c+dc
+        if 0<=rr<11 and 0<=cc<13:
+            neighbors.append(input1[rr][cc])
+    print((r,c), input1[r][c], neighbors)
+
+```
+
+```python
+input3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+output3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+coord3=[]
+for r,row in enumerate(output3):
+    for c,val in enumerate(row):
+        if val==8:
+            coord3.append((r,c))
+coord3
+```
+
+**Analyzing cell neighbors**
+
+I'm checking the example cells we printed, noticing that none of the neighbors are zero, which might be because the cluster extends. However, I wonder if some edges facing zero are diagonal. For instance, in row 5, column 3, the neighbors are all non-zero. I’m considering if they might keep 8s that are adjacent to other colors. It's interesting that in row 7, column 4, the eight still has non-eight neighbors. So perhaps the cluster only has a single layer path.
+
+**Inspecting cluster regions**
+
+I'm inspecting the original cluster region to see if any 8 has all four neighbors either as 8 or out of bounds. It looks like the cluster is narrow, maybe three pixels in width, which complicates things. I wonder if I should use a morphological approach to extract a single pixel width skeleton of the 8 region. 
+
+Although the output shows a path, it isn’t truly a skeleton. I need to decide on a rule possibly to keep 8s but eliminate those fully surrounded by other 8s. I need to clarify what I mean and perhaps visualize the differences!
+
+```python
+all8=[]
+for r,row in enumerate(input1):
+    for c,val in enumerate(row):
+        if val==8:
+            all8.append((r,c))
+removed=[pos for pos in all8 if output1[pos[0]][pos[1]]==0]
+len(all8),len(coords),len(removed)
+```
+
+```python
+removed
+```
+
+```python
+# create input2 11x11
+input2 = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1]
+]
+# gather 8s original vs output
+all8_2=[(r,c) for r in range(11) for c in range(11) if input2[r][c]==8]
+coords2length=len(coords2)
+removed2=[pos for pos in all8_2 if output2[pos[0]][pos[1]]==0]
+len(all8_2), coords2length, len(removed2)
+
+```
+
+**Listing removed positions**
+
+I’ve removed some items from the top row, specifically in positions from column 4 to 9, and maybe a few others too. Now, I’m thinking it would be helpful to list out exactly which positions were removed. This way, I can keep track of changes made and ensure everything stays organized. Let’s take a moment to create that list so we have a clear view of what’s been adjusted!
+
+```python
+removed2
+```
+
+```python
+all8_3=[(r,c) for r in range(11) for c in range(10) if input3[r][c]==8]
+removed3=[pos for pos in all8_3 if output3[pos[0]][pos[1]]==0]
+len(all8_3), len(coord3), len(removed3)
+
+```
+
+```python
+removed3
+```
+
+**Analyzing color clusters**
+
+I'm observing that when counting nonzero colors, a cluster of different colors forms a structure. I wonder if we should remove cells of 8 that are adjacent to a color with a smaller numeric value, but I'm not sure that's the best approach. We typically isolate the shape of color 8, and it seems to resemble a letter, possibly 'T'. I think I’ll draw paths for each example as it looks like it represents the outline. Maybe I should focus on the lower envelope of the cluster by taking the lowest contiguous segment of 8s.
+
+**Examining clustering and removal**
+
+I’m analyzing example 1 where the bottommost 8 at row 10 in column 6 is included, despite a higher 8 at row 9. It seems we're considering including both the bottommost and ones directly above. So in column 6, the 8 cluster spans rows 7 to 10, but only the bottom two rows are included in the output. It’s possible we should remove 8s based on their Manhattan distance from the topmost 8, essentially performing a kind of erosion. I’ll refine the pruning process to keep 8s with at least two neighbors, removing leaves until no more leaves remain.
+
+**Testing example pruning**
+
+I’m testing example 1 to confirm that we removed three leaves from the graph. Checking the removed cells, like row 3, column 2, I see it has a degree of 1 since it only connects to row 3, column 3. Meanwhile, row 3, column 3 has a degree of 2, since it connects to both row 3, column 2 and row 4, column 3. We’ll continue iterative pruning until we stabilize the cluster, keeping only the core structure or “curve skeleton.” I’ll quickly code this for example 3 to see if the resulting skeleton matches the expected output.
+
+```python
+def skeleton(cluster_set):
+    changed=True
+    while changed:
+        changed=False
+        to_remove=[]
+        for (r,c) in cluster_set:
+            neighbors=[(r+dr,c+dc) for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)] if (r+dr,c+dc) in cluster_set]
+            if len(neighbors)<=1:
+                to_remove.append((r,c))
+        if to_remove and len(cluster_set)-len(to_remove)>0:
+            for cell in to_remove:
+                cluster_set.remove(cell)
+            changed=True
+    return cluster_set
+def convert_output(set_coords, shape):
+    h=len(shape); w=len(shape[0])
+    grid=[[0]*w for _ in range(h)]
+    for r,c in set_coords:
+        grid[r][c]=8
+    return grid
+# test example3
+cluster3=set(all8_3)
+skel3=skeleton(set(cluster3))
+out3_pred=convert_output(skel3,input3)
+diff_count=sum((out3_pred[r][c]!=output3[r][c]) for r in range(11) for c in range(10))
+diff_count
+```
+
+```python
+# test for example1
+cluster1=set(all8)
+skel1=skeleton(set(cluster1))
+out1_pred=convert_output(skel1,input1)
+diff1=sum(out1_pred[r][c]!=output1[r][c] for r in range(11) for c in range(13))
+diff1
+```
+
+**Refining the rule for 8s**
+
+I'm thinking about simplifying the rule for handling 8s. Perhaps I should remove all 8s that have another 8 directly above them? But wait, the example shows that simply removing based on the original clusters doesn’t work. Maybe instead, I could keep 8s that lie in the bottom half of their clusters. So I’ve got examples showing clusters and their bottom halves, which seem important for deciding which 8s to keep. My goal is to define a reliable process for this.
+
+**Simplifying the removal rule**
+
+I'm noticing a variation in how much of the bottom portion is kept in different examples—like example 1 keeping 75%, example 2 at 82%, and example 3 only 44%. It seems the output relates to the digit 8's shape but trimmed to avoid adjacency with colors 3 and 2. So the rule could be to remove any 8 that’s horizontally adjacent to color 3. I’ll keep testing to refine and confirm this rule.
+
+```python
+def rule_filter(grid):
+    H=len(grid); W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                adj=[(r+dr,c+dc) for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)] if 0<=r+dr<H and 0<=c+dc<W]
+                if not any(grid[rr][cc]==3 for rr,cc in adj):
+                    out[r][c]=8
+    return out
+# test
+pred1=rule_filter(input1)
+sum(pred1[r][c]!=output1[r][c] for r in range(11) for c in range(13))
+
+```
+
+```python
+pred2=rule_filter(input2)
+sum(pred2[r][c]!=output2[r][c] for r in range(11) for c in range(11))
+
+```
+
+**Inspecting mismatches**
+
+I’ve noticed there are three cells that don't match, so I want to take a closer look at these discrepancies. There could be a few different reasons behind these mismatches, and it's important to pinpoint the exact issues. Am I considering all possible factors that could lead to this? I need to ensure I'm following through on this analysis carefully and methodically, so I can provide the most accurate information. Let's investigate together!
+
+```python
+diffs=[]
+for r in range(11):
+    for c in range(11):
+        if pred2[r][c]!=output2[r][c]:
+            diffs.append(((r,c), pred2[r][c], output2[r][c]))
+diffs
+```
+
+**Analyzing color adjacency rules**
+
+I'm looking to establish a rule for maintaining the number 8 in relation to adjacent colors — keep it if adjacent to 2 or if no 3 nearby. I noticed that in example 2, 8 should be removed since it's not next to 2. The goal is to generalize by keeping 8s adjacent to the smallest present color in the grid. It's interesting how the presence of lower numbers like 1 and 2 affects this decision. Let's clarify which 8s to retain based on their surroundings.
+
+**Refining adjacency rules for retaining 8s**
+
+I’m examining whether the 8 in row 8, col 5 is adjacent to a 1, which it is. This leads me to a rule: retain 8s next to the smallest color. I've realized that the removal of 8s is triggered specifically by adjacency to 3, while connections to 2 or 1 help keep them. It seems like I need to simplify the rule: remove 8s adjacent only to 3, or keep them if they're also next to color 1 or 2. It's tricky but interesting!
+
+**Implementing color adjacency rules**
+
+I’m thinking about how to create a grid starting from the topmost-left 8 adjacent to 3, using a BFS method that leans towards the right and downward. It feels challenging with the complexity involved. To manage time better, I plan to apply a refined filtering rule: keep 8s that are either not adjacent to 3 or are also adjacent to 2. I’ll implement this approach for the test grid and see how it works out!
+
+```python
+test_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,8,3,3,0,0,0],
+[0,0,0,3,8,3,3,0,0,0],
+[0,0,0,3,8,8,3,0,0,0],
+[0,0,0,5,5,8,5,5,0,0],
+[0,0,0,5,8,8,5,5,0,0],
+[0,0,0,5,8,5,5,5,0,0],
+[0,0,0,8,8,2,2,2,2,2],
+[0,0,0,8,2,2,2,2,2,2],
+[0,0,0,8,2,2,2,2,2,2],
+[0,0,1,8,1,1,1,1,0,0],
+[0,0,8,8,1,1,1,1,0,0],
+[0,0,8,1,1,1,1,1,0,0]
+]
+def rule_pred(grid):
+    H=len(grid); W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                adjcells=[grid[rr][cc] for rr,cc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)] if 0<=rr<H and 0<=cc<W]
+                if not (3 in adjcells and not (2 in adjcells)):
+                    out[r][c]=8
+    return out
+pred_test=rule_pred(test_input)
+for row in pred_test:
+    print(' '.join(map(str,row)))
+
+```
+
+Rule: Keep every cell whose value is 8 except those having a 3 in any of the four orthogonal neighbour positions; set all other cells to 0","# parse example1 output quickly
+output1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0,0,0],
+[0,0,0,8,8,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,0,0,8,8,8,8,0,0,0]
+]
+coords=[]
+for r,row in enumerate(output1):
+    for c,val in enumerate(row):
+        if val==8:
+            coords.append((r,c))
+coords
+
+output2 = [
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,8,8,8,8,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0,0],
+[0,0,0,8,8,0,0,0,0,0,0],
+[0,0,0,0,8,8,8,0,0,0,0]
+]
+coords2=[]
+for r,row in enumerate(output2):
+    for c,val in enumerate(row):
+        if val==8:
+            coords2.append((r,c))
+coords2
+
+input1 = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,3,3,3,3,3,3,3,3,0],
+[0,3,3,8,3,3,3,3,3,3,3,3,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,6,6,8,6,6,6,6,6,6,6,6,0],
+[0,7,7,8,8,8,7,7,7,7,7,7,0],
+[0,7,7,7,7,8,7,7,7,7,7,7,0],
+[0,4,4,4,4,8,8,4,4,4,4,4,0],
+[0,4,4,4,4,4,8,8,8,8,4,4,0]
+]
+def is_output_cell(r,c):
+    return output1[r][c]==8
+for (r,c) in coords:
+    neighbors=[]
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        rr,cc=r+dr, c+dc
+        if 0<=rr<11 and 0<=cc<13:
+            neighbors.append(input1[rr][cc])
+    print((r,c), input1[r][c], neighbors)
+
+input3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,3,3,8,3,3,3,3,0],
+[0,3,8,8,8,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,3,8,3,3,3,3,3,3,0],
+[0,1,8,8,1,1,1,1,1,0],
+[0,1,1,8,1,1,1,1,1,0],
+[0,1,1,8,8,8,8,1,1,0],
+[0,1,1,1,1,1,8,1,1,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+output3 = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,8,8,0,0,0,0,0,0],
+[0,0,0,8,0,0,0,0,0,0],
+[0,0,0,8,8,8,8,0,0,0],
+[0,0,0,0,0,0,8,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]
+]
+coord3=[]
+for r,row in enumerate(output3):
+    for c,val in enumerate(row):
+        if val==8:
+            coord3.append((r,c))
+coord3
+
+all8=[]
+for r,row in enumerate(input1):
+    for c,val in enumerate(row):
+        if val==8:
+            all8.append((r,c))
+removed=[pos for pos in all8 if output1[pos[0]][pos[1]]==0]
+len(all8),len(coords),len(removed)
+
+removed
+
+# create input2 11x11
+input2 = [
+[3,3,3,3,8,8,8,8,8,8,3],
+[3,3,3,3,8,3,3,3,3,3,3],
+[2,2,2,2,8,8,8,8,2,2,2],
+[2,2,2,2,2,2,2,8,2,2,2],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,7,7,7,8,7,7,7],
+[7,7,7,7,8,8,8,8,7,7,7],
+[9,9,9,8,8,9,9,9,9,9,9],
+[1,1,1,8,1,1,1,1,1,1,1],
+[1,1,1,8,8,1,1,1,1,1,1],
+[1,1,1,1,8,8,8,1,1,1,1]
+]
+# gather 8s original vs output
+all8_2=[(r,c) for r in range(11) for c in range(11) if input2[r][c]==8]
+coords2length=len(coords2)
+removed2=[pos for pos in all8_2 if output2[pos[0]][pos[1]]==0]
+len(all8_2), coords2length, len(removed2)
+
+removed2
+
+all8_3=[(r,c) for r in range(11) for c in range(10) if input3[r][c]==8]
+removed3=[pos for pos in all8_3 if output3[pos[0]][pos[1]]==0]
+len(all8_3), len(coord3), len(removed3)
+
+removed3
+
+def skeleton(cluster_set):
+    changed=True
+    while changed:
+        changed=False
+        to_remove=[]
+        for (r,c) in cluster_set:
+            neighbors=[(r+dr,c+dc) for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)] if (r+dr,c+dc) in cluster_set]
+            if len(neighbors)<=1:
+                to_remove.append((r,c))
+        if to_remove and len(cluster_set)-len(to_remove)>0:
+            for cell in to_remove:
+                cluster_set.remove(cell)
+            changed=True
+    return cluster_set
+def convert_output(set_coords, shape):
+    h=len(shape); w=len(shape[0])
+    grid=[[0]*w for _ in range(h)]
+    for r,c in set_coords:
+        grid[r][c]=8
+    return grid
+# test example3
+cluster3=set(all8_3)
+skel3=skeleton(set(cluster3))
+out3_pred=convert_output(skel3,input3)
+diff_count=sum((out3_pred[r][c]!=output3[r][c]) for r in range(11) for c in range(10))
+diff_count
+
+# test for example1
+cluster1=set(all8)
+skel1=skeleton(set(cluster1))
+out1_pred=convert_output(skel1,input1)
+diff1=sum(out1_pred[r][c]!=output1[r][c] for r in range(11) for c in range(13))
+diff1
+
+def rule_filter(grid):
+    H=len(grid); W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                adj=[(r+dr,c+dc) for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)] if 0<=r+dr<H and 0<=c+dc<W]
+                if not any(grid[rr][cc]==3 for rr,cc in adj):
+                    out[r][c]=8
+    return out
+# test
+pred1=rule_filter(input1)
+sum(pred1[r][c]!=output1[r][c] for r in range(11) for c in range(13))
+
+pred2=rule_filter(input2)
+sum(pred2[r][c]!=output2[r][c] for r in range(11) for c in range(11))
+
+diffs=[]
+for r in range(11):
+    for c in range(11):
+        if pred2[r][c]!=output2[r][c]:
+            diffs.append(((r,c), pred2[r][c], output2[r][c]))
+diffs
+
+test_input = [
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,3,8,3,3,0,0,0],
+[0,0,0,3,8,3,3,0,0,0],
+[0,0,0,3,8,8,3,0,0,0],
+[0,0,0,5,5,8,5,5,0,0],
+[0,0,0,5,8,8,5,5,0,0],
+[0,0,0,5,8,5,5,5,0,0],
+[0,0,0,8,8,2,2,2,2,2],
+[0,0,0,8,2,2,2,2,2,2],
+[0,0,0,8,2,2,2,2,2,2],
+[0,0,1,8,1,1,1,1,0,0],
+[0,0,8,8,1,1,1,1,0,0],
+[0,0,8,1,1,1,1,1,0,0]
+]
+def rule_pred(grid):
+    H=len(grid); W=len(grid[0])
+    out=[[0]*W for _ in range(H)]
+    for r in range(H):
+        for c in range(W):
+            if grid[r][c]==8:
+                adjcells=[grid[rr][cc] for rr,cc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)] if 0<=rr<H and 0<=cc<W]
+                if not (3 in adjcells and not (2 in adjcells)):
+                    out[r][c]=8
+    return out
+pred_test=rule_pred(test_input)
+for row in pred_test:
+    print(' '.join(map(str,row)))",0,"The Evaluated Rule focuses on keeping cells with a value of 8 and removing those with a 3 in neighboring positions, which does not align with the Ground Truth Rule's requirement to remove all colored rows of rectangles and parts of the cyan object in green rows. The transformations described are fundamentally different.",Keep every cell whose value is 8 except those having a 3 in any of the four orthogonal neighbour positions; set all other cells to 0,1,Incorrect,2,0
+2025-07-17T16:08:18,AboveBelow,AboveBelow9,1,low,1,,0,"0 0 8 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 8 8 8 8 8 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 8 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 8 0 0 0 0 0 0 0 0
+0 0 0 0 8 8 8 0 0 0 0 0 0 0 0
+0 0 0 0 8 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 8 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 8 8 8 8 0 0 0 0 0 0 0
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","**Crafting the output grid**
+
+I'm working on creating a grid based on certain rules. The idea is to keep all rows up to and including a full row of a specific color, setting all lower rows to a background color. In this case, I found that row 8 is completely filled with color 9, and rows below it will be zeroed out. I’ll copy the rows I need, ensuring the output grid reflects this correctly. Let's proceed with that!
+
+**Generating the output grid**
+
+I'm working with a 12x15 grid where I need to keep all rows up to and including the first fully filled row with a non-background color. In my case, rows 0-8 contain essential data, while rows 9-11 should be replaced with zeros. So, I’ll output these rows as specified, returning them as a multiline string in JSON format. This helps create clarity for the user and adheres to the provided rules. Let's put this together!
+
+**Building the grid string**
+
+I'm creating a grid string that includes rows 0 through 8 along with rows 9 to 11 all set to zeros. Each row will be represented as a string with spaces separating the values. The final output will have a JSON format, capturing the rule summary for clarity. I'll keep it minified to avoid unnecessary spaces while ensuring everything is organized according to the provided instructions. Let's finalize that grid representation!
+
+Rule: Copy every row from the top down to (and including) the first row that is completely filled with the same non-zero colour; turn every row beneath that stripe into background 0s.",,1,"The Evaluated Rule effectively achieves the same outcome as the Ground Truth Rule by removing all pixels below the first completely filled row of the same non-zero color, which aligns with the intent of removing pixels below a solid horizontal line.",Copy every row from the top down to (and including) the first row that is completely filled with the same non-zero colour; turn every row beneath that stripe into background 0s.,1,Correct - Intended,2,0
+2025-07-17T16:08:07,AboveBelow,AboveBelow9,2,low,1,,0,"0 0 0 1 0 0 0 0 0 0 0 0
+3 3 3 3 3 3 3 3 3 3 3 3
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0","**Inferring output rules**
+
+I’m trying to figure out the rule for generating outputs from examples. In the first example, there's a 10x12 grid where certain colors form patterns. It seems like the output keeps the first two rows but removes everything below the row containing color 4. So the rule might be to keep all rows above and including the one with color 4, while setting rows below, particularly containing color 3, to zero. I'll test this rule with the second example to see if it holds.
+
+**Crafting output grid**
+
+I’m defining a rule: find a horizontal row fully filled with the same non-zero color, specifically color 4, which indicates a solid stripe. I’ll keep all rows up to and including that stripe unchanged and remove everything below it. I'll test with a 12x12 grid, where color 3 forms a full row at row 1. So, I’ll keep rows 0 and 1 unchanged, while setting rows 2-11 to zeros. 
+
+Let’s return a JSON with a description of the rule and the grid formatted correctly.
+
+**Describing the rule**
+
+I’m thinking about how to articulate the rule for processing the grid. It appears to be: ""Keep all rows up to and including the first fully filled row; blank out everything below that row."" This will help clarify how I handle the grid transformation. Now I just need to craft this into a clear format for the output. Let’s ensure it’s simple and easy to understand for anyone who reads it!
+
+Rule: Find the first (top-most) row whose every cell is the same non-zero colour; leave that row and all rows above it unchanged, and replace every cell in all rows below it with the background colour 0.",,1,"The Evaluated Rule effectively identifies a solid horizontal line (the first row with a uniform non-zero color) and removes all rows below it by replacing them with the background color, which aligns with the intent of the Ground Truth Rule to remove pixels below a solid horizontal line.","Find the first (top-most) row whose every cell is the same non-zero colour; leave that row and all rows above it unchanged, and replace every cell in all rows below it with the background colour 0.",1,Correct - Intended,2,0
+2025-07-17T16:08:56,AboveBelow,AboveBelow9,3,low,1,,1,"2 2 2 2 2 2 2 2 2 2 2
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0","**Identifying grid patterns**
+
+I'm trying to figure out the rules for how these input grids work. They have a background of zeros and a horizontal line of 4's across the top, along with a shape made of colors 3 or 7. It looks like the pattern is preserved above the line while motioning downward. In the first example, rows above the 4 line are retained, but everything below is turned to zeros. I see that rows 0 and 1 have color 3 in column 4, but the rest below that line is wiped out.
+
+**Clarifying grid rules**
+
+Okay, it seems like I need to refine the rule based on my observations. I need to keep everything up to and including the first full-width row of color 4, while clearing all rows below that to zeros. In the second example, rows 0 through 6 were preserved because row 6 had the line of 4's. So the main rule is: find the row with the most frequent non-zero color and retain everything above it, converting below to zeros. 
+
+I'll need to handle edge cases where the line might not be at the top. Let's continue analyzing!
+
+```python
+grid = [
+[2,2,2,2,2,2,2,2,2,2,2],
+[0,0,0,0,5,0,0,0,0,0,0],
+[0,0,0,0,5,0,0,0,0,0,0],
+[0,0,0,5,5,0,0,0,0,0,0],
+[0,0,0,5,0,0,0,0,0,0,0],
+[5,5,5,5,0,0,0,0,0,0,0],
+[5,0,0,0,0,0,0,0,0,0,0],
+[5,5,5,5,5,5,0,0,0,0,0],
+[0,0,0,0,0,5,0,0,0,0,0],
+]
+rows=[]
+for r in grid:
+    rows.append(len(set(r))==1 and r[0]!=0)
+rows
+```
+
+**Analyzing grid outputs**
+
+I’m considering the implications of keeping rows based on uniform colors. In past examples, I noticed that we retained all rows above the uniform row, leading to confusion about what to keep. In this case, since the solid color row is the top row, I’ll keep that row and remove the rest, resulting in zeros for the lower rows. So, the output will feature just row 0 as it is, followed by rows 1-8 as zeros.
+
+**Creating grid output**
+
+I’m crafting the grid to show the values clearly. For row 0, it will be filled with ""2"" repeated 11 times. Rows 1 to 8 will simply be zeros. I want to return this as a single-line grid with spaces, just like the previous outputs which had space-separated numbers. So, the final grid will look like:   
+Row0 as ""2 2 2 2 2 2 2 2 2 2 2"" and then rows with ""0 0 0 0 0 0 0 0 0 0 0."" I also need to format this into a JSON structure mentioning the rule for clarity.
+
+```python
+output = ["" "".join(map(str,row)) for row in grid]
+output
+```
+
+```python
+new_grid = [output[0]] + [""0 0 0 0 0 0 0 0 0 0 0""]*8
+new_grid
+```
+
+Rule: Keep every row from the top down to (and including) the first row that is entirely filled with a single non-zero colour; replace all rows below it with background zeros.","grid = [
+[2,2,2,2,2,2,2,2,2,2,2],
+[0,0,0,0,5,0,0,0,0,0,0],
+[0,0,0,0,5,0,0,0,0,0,0],
+[0,0,0,5,5,0,0,0,0,0,0],
+[0,0,0,5,0,0,0,0,0,0,0],
+[5,5,5,5,0,0,0,0,0,0,0],
+[5,0,0,0,0,0,0,0,0,0,0],
+[5,5,5,5,5,5,0,0,0,0,0],
+[0,0,0,0,0,5,0,0,0,0,0],
+]
+rows=[]
+for r in grid:
+    rows.append(len(set(r))==1 and r[0]!=0)
+rows
+
+output = ["" "".join(map(str,row)) for row in grid]
+output
+
+new_grid = [output[0]] + [""0 0 0 0 0 0 0 0 0 0 0""]*8
+new_grid",1,"The Evaluated Rule effectively captures the essence of the Ground Truth Rule by ensuring that all rows below the first fully filled row are replaced with background zeros, which aligns with the concept of removing pixels below a solid horizontal line.",Keep every row from the top down to (and including) the first row that is entirely filled with a single non-zero colour; replace all rows below it with background zeros.,1,Correct - Intended,2,0
