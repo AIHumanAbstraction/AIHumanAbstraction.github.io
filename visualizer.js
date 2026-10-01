@@ -452,6 +452,16 @@ class ConceptARCVisualizer {
     }
 
     // ---------- Flexible field accessors ----------
+    // Puzzle name from a human Task path, e.g. "corpus/Center/Center10.json" -> "Center10"
+    taskStem(task) {
+        return String(task || '').split('/').pop().replace(/\.json$/i, '').trim();
+    }
+
+    // Natural order so Center2 comes before Center10
+    sortPuzzles(puzzles) {
+        return puzzles.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+    }
+
     getPuzzleFromRow(row) {
         if (!row) return '';
         if (row.puzzle && row.puzzle.trim()) {
@@ -706,7 +716,7 @@ class ConceptARCVisualizer {
     
     setupStandardNavigation() {
         console.log('Setting up standard navigation');
-        const puzzles = [...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(p => p).sort();
+        const puzzles = this.sortPuzzles([...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(p => p));
         console.log('Found puzzles:', puzzles);
         
         const puzzleSelect = document.getElementById('puzzle-select');
@@ -725,7 +735,7 @@ class ConceptARCVisualizer {
         // Populate concepts from Human manifest to cover all 16
         const concepts = this._humanConceptsCache && this._humanConceptsCache.length
             ? this._humanConceptsCache
-            : [...new Set(this.data.map(r => r.Task.split('/').pop().replace(/\.json$/, '').replace(/\d+$/, '')))].sort();
+            : [...new Set(this.data.map(r => this.taskStem(r.Task).replace(/\d+$/, '')))].sort();
         const conceptSelect = document.getElementById('concept-select');
         conceptSelect.innerHTML = concepts.map(c => `<option value="${c}">${c}</option>`).join('');
         
@@ -762,7 +772,7 @@ class ConceptARCVisualizer {
     
     updateHumanPuzzles() {
         const concept = document.getElementById('concept-select').value;
-        const puzzles = [...new Set(this.data.filter(r => r.Task.includes(concept)).map(r => r.Task.split('/').pop().replace(/\.json$/, '')))].sort();
+        const puzzles = this.sortPuzzles([...new Set(this.data.map(r => this.taskStem(r.Task)).filter(p => p.replace(/\d+$/, '') === concept))]);
         const puzzleSelect = document.getElementById('human-puzzle-select');
         puzzleSelect.innerHTML = puzzles.map(p => `<option value="${p}">${p}</option>`).join('');
         
@@ -774,7 +784,7 @@ class ConceptARCVisualizer {
     
     updateHumanTests() {
         const puzzle = document.getElementById('human-puzzle-select').value;
-        const tests = [...new Set(this.data.filter(r => r.Task.includes(puzzle)).map(r => r.Test))].sort((a, b) => parseInt(a) - parseInt(b));
+        const tests = [...new Set(this.data.filter(r => this.taskStem(r.Task) === puzzle).map(r => r.Test))].sort((a, b) => parseInt(a) - parseInt(b));
         const testSelect = document.getElementById('human-test-select');
         testSelect.innerHTML = tests.map(t => `<option value="${t}">${t}</option>`).join('');
         
@@ -789,7 +799,7 @@ class ConceptARCVisualizer {
     updateHumans() {
         const puzzle = document.getElementById('human-puzzle-select').value;
         const test = document.getElementById('human-test-select').value;
-        const humans = this.data.filter(r => r.Task.includes(puzzle) && r.Test === test);
+        const humans = this.data.filter(r => this.taskStem(r.Task) === puzzle && r.Test === test);
         const humanSelect = document.getElementById('human-select');
         humanSelect.innerHTML = humans.map((_, i) => `<option value="${i}">${i + 1}</option>`).join('');
         
@@ -885,7 +895,7 @@ class ConceptARCVisualizer {
         
         if (!concept || !puzzle || !test) return;
         
-        const humans = this.data.filter(r => r.Task.includes(puzzle) && r.Test === test);
+        const humans = this.data.filter(r => this.taskStem(r.Task) === puzzle && r.Test === test);
         if (humanIdx >= humans.length) return;
         
         const row = humans[humanIdx];
@@ -895,15 +905,16 @@ class ConceptARCVisualizer {
         if (v !== this._refreshVersion) return;
         
         const testIdx = parseInt(test) - 1;
-        const testInput = puzzleData.test[testIdx].input;
-        const groundTruth = puzzleData.test[testIdx].output;
+        const testCase = puzzleData && puzzleData.test ? puzzleData.test[testIdx] : null;
+        const testInput = testCase ? testCase.input : null;
+        const groundTruth = testCase ? testCase.output : null;
         
         // Display grids
         this.renderGrid('human-test-grid', testInput);
         this.renderGrid('human-gt-grid', groundTruth);
         
         // Display demonstrations
-        this.renderDemonstrations('human-demos-container', puzzleData.train);
+        this.renderDemonstrations('human-demos-container', puzzleData ? puzzleData.train : []);
         if (v !== this._refreshVersion) return;
         
         // Display text content
@@ -1214,6 +1225,7 @@ class ConceptARCVisualizer {
     }
     
     navigateLeft() {
+        if (!this.data) return;
         if (this.isHumanMode) {
             // Human mode: human -> test -> puzzle
             const humanSel = document.getElementById('human-select');
@@ -1248,7 +1260,7 @@ class ConceptARCVisualizer {
         }
         const puzzleSel = document.getElementById('puzzle-select');
         if (puzzleSel) {
-            const puzzles = [...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(Boolean).sort();
+            const puzzles = this.sortPuzzles([...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(Boolean));
             const curr = puzzleSel.value;
             const idx = puzzles.indexOf(curr);
             if (idx > 0) {
@@ -1266,6 +1278,7 @@ class ConceptARCVisualizer {
     }
     
     navigateRight() {
+        if (!this.data) return;
         if (this.isHumanMode) {
             // Human mode: human -> test -> puzzle
             const humanSel = document.getElementById('human-select');
@@ -1300,7 +1313,7 @@ class ConceptARCVisualizer {
         }
         const puzzleSel = document.getElementById('puzzle-select');
         if (puzzleSel) {
-            const puzzles = [...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(Boolean).sort();
+            const puzzles = this.sortPuzzles([...new Set(this.data.map(r => this.getPuzzleFromRow(r)))].filter(Boolean));
             const curr = puzzleSel.value;
             const idx = puzzles.indexOf(curr);
             if (idx !== -1 && idx < puzzles.length - 1) {
@@ -1388,9 +1401,24 @@ class ConceptARCVisualizer {
             } else {
                 sel.disabled = true;
                 if (loadBtn) loadBtn.disabled = true;
+                this.clearStandardDisplay();
                 this.updateStatus('ℹ️ No dataset available for this selection', 'info');
             }
         } catch (_) {}
+    }
+
+    // Remove the previous selection's puzzle so it is not shown under a model without data
+    clearStandardDisplay() {
+        this.data = null;
+        this._refreshVersion = (this._refreshVersion || 0) + 1;
+        ['puzzle-select', 'test-select'].forEach(id => { document.getElementById(id).innerHTML = ''; });
+        ['test-grid', 'gt-grid', 'answer-grid'].forEach(id => this.renderGrid(id, null));
+        this.renderDemonstrations('demos-container', []);
+        ['model-rule-content', 'gt-rule-content', 'reasoning-content', 'rule-status-content'].forEach(id => {
+            document.getElementById(id).textContent = '';
+        });
+        const perf = document.getElementById('performance-indicator');
+        if (perf) perf.textContent = 'Performance: --';
     }
 
     async populateConceptsFromSelectors() {

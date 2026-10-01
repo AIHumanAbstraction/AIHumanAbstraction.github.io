@@ -1,5 +1,5 @@
 timestamp,concept,puzzle,test_idx,effort,is_correct,err,tools_used,answer,summary,programming_calls,Rule,validated,Rule_correct,Rule_correct_label,validation_level,starred,rule_evaluation_reasoning
-2025-08-03T22:50:21,Horizontalvertical,HorizontalVertical1,1,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:50:21,HorizontalVertical,HorizontalVertical1,1,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0
 0 5 3 3 3 3 3 3 3 5 0 0 0 0 0 0 0 0
@@ -863,7 +863,7 @@ minified[:200]
 ```python
 minified
 ```","Fill the interior of each hollow rectangular frame (border thickness 1). Process the frames in reading order (top-to-bottom, left-to-right). Colour the first frame’s interior with 3, the second with 7, the third with 3, the fourth with 7, and so on, alternating 3 and 7. All other cells remain unchanged.",1,1,Correct - Unintended,2,0,
-2025-08-03T22:44:43,Horizontalvertical,HorizontalVertical1,2,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:44:43,HorizontalVertical,HorizontalVertical1,2,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0
 0 3 3 3 3 3 3 3 3 3 0
 0 3 7 7 7 7 7 7 7 3 0
 0 3 3 3 3 3 3 3 3 3 0
@@ -1289,7 +1289,7 @@ def grid_to_string(g):
     return ""\n"".join("" "".join(map(str,row)) for row in g)
 print(grid_to_string(grid))
 ```",Each non-zero component is a hollow rectangular frame. Determine its orientation: if its height exceeds its width (vertical frame) colour every 0 inside the frame with 3; if its width exceeds its height (horizontal frame) colour every 0 inside the frame with 7.,1,1,Correct - Intended,2,0,
-2025-08-03T22:50:41,Horizontalvertical,HorizontalVertical1,3,medium,0,mismatch,1,"3 3 3 3 3 0 6 6 6 6 6 6 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:50:41,HorizontalVertical,HorizontalVertical1,3,medium,0,mismatch,1,"3 3 3 3 3 0 6 6 6 6 6 6 0 0 0 0 0 0 0 0 0 0 0
 3 3 3 3 3 0 6 7 7 7 7 6 0 4 4 4 4 4 4 4 4 4 4
 3 3 3 3 3 0 6 7 7 7 7 6 0 4 3 3 3 3 3 3 3 3 4
 3 3 3 3 3 0 6 7 7 7 7 6 0 4 3 3 3 3 3 3 3 3 4
@@ -1665,7 +1665,7 @@ expected2=[list(map(int,l.split())) for l in expected2_str.splitlines()]
 out_grid_str='\n'.join(' '.join(map(str,row)) for row in out_list)
 out_grid_str
 ```","Locate every hollow rectangle whose border is one cell thick. Scan the grid from top-left to bottom-right; for the 1st rectangle fill its interior with colour 3, for the 2nd with 7, then keep alternating 3 and 7 for the rest. Leave all other cells unchanged.",1,1,Correct - Unintended,2,0,
-2025-08-03T22:42:44,Horizontalvertical,HorizontalVertical10,1,medium,1,,0,"0 0 0 0 0 0 0 0 0 8
+2025-08-03T22:42:44,HorizontalVertical,HorizontalVertical10,1,medium,1,,0,"0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
@@ -1695,7 +1695,7 @@ I’m analyzing the distances for the bounding box edges. For the first example,
 So the color consistently used is 8, and the transformation involves filling a grid edge based on these orientations. Let’s set up the final answer accordingly!
 
 Rule: Detect whether the coloured area is made of uniform-colour horizontal rows or vertical columns. If it consists of horizontal rows, append a full column of colour 8 on the right edge; if it consists of vertical columns, append a full row of colour 8 on the top edge. All other cells stay unchanged.",,"Detect whether the coloured area is made of uniform-colour horizontal rows or vertical columns. If it consists of horizontal rows, append a full column of colour 8 on the right edge; if it consists of vertical columns, append a full row of colour 8 on the top edge. All other cells stay unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:45:15,Horizontalvertical,HorizontalVertical10,2,medium,1,,0,"8 8 8 8 8 8 8 8 8 8
+2025-08-03T22:45:15,HorizontalVertical,HorizontalVertical10,2,medium,1,,0,"8 8 8 8 8 8 8 8 8 8
 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0
@@ -1742,7 +1742,7 @@ Row9: 0 0 0 0 0 0 0 0 0 0
 Finally, I’ll format the output in minified JSON as specified. This will ensure there's no extra spacing after the last row and keep it clean.
 
 Rule: If the non-zero rectangle consists of horizontal colour stripes, add a full column of 8s on the right edge; if it consists of vertical colour stripes, add a full row of 8s on the top edge. Leave everything else unchanged.",,"If the non-zero rectangle consists of horizontal colour stripes, add a full column of 8s on the right edge; if it consists of vertical colour stripes, add a full row of 8s on the top edge. Leave everything else unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:42:46,Horizontalvertical,HorizontalVertical10,3,medium,1,,0,"0 0 0 0 0 0 0 0 0 8
+2025-08-03T22:42:46,HorizontalVertical,HorizontalVertical10,3,medium,1,,0,"0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
 0 0 0 0 0 0 0 0 0 8
@@ -1772,7 +1772,7 @@ I’m analyzing how to fill the grid based on symmetry and the presence of color
 I’ll keep the existing non-zero values intact and format the output accordingly, ensuring I capture everything correctly. Let’s finalize the JSON representation of the grid!
 
 Rule: Paint every cell of the first completely empty border line with the constant colour 8; choose a column if at least one empty column exists (select the right-most one), otherwise choose the top empty row.",,"Paint every cell of the first completely empty border line with the constant colour 8; choose a column if at least one empty column exists (select the right-most one), otherwise choose the top empty row.",1,0,Incorrect,2,0,
-2025-08-03T22:42:56,Horizontalvertical,HorizontalVertical2,1,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:42:56,HorizontalVertical,HorizontalVertical2,1,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 6 1 6 1 6 0 0 0 0 0 0 0 0
@@ -1972,7 +1972,7 @@ print(grid_to_string(out))
 grid_string = '\n'.join(' '.join(str(x) for x in row) for row in out)
 grid_string
 ```","Keep only the non-zero shapes that are entirely surrounded by zeros (i.e., shapes that do not touch any edge of the grid). Set every other cell to 0.",1,1,Correct - Unintended,2,0,
-2025-08-03T22:44:19,Horizontalvertical,HorizontalVertical2,2,medium,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:44:19,HorizontalVertical,HorizontalVertical2,2,medium,0,mismatch,0,"0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0
 0 1 1 6 1 1 1 0 0 0 0 0
 0 1 1 6 1 1 1 0 0 0 0 0
@@ -2008,7 +2008,7 @@ Next, I'm going to produce a minified JSON object that includes a transformation
 I'm creating a minified JSON object here. The rule states, ""Keep only the colored regions that do not touch the border, and replace all other cells with 0."" The grid is represented as a string with rows separated by newlines, and it captures the specific patterns clearly. I’ve ensured that the JSON format is valid and doesn’t have any unnecessary spaces outside. Now, it’s ready for delivery!
 
 Rule: Keep only the colored regions that do not touch any edge of the grid; set every other cell to 0.",,Keep only the colored regions that do not touch any edge of the grid; set every other cell to 0.,1,1,Correct - Unintended,2,0,
-2025-08-03T22:46:00,Horizontalvertical,HorizontalVertical2,3,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:46:00,HorizontalVertical,HorizontalVertical2,3,medium,0,mismatch,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 8 8 8 8 8 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 8 8 8 8 8 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2856,7 +2856,7 @@ grid_str[:200]
 ```python
 grid_str
 ```",Find all connected non-background components. For each component test whether its bounding box is completely filled (no 0s inside) AND every row inside that box is monochrome (all cells in the row have the same colour). Among the rectangles that satisfy these two conditions choose the one with the largest area and leave it unchanged; replace every other cell of the grid with 0.,1,1,Correct - Unintended,2,0,
-2025-08-03T22:48:26,Horizontalvertical,HorizontalVertical3,1,medium,1,,0,"1 1 1 1 1 1 1 1 1 1 1 1
+2025-08-03T22:48:26,HorizontalVertical,HorizontalVertical3,1,medium,1,,0,"1 1 1 1 1 1 1 1 1 1 1 1
 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 7 0 0 0 0 0 7 0 0 0
 0 7 7 7 0 0 0 7 7 7 0 0
@@ -2888,7 +2888,7 @@ It seems the pattern might prefer to fill in edges closer to the bounding box. H
 I’m working with the bounding boxes and looking at how shapes differ in height and width. For Example 2, the shape is taller than it is wide, prompting a vertical column insertion, while Example 3 is wider, leading to a top row addition. The rule I’m forming is straightforward: if the shape’s width is greater than its height, fill the top row with 1s; otherwise, fill the left column. Now, I’ll present this as a concise JSON output.
 
 Rule: Fill with 1. If bounding box width>height, set entire top row to 1, else set entire left column to 1",,"Fill with 1. If bounding box width>height, set entire top row to 1, else set entire left column to 1",1,1,Correct - Unintended,2,0,
-2025-08-03T22:45:55,Horizontalvertical,HorizontalVertical3,2,medium,1,,0,"1 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:45:55,HorizontalVertical,HorizontalVertical3,2,medium,1,,0,"1 0 0 0 0 0 0 0 0 0 0 0
 1 0 8 8 8 0 0 0 0 0 0 0
 1 0 0 8 0 0 0 0 0 0 0 0
 1 0 0 8 0 0 0 0 0 0 0 0
@@ -2918,7 +2918,7 @@ I’m converting the input rows to the output format. For each row, I’m adding
 Now, I'll create the JSON output with a summarized transformation rule. The rule will express that I should draw a line of color 1 on the top row for horizontal patterns and the left column for vertical patterns. Let's finalize that!
 
 Rule: Detect whether the non-zero motif repeats horizontally or vertically; if the repetitions run horizontally, fill the entire top row with colour 1, otherwise (vertical repetitions) fill the entire leftmost column with colour 1, leaving all other cells unchanged.",,"Detect whether the non-zero motif repeats horizontally or vertically; if the repetitions run horizontally, fill the entire top row with colour 1, otherwise (vertical repetitions) fill the entire leftmost column with colour 1, leaving all other cells unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:47:46,Horizontalvertical,HorizontalVertical3,3,medium,1,,1,"1 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:47:46,HorizontalVertical,HorizontalVertical3,3,medium,1,,1,"1 0 0 0 0 0 0 0 0 0 0 0
 1 0 0 5 5 5 0 0 0 0 0 0
 1 0 0 5 5 5 5 0 0 0 0 0
 1 0 0 0 5 5 5 0 0 0 0 0
@@ -3000,7 +3000,7 @@ for i in range(12):
     out[i][0] = 1
 out
 ```","Find the bounding box of the non-zero colour. If the box is wider than tall, draw a full horizontal line of colour 1 on the top edge of the whole grid; if the box is taller than wide, draw a full vertical line of colour 1 on the left edge. Leave every other cell unchanged.",1,1,Correct - Unintended,2,0,
-2025-08-03T22:51:02,Horizontalvertical,HorizontalVertical4,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:51:02,HorizontalVertical,HorizontalVertical4,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 7 7 7 7 7 7 7 7 0 0
 0 0 7 0 0 2 0 0 0 7 0 0
@@ -3697,7 +3697,7 @@ def grid_to_string(grid):
 grid_str=grid_to_string(out_test)
 grid_str
 ```",Recolour every connected component of colour 2 that is only one cell tall (horizontal lines) by replacing its cells with colour 3; leave all other cells unchanged.,1,1,Correct - Intended,2,0,
-2025-08-03T22:42:58,Horizontalvertical,HorizontalVertical4,2,medium,1,,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:42:58,HorizontalVertical,HorizontalVertical4,2,medium,1,,0,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 6 6 6 6 6 6 6 6 6 6 6 0
 0 0 6 0 0 0 0 0 0 0 0 0 6 0
 0 0 6 0 0 0 3 3 3 3 0 0 6 0
@@ -3737,7 +3737,7 @@ I'm putting together the grid rows with the correct values. Each row showcases t
 Now, I’ll format the grid as a string, using newline characters to keep the structure clear. Following that, I'll create a JSON object to encapsulate the transformation rule and the grid string, ensuring everything is minified correctly without unnecessary spaces. This way, both the rule and grid are neatly presented for easy access.
 
 Rule: Change every horizontal run of two or more consecutive 2s into 3s; single isolated 2s stay as 2.",,Change every horizontal run of two or more consecutive 2s into 3s; single isolated 2s stay as 2.,1,1,Correct - Intended,2,0,
-2025-08-03T22:44:20,Horizontalvertical,HorizontalVertical4,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:44:20,HorizontalVertical,HorizontalVertical4,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 8 8 8 8 8 8 8 8 8 0 0 0 0
 0 0 0 8 0 0 0 0 0 0 0 8 8 0 0 0
 0 0 0 8 0 0 0 0 0 0 0 0 8 0 0 0
@@ -4251,7 +4251,7 @@ def grid_to_string(grid):
 grid_str = grid_to_string(output_grid)
 grid_str.split(""\n"")[8]
 ```","Recolour each connected component of colour 2: if the component’s bounding box is wider than it is tall (horizontal), change all its cells to colour 3; otherwise leave it as 2. All other colours stay unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:45:18,Horizontalvertical,HorizontalVertical5,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 3
+2025-08-03T22:45:18,HorizontalVertical,HorizontalVertical5,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 3
 0 4 0 0 0 0 0 0 4 3
 0 4 0 0 0 0 0 0 4 3
 0 4 4 4 4 4 4 4 4 3
@@ -4553,7 +4553,7 @@ for row in out:
 grid_str=""\n"".join("" "".join(map(str,row)) for row in out)
 grid_str[:300]
 ```","Identify the first row (from the top) that contains any 4s. • If the 4s in that row form one single uninterrupted block, paint the entire top border row with 3s. • Otherwise (the 4s are split into two or more blocks), paint the entire right-hand border column with 3s. Leave every other cell unchanged.",1,1,Correct - Unintended,2,0,
-2025-08-03T22:46:57,Horizontalvertical,HorizontalVertical5,2,medium,1,,1,"3 3 3 3 3 3 3 3 3 3
+2025-08-03T22:46:57,HorizontalVertical,HorizontalVertical5,2,medium,1,,1,"3 3 3 3 3 3 3 3 3 3
 0 0 0 0 0 0 0 0 0 0
 0 4 4 4 4 4 0 0 0 0
 0 0 4 4 4 0 0 0 0 0
@@ -5021,7 +5021,7 @@ output = [row[:] for row in test_input]
 output[0] = [3]*10
 output
 ```","Locate the figure made of colour 4. Find the outer edges (top, bottom, left, right) that are completely background (0) and whose first 4-coloured cells appear exactly one step (one empty row/column) inside the grid. Paint that edge completely with colour 3. If more than one edge satisfies the condition, choose the one whose adjacent inner line contains the longest uninterrupted run of colour-4 cells.",1,0,Incorrect,2,0,
-2025-08-03T22:48:46,Horizontalvertical,HorizontalVertical5,3,medium,0,mismatch,1,"3 3 3 3 3 3 3 3 3 3
+2025-08-03T22:48:46,HorizontalVertical,HorizontalVertical5,3,medium,0,mismatch,1,"3 3 3 3 3 3 3 3 3 3
 4 0 4 0 4 0 4 0 4 0
 4 4 0 4 0 4 0 4 4 0
 4 0 0 0 0 0 0 0 4 0
@@ -5325,7 +5325,7 @@ def grid_to_str(grid):
     return ""\n"".join("" "".join(map(str,row)) for row in grid)
 grid_to_str(out)
 ```","Count how the coloured figure spreads: if it occupies more columns than rows (it is ‘taller’), paint the whole top edge with colour 3; otherwise (it is ‘wider’), paint the whole right-hand edge with colour 3. Leave every other cell unchanged.",1,0,Incorrect,2,0,
-2025-08-03T22:46:31,Horizontalvertical,HorizontalVertical6,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 3
+2025-08-03T22:46:31,HorizontalVertical,HorizontalVertical6,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 3
 0 0 0 1 1 1 0 0 0 0 0 0 0 3
 0 0 0 1 0 0 0 0 0 0 0 0 0 3
 0 0 0 1 1 0 0 0 0 0 0 0 0 3
@@ -5429,7 +5429,7 @@ out
 grid_str = '\n'.join(' '.join(map(str,row)) for row in out)
 grid_str[:200], len(grid_str)
 ```","Find the bounding box of all non-zero (1) cells. If its height is greater than its width, the figure is taller than it is wide, so paint the entire rightmost column with 3s. Otherwise (width ≥ height) paint the entire top row with 3s. Leave every other cell unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:47:39,Horizontalvertical,HorizontalVertical6,2,medium,1,,1,"3 3 3 3 3 3 3 3 3 3 3 3 3 3
+2025-08-03T22:47:39,HorizontalVertical,HorizontalVertical6,2,medium,1,,1,"3 3 3 3 3 3 3 3 3 3 3 3 3 3
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -5541,7 +5541,7 @@ output
 grid_str=""\n"".join("" "".join(map(str,row)) for row in output)
 grid_str[:200]
 ```","Keep every 1 where it is. Compute the rectangle that contains all 1s. If that rectangle is wider than it is tall, paint the whole first (top) row with 3s. If it is taller than it is wide, paint the whole last (right-most) column with 3s.",1,1,Correct - Intended,2,0,
-2025-08-03T22:47:18,Horizontalvertical,HorizontalVertical6,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 3
+2025-08-03T22:47:18,HorizontalVertical,HorizontalVertical6,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 3
 0 0 0 0 0 0 0 0 0 0 0 0 0 3
 0 0 0 0 1 1 1 0 0 0 0 0 0 3
 0 0 0 0 0 0 0 0 0 0 0 0 0 3
@@ -5879,7 +5879,7 @@ def grid_to_str(grid):
     return '\n'.join(' '.join(map(str,row)) for row in grid)
 print(grid_to_str(out)[:200])
 ```","Let the set of 1-cells define a bounding rectangle. Compare its height and width.  If height > width, write 3 in every cell of the outermost right column; otherwise write 3 in every cell of the outermost top row.  Leave all other cells unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:42:41,Horizontalvertical,HorizontalVertical7,1,medium,1,,0,"5 5 5 5 5 5 5 5 5 5
+2025-08-03T22:42:41,HorizontalVertical,HorizontalVertical7,1,medium,1,,0,"5 5 5 5 5 5 5 5 5 5
 0 0 0 0 0 0 0 0 0 0
 0 5 7 7 7 7 7 5 0 0
 0 0 0 7 7 7 0 0 0 0
@@ -5905,7 +5905,7 @@ I'm analyzing a grid where internal 2's appear in specific columns and how these
 I’m reflecting on the transformation rules for filling colors in the grid. Horizontal alignment of 2's fills the entire top row, whereas vertical alignment does the same for the leftmost column. The pattern determines whether the border changes are applied to the top row or the left column. For the test input, I identify 5 as the minority color, horizontally aligned, leading to filling the top row with 5's. Finally, I create the minified JSON representation with the rule and grid value, properly formatted with newline characters.
 
 Rule: If the two cells of the unique colour are in the same column, create a solid column of that colour on the left border; if they are in the same row, create a solid row of that colour on the top border, leaving all other cells unchanged.",,"If the two cells of the unique colour are in the same column, create a solid column of that colour on the left border; if they are in the same row, create a solid row of that colour on the top border, leaving all other cells unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:43:30,Horizontalvertical,HorizontalVertical7,2,medium,1,,0,"2 0 0 0 1 1 0 0 0 0
+2025-08-03T22:43:30,HorizontalVertical,HorizontalVertical7,2,medium,1,,0,"2 0 0 0 1 1 0 0 0 0
 2 0 0 1 1 1 1 0 0 0
 2 0 1 1 1 1 1 1 0 0
 2 2 1 1 1 1 1 1 0 0
@@ -5931,7 +5931,7 @@ In Example 3, the entire first row is changed to 2's, but the first column remai
 I see that the rule states to fill the first column with 2's, and I've verified the grid positions. I've checked that all necessary rows are updated while leaving other cells unchanged. After processing the rows, I need to format the grid as a string with newline characters between each row. I'll ensure the rule clearly explains how the orientation matters when painting the grid. Finally, I will prepare the minified JSON, ensuring everything is correctly formatted and concise. Here’s what I came up with!
 
 Rule: Paint a solid stripe of colour 2 along the outer border that matches the orientation of the two existing 2-cells: if the two 2s lie in the same column, fill the whole first column with 2; if they lie in the same row, fill the whole first row with 2. All other cells stay as they are.",,"Paint a solid stripe of colour 2 along the outer border that matches the orientation of the two existing 2-cells: if the two 2s lie in the same column, fill the whole first column with 2; if they lie in the same row, fill the whole first row with 2. All other cells stay as they are.",1,1,Correct - Intended,2,0,
-2025-08-03T22:43:36,Horizontalvertical,HorizontalVertical7,3,medium,1,,0,"2 0 0 0 0 0 0 0 0 0
+2025-08-03T22:43:36,HorizontalVertical,HorizontalVertical7,3,medium,1,,0,"2 0 0 0 0 0 0 0 0 0
 2 0 0 0 0 0 0 0 0 0
 2 9 9 2 9 9 9 9 0 0
 2 9 9 2 9 9 9 9 0 0
@@ -5955,7 +5955,7 @@ Looking at row arrangements, I see that the second row has a '2' at column 5, an
 For horizontal arrangements, like in example three, the first row gets filled with '2's. It seems the rule is to replicate the orientation of '2's to the top or left border, maintaining original placements inside the shapes. Let's test this with a new grid!
 
 Rule: Locate the two cells coloured 2. If they are in the same column, overwrite the whole first column with 2; if they are in the same row, overwrite the whole first row with 2. Leave every other cell unchanged.",,"Locate the two cells coloured 2. If they are in the same column, overwrite the whole first column with 2; if they are in the same row, overwrite the whole first row with 2. Leave every other cell unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:45:42,Horizontalvertical,HorizontalVertical8,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:45:42,HorizontalVertical,HorizontalVertical8,1,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 3 3 3 3 3 3 3 0 0 0
@@ -6173,7 +6173,7 @@ grid_lines_str = ["" "".join(map(str,row)) for row in grid_output]
 grid_str = ""\n"".join(grid_lines_str)
 grid_str[:400]
 ```","Pairs of coloured components exist that are mirror-images of each other either across the vertical axis (left/right pair) or across the horizontal axis (top/bottom pair).  Leave the central component and the left/right pair untouched, but delete the pair whose two shapes are symmetric with respect to the horizontal mid-line of the canvas (i.e. paint those two components with 0).",1,1,Correct - Intended,2,0,
-2025-08-03T22:47:00,Horizontalvertical,HorizontalVertical8,2,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:47:00,HorizontalVertical,HorizontalVertical8,2,medium,1,,1,"0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -6669,7 +6669,7 @@ grid_str[:200]
 grid_str_complete = grid_to_string(out_list)
 print(grid_str_complete)
 ```",Find the color with the biggest block (the central figure). Any coloured region that touches this block only from directly above or directly below is replaced by 0; regions that touch it from the left or right are kept. All other cells stay unchanged.,1,1,Correct - Intended,2,0,
-2025-08-03T22:49:32,Horizontalvertical,HorizontalVertical8,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0
+2025-08-03T22:49:32,HorizontalVertical,HorizontalVertical8,3,medium,1,,1,"0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 3 0 0 0 0 0
 0 0 0 0 3 0 0 0 0 0
@@ -7208,7 +7208,7 @@ for row in grid:
 out_str=""\n"".join("" "".join(map(str,row)) for row in out)
 out_str
 ```","keep rows that contain at least one cell of color 3; replace every other row with all zeros, leaving surviving rows unchanged",1,1,Correct - Unintended,2,0,
-2025-08-03T22:47:55,Horizontalvertical,HorizontalVertical9,1,medium,1,,0,"4 0 4 0 0 0
+2025-08-03T22:47:55,HorizontalVertical,HorizontalVertical9,1,medium,1,,0,"4 0 4 0 0 0
 4 0 4 0 0 0
 4 0 4 0 0 0
 4 0 4 0 0 0
@@ -7230,7 +7230,7 @@ I'm considering edge cases where colors 4 and 7 are predetermined; color 4 is fo
 For formatting, I’m thinking of using newline-separated rows with space-separated numbers, as I want to keep the style consistent with previous examples. I’ll aim for clarity in this representation!
 
 Rule: Replace each non-zero monochrome line by orientation: vertical lines → color 4, horizontal lines → color 7; background (0) unchanged.",,"Replace each non-zero monochrome line by orientation: vertical lines → color 4, horizontal lines → color 7; background (0) unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:42:26,Horizontalvertical,HorizontalVertical9,2,medium,1,,0,"7 7 7 7 0 0
+2025-08-03T22:42:26,HorizontalVertical,HorizontalVertical9,2,medium,1,,0,"7 7 7 7 0 0
 4 0 0 0 0 4
 4 0 0 0 0 4
 4 0 0 0 0 4
@@ -7248,7 +7248,7 @@ I'm checking the grid for color transformations based on orientation. For Color3
 I’m putting together the final output grid. The bottom row, row 5 in columns 2-5 shows 7s, while the vertical lines from cells with 3 and 8 become 4 in rows 1-4. So, I’m pulling together the rows with the following values: the first row has four 7s followed by two 0s, the next four rows show 4s and a few 0s, and the bottom row has four 7s again. Now I’ll format the output into a minified JSON object. I need to ensure the rule is clear and the apostrophe is properly escaped.
 
 Rule: For each non-zero connected component, compute its bounding box: if width > height (horizontal) recolor all its cells to 7; if height > width (vertical) recolor to 4. Zeros remain unchanged.",,"For each non-zero connected component, compute its bounding box: if width > height (horizontal) recolor all its cells to 7; if height > width (vertical) recolor to 4. Zeros remain unchanged.",1,1,Correct - Intended,2,0,
-2025-08-03T22:42:42,Horizontalvertical,HorizontalVertical9,3,medium,1,,1,"4 0 7 7 7 7
+2025-08-03T22:42:42,HorizontalVertical,HorizontalVertical9,3,medium,1,,1,"4 0 7 7 7 7
 4 4 0 0 0 0
 4 4 0 0 0 0
 4 4 0 0 0 0
