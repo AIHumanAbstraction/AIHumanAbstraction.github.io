@@ -215,7 +215,7 @@ class ConceptARCVisualizer {
             // Auto-load dataset when switching modality
             if (modelNow === 'Human') {
                 const concept = this._humanSelectedConcept || (this._humanConceptsCache && this._humanConceptsCache[0]) || 'AboveBelow';
-                await this.loadStaticConceptDataset('/data/logs/Human', concept);
+                await this.loadStaticConceptDataset('data/logs/Human', concept);
             } else {
                 const base = this.resolveBasePathFromSelectors();
                 const conceptSel = document.getElementById('static-concept-select');
@@ -232,7 +232,7 @@ class ConceptARCVisualizer {
             // Auto-load dataset on model switch
             if (modelNow === 'Human') {
                 const concept = this._humanSelectedConcept || (this._humanConceptsCache && this._humanConceptsCache[0]) || 'AboveBelow';
-                await this.loadStaticConceptDataset('/data/logs/Human', concept);
+                await this.loadStaticConceptDataset('data/logs/Human', concept);
             } else {
                 const base = this.resolveBasePathFromSelectors();
                 const conceptSel = document.getElementById('static-concept-select');
@@ -248,7 +248,7 @@ class ConceptARCVisualizer {
             // Auto-load dataset when switching setting
             if (modelNow === 'Human') {
                 const concept = this._humanSelectedConcept || (this._humanConceptsCache && this._humanConceptsCache[0]) || 'AboveBelow';
-                await this.loadStaticConceptDataset('/data/logs/Human', concept);
+                await this.loadStaticConceptDataset('data/logs/Human', concept);
             } else {
                 const base = this.resolveBasePathFromSelectors();
                 const conceptSel = document.getElementById('static-concept-select');
@@ -281,7 +281,7 @@ class ConceptARCVisualizer {
                 // Remember desired human concept so navigation doesn't reset it
                 this._humanSelectedConcept = selConcept;
                 // Load the selected human concept dataset so dropdown becomes a true concept switcher
-                await this.loadStaticConceptDataset('/data/logs/Human', selConcept);
+                await this.loadStaticConceptDataset('data/logs/Human', selConcept);
             } else {
                 this.updateHumanPuzzles();
             }
@@ -1348,7 +1348,7 @@ class ConceptARCVisualizer {
 
     async populateStaticConcepts(basePath) {
         try {
-            const manifestUrl = (basePath.endsWith('/Human') ? `/data/logs/Human/manifest.json` : `${basePath}/manifest.json`);
+            const manifestUrl = (basePath.endsWith('/Human') ? `data/logs/Human/manifest.json` : `${basePath}/manifest.json`);
             let files = [];
             try {
                 const res = await fetch(manifestUrl, { cache: 'no-cache' });
@@ -1473,9 +1473,9 @@ class ConceptARCVisualizer {
                 medium: 'temp0_max8192_ctx16384',
             },
         };
-        // Human is special: a single Textual-like bucket under /data/logs/Human
+        // Human is special: a single Textual-like bucket under data/logs/Human
         if (model === 'Human') {
-            return `/data/logs/Human`;
+            return `data/logs/Human`;
         }
         let leaf = '';
         if (modality === 'Textual') {
@@ -1483,7 +1483,7 @@ class ConceptARCVisualizer {
         } else {
             leaf = visualMap[model] && (visualMap[model][setting] || visualMap[model].any) || '';
         }
-        return `/data/logs/${modality}/${model}/${leaf}`;
+        return `data/logs/${modality}/${model}/${leaf}`;
     }
 
     refreshSettingOptions() {
@@ -1533,7 +1533,7 @@ class ConceptARCVisualizer {
     async loadStaticConceptDataset(basePath, conceptName) {
         // Prefer JSON (pre-converted) if present
         const isHuman = basePath.endsWith('/Human');
-        const jsonUrl = isHuman ? `/data/logs/Human/json/${conceptName}.json?v=${Date.now()}` : `${basePath}/json/${conceptName}.json?v=${Date.now()}`;
+        const jsonUrl = isHuman ? `data/logs/Human/json/${conceptName}.json?v=${Date.now()}` : `${basePath}/json/${conceptName}.json?v=${Date.now()}`;
         const csvUrl  = isHuman ? `` : `${basePath}/${conceptName}.csv?v=${Date.now()}`;
         try {
             let rows = [];
